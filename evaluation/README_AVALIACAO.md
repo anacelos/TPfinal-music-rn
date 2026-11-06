@@ -1,156 +1,123 @@
-# Avaliação — TP2 IA Generativa para Música
+# Avaliação do TP2
 
-Esta pasta contém a infraestrutura da **Parte 4 — Avaliação/Métricas** do TP2.
+Essa pasta é a parte de **avaliação/métricas** do projeto.
 
-O objetivo é usar o mesmo pipeline para comparar:
+A ideia é simples: usar o mesmo pipeline para comparar três conjuntos:
 
-- músicas reais do conjunto de teste;
+- músicas reais do test set;
 - músicas geradas pelo baseline;
-- músicas geradas pelo modelo autoregressivo principal.
+- músicas geradas pelo modelo principal.
 
-A avaliação é feita diretamente na representação simbólica do **PICO-8**, sem conversão para MIDI.
+Tudo é avaliado direto na representação simbólica do PICO-8, sem precisar converter para MIDI.
 
-## Status
+## O que já funciona
 
-A parte independente do restante do projeto já está implementada.
+Hoje essa parte já consegue:
 
-**Estado atual: 20 testes automatizados passando.**
+- ler os `audio.json`;
+- avaliar uma peça a partir de um conjunto de music patterns;
+- calcular métricas estruturais;
+- processar várias peças de uma vez;
+- salvar os resultados em CSV;
+- comparar Real × Baseline × Neural;
+- calcular estatísticas e distâncias entre distribuições;
+- gerar boxplots automaticamente.
 
-Já estão disponíveis:
+Também tem **20 testes automatizados passando**.
 
-- parser da representação `audio.json`;
-- avaliação de conjuntos arbitrários de music patterns;
-- métricas estruturais PICO-8;
-- avaliação em lote via manifesto;
-- exportação dos resultados para CSV;
-- estatísticas descritivas;
-- comparação Real × Baseline × Neural;
-- KS e Wasserstein-1 como medidas candidatas de distância entre distribuições;
-- geração automática de boxplots;
-- testes para edge cases da representação;
-- alinhamento do parser de avaliação com o sintetizador original do dataset.
+## Métricas atuais
 
-Mais detalhes metodológicos estão em `METRICS.md`.
+Por enquanto estão implementadas:
 
-## Métricas implementadas
+- **Pitch Range**  
+  extensão entre o menor e o maior pitch usado;
 
-### Pitch Range
+- **Pitch-Class Entropy**  
+  diversidade das classes de pitch;
 
-Diferença entre o maior e o menor pitch das notas audíveis.
+- **Structural Note Density**  
+  proporção de slots realmente audíveis;
 
-### Normalized Pitch-Class Entropy
+- **Audible Channel Utilization**  
+  quanto dos 4 canais do PICO-8 é efetivamente usado;
 
-Entropia das classes de pitch (`pitch % 12`), normalizada pelo máximo possível para 12 classes.
+- **SFX Repetition Ratio**  
+  quanto os mesmos SFX são reutilizados dentro da peça.
 
-### Structural Note Density
+Além disso, o pipeline também coleta informações de instrumento, efeito, `speed`, flags e SFX vazios.
 
-Proporção de slots com `volume > 0` entre os slots disponíveis nos SFX utilizados pela peça.
+As definições mais detalhadas estão em [`METRICS.md`](METRICS.md).
 
-É uma métrica estrutural do PICO-8, não uma medida de notas por segundo.
+## Como a representação está sendo interpretada
 
-### Audible Channel Utilization
+A implementação foi conferida com o `extract_audio.py` e o `synthesize_audio.py` usados para gerar o dataset.
 
-Proporção dos quatro canais PICO-8 que realmente produzem som ao longo dos patterns avaliados.
+As regras que estamos usando são:
 
-### SFX Repetition Ratio
-
-Mede a reutilização de SFX dentro da peça.
-
-Além dessas métricas, o pipeline coleta distribuições de:
-
-- instrumentos;
-- efeitos;
-- `speed`;
-- flags;
-- canais habilitados;
-- SFX explícitos ou implicitamente vazios.
-
-## Regras da representação usadas atualmente
-
-A análise do `extract_audio.py` e do `synthesize_audio.py` originais do dataset confirmou que:
-
-- valores de canal `0..63` referenciam diretamente SFX `0..63`;
-- valores de canal `>= 64` não geram áudio;
-- `volume > 0` define um slot audível;
+- valores de canal `0..63` apontam diretamente para um SFX;
+- valores `>= 64` não produzem áudio;
+- uma nota só é considerada audível quando `volume > 0`;
 - cada SFX possui 32 slots;
 - um SFX referenciado mas ausente é tratado como vazio;
-- apenas SFX referenciados pela peça entram nas métricas;
-- quando um mesmo SFX é usado mais de uma vez, cada ocorrência é contabilizada;
-- `speed` influencia a duração dos slots na síntese;
-- `flags`, `loop_start` e `loop_end` são preservados pelo extrator, mas não são executados pelo sintetizador atual.
+- reutilizações do mesmo SFX contam novamente, porque ele está sendo tocado outra vez.
 
-O sintetizador fornecido gera cada `music pattern` isoladamente.
+O sintetizador atual renderiza cada `music pattern` separadamente, então um arquivo `music_XX.wav` não representa necessariamente uma música completa.
 
-Portanto:
+## Sobre o split
 
-`music_XX.wav` **não deve ser assumido como uma música completa**.
+O split deve ser feito por **TID inteiro**.
 
-## Split do dataset
+TID é o ID do jogo, e um mesmo jogo pode ter várias músicas reaproveitando os mesmos SFX. Então não devemos colocar músicas do mesmo TID em train e test, por exemplo.
 
-O split deve ser realizado por **TID inteiro**.
+## O que ainda não está fechado
 
-TID identifica um jogo, e um jogo pode conter várias músicas que reutilizam os mesmos SFX.
+A parte estrutural da avaliação já funciona, mas algumas decisões ainda dependem das outras frentes do projeto:
 
-Assim, músicas do mesmo TID não devem aparecer em conjuntos diferentes de treino, validação e teste, evitando vazamento de informação.
+- como os patterns serão agrupados em uma música completa;
+- tokenização final;
+- split definitivo de train/val/test;
+- formato da saída/decoder do baseline;
+- formato da saída/decoder do modelo principal;
+- reconstrução de loops, stop e sequência completa de patterns.
 
-## Unidade de avaliação
+Por isso, o avaliador recebe explicitamente quais patterns formam uma peça. Quando essa definição estiver fechada, basta trocar o manifesto, sem reescrever as métricas.
 
-O avaliador recebe explicitamente os patterns que compõem uma peça:
-
-```python
-evaluate_piece_data(
-    data,
-    pattern_ids=[0, 1, 2, 3]
-)
-```
-
-A definição final de como os patterns serão agrupados em músicas completas ainda depende da tokenização/decodificação final do projeto.
-
-Essa decisão foi mantida separada do cálculo das métricas para que a infraestrutura não precise ser reescrita depois.
-
-## Estrutura prevista
+## Estrutura da pasta
 
 ```text
 evaluation/
+├── README_AVALIACAO.md
+├── METRICS.md
 ├── pico8_metrics.py
 ├── evaluate_manifest.py
 ├── compare_results.py
 ├── plot_distributions.py
 ├── pieces.example.json
-├── METRICS.md
-├── README_AVALIACAO.md
 ├── requirements.txt
 └── tests/
-    ├── test_metrics.py
-    ├── test_manifest.py
-    ├── test_compare_results.py
-    └── test_synth_alignment.py
 ```
 
-## Ambiente
+## Rodando os testes
+
+Dentro da pasta `evaluation`:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
+python -m unittest discover -s tests -v
 ```
 
-## Testes
-
-```bash
-python -m unittest -v
-```
-
-Estado validado atualmente:
+Estado atual:
 
 ```text
 Ran 20 tests
 OK
 ```
 
-## Avaliação de peças
+## Avaliando peças
 
-O manifesto define quais patterns formam cada peça.
+O manifesto diz quais patterns pertencem a cada peça.
 
 Exemplo:
 
@@ -166,7 +133,7 @@ Exemplo:
 }
 ```
 
-Execução:
+Depois:
 
 ```bash
 python evaluate_manifest.py \
@@ -175,9 +142,9 @@ python evaluate_manifest.py \
   --output results.csv
 ```
 
-## Comparação Real × Baseline × Neural
+## Comparando os sistemas
 
-Quando os três conjuntos estiverem disponíveis:
+Quando tivermos os três conjuntos:
 
 ```bash
 python compare_results.py \
@@ -187,20 +154,9 @@ python compare_results.py \
   --output comparison_summary.csv
 ```
 
-O pipeline calcula, para cada métrica:
+Isso gera estatísticas como média, mediana, desvio padrão, quartis e também KS/Wasserstein em relação ao conjunto real.
 
-- N;
-- média;
-- mediana;
-- desvio padrão;
-- Q1 e Q3;
-- mínimo e máximo;
-- KS em relação ao conjunto real;
-- Wasserstein-1 em relação ao conjunto real.
-
-KS e Wasserstein-1 estão implementados como candidatos; a decisão de reportá-los no paper será feita após os experimentos reais.
-
-## Gráficos
+## Gerando os gráficos
 
 ```bash
 python plot_distributions.py \
@@ -210,24 +166,10 @@ python plot_distributions.py \
   --output-dir plots
 ```
 
-São gerados boxplots das principais métricas.
+Hoje os gráficos principais são boxplots das métricas estruturais.
 
-## Dependências das outras partes
+## Observação
 
-Para concluir os experimentos reais ainda precisamos de:
+Os arquivos de exemplo servem só para testar a infraestrutura.
 
-1. definição final de como uma música completa é representada/segmentada;
-2. tokenização final;
-3. split definitivo por TID;
-4. decoder do baseline;
-5. decoder do modelo neural;
-6. outputs gerados pelo baseline;
-7. outputs gerados pelo modelo principal.
-
-Métricas temporais de música completa permanecem pendentes até a definição da reconstrução de loops, stop e sequência de patterns.
-
-## Importante
-
-Os manifests, CSVs e resultados usados durante o desenvolvimento são apenas exemplos para validação da infraestrutura.
-
-Eles **não são resultados experimentais finais do TP2**.
+Eles **não são resultados finais do TP2**.
