@@ -1,4 +1,3 @@
-"""Check dataset_pico8/audio/<tid>/audio.json against the raw .p8 carts it was parsed from."""
 import argparse
 import json
 import os
