@@ -1,0 +1,8 @@
+dataset_pico8/
+data/
+notes/
+_chat.txt
+tp2_autoregressivos.pdf
+__pycache__/
+*.pyc
+.DS_Store
