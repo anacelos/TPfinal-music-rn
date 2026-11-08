@@ -1,0 +1,15 @@
+{
+  "drop_all_rest": true,
+  "drop_incompatible_speeds": true,
+  "drop_loop_external": true,
+  "drop_no_loop": false,
+  "min_patterns": 1,
+  "min_notes": 16,
+  "max_steps": null,
+  "dedupe": "global",
+  "group_by_shared_sfx": true,
+  "shared_sfx_min_notes": 4,
+  "split_ratios": {"train": 0.8, "valid": 0.1, "test": 0.1},
+  "force_train_group_frac": 0.01,
+  "seed": 831
+}
