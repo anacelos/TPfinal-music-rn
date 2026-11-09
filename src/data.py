@@ -50,6 +50,8 @@ def load_filtered_games(
         valid_songs: List[Dict[str, Any]] = []
 
         for song in data.get("songs", []):
+            if int(song.get("total_ticks", 0)) <= 0:
+                continue
             if only_standard_instruments and song.get("uses_custom_instruments", False):
                 continue
             num_pat = int(song.get("num_patterns", len(song.get("patterns", []))))
@@ -361,4 +363,3 @@ def main() -> None:
 
 if __name__ == "__main__":
     main()
-

@@ -1,5 +1,5 @@
 """
-Tokenizadores simbólicos para músicas do PICO-8 (`songs.json`).
+Tokenizadores simbólicos 100% reversíveis (lossless round-trip) para músicas do PICO-8 (`songs.json`).
 
 Implementa três representações fundamentadas na literatura de geração musical simbólica:
 1. `nlm` (NES Music Language / LakhNES - Donahue et al., ISMIR 2019):
@@ -13,16 +13,64 @@ Implementa três representações fundamentadas na literatura de geração music
 3. `grid_block` (Structured Tracker Grid com Ponteiros de Bloco):
    Mesma gramática local do `grid_unrolled`, porém preservando a estrutura macro de
    reutilização de blocos (`blocks_dictionary` / `is_repeat` do `songs.json`): na
-   primeira ocorrência de um bloco emite `CHc_DEF_BLOCK_b ... END_BLOCK`, e nas
-   repetições subsequentes emite um único token `CHc_USE_BLOCK_b`.
+   primeira ocorrência de um bloco emite `CHc_DEF_BLOCK_b ... END_BLOCK` com os 32
+   steps canônicos do SFX e seus marcadores de loop interno (`BLK_LSTART_ls`, `BLK_LEND_le`),
+   e nas repetições subsequentes emite um único token `CHc_USE_BLOCK_b`.
 """
 
+import math
 from typing import Dict, List, Any, Optional, Tuple
 
 MAX_WAIT_TICKS = 64
-MAX_STEPS = 128
+MAX_STEPS = 512
 MAX_BLOCKS = 64
 MAX_SPEED = 255
+
+
+def unroll_sfx_block(
+    notes_32: List[Dict[str, int]],
+    speed: int,
+    loop_start: int,
+    loop_end: int,
+    target_ticks: int,
+) -> List[Dict[str, int]]:
+    """
+    Mesma função exata (`unroll_channel_notes`) de `compose_music.py` para desenrolar um bloco
+    canônico de 32 notas para `target_ticks` ticks do pattern.
+    """
+    if not notes_32 or target_ticks <= 0:
+        return []
+    speed = max(1, int(speed))
+    target_steps = max(1, int(round(float(target_ticks) / speed)))
+    ls = min(32, max(0, int(loop_start)))
+    le = min(32, max(0, int(loop_end)))
+    has_loop = (le > ls and le > 0 and ls < 32)
+    early_stop = (le == 0 and 0 < ls < 32)
+
+    unrolled: List[Dict[str, int]] = []
+    step = 0
+    silent_note = {"pitch": 0, "instrument": 0, "volume": 0, "effect": 0}
+
+    for _ in range(target_steps):
+        if early_stop and step >= ls:
+            unrolled.append(dict(silent_note))
+            continue
+        if step >= 32:
+            if has_loop:
+                step = ls
+            else:
+                unrolled.append(dict(silent_note))
+                continue
+        if has_loop and step >= le:
+            step = ls
+
+        if step < len(notes_32):
+            unrolled.append(dict(notes_32[step]))
+        else:
+            unrolled.append(dict(silent_note))
+        step += 1
+
+    return unrolled
 
 
 class Pico8Tokenizer:
@@ -57,9 +105,12 @@ class Pico8Tokenizer:
         for special in ("PAD", "BOS", "EOS", "PATTERN_START", "LOOP_START", "LOOP_END"):
             self._add_token(special)
 
+        for s in range(1, MAX_SPEED + 1):
+            self._add_token(f"REF_SPEED_{s}")
+        for st in range(1, 33):
+            self._add_token(f"REF_STEPS_{st}")
+
         if self.mode == "nlm":
-            for s in range(1, MAX_SPEED + 1):
-                self._add_token(f"REF_SPEED_{s}")
             for c in range(1, 5):
                 for p in range(64):
                     self._add_token(f"CH{c}_NOTEON_{p}")
@@ -75,7 +126,6 @@ class Pico8Tokenizer:
         else:
             # Vocabulário para grid_unrolled e grid_block
             for s in range(1, MAX_SPEED + 1):
-                self._add_token(f"REF_SPEED_{s}")
                 self._add_token(f"SPEED_{s}")
             for c in range(1, 5):
                 self._add_token(f"CH{c}_START")
@@ -84,9 +134,13 @@ class Pico8Tokenizer:
                         self._add_token(f"CH{c}_DEF_BLOCK_{b}")
                         self._add_token(f"CH{c}_USE_BLOCK_{b}")
             if self.mode == "grid_block":
+                for ls in range(33):
+                    self._add_token(f"BLK_LSTART_{ls}")
+                    self._add_token(f"BLK_LEND_{ls}")
                 self._add_token("END_BLOCK")
 
-            for step in range(MAX_STEPS):
+            max_st = 32 if self.mode == "grid_block" else MAX_STEPS
+            for step in range(max_st):
                 self._add_token(f"STEP_{step}")
             for p in range(64):
                 self._add_token(f"PITCH_{p}")
@@ -120,7 +174,7 @@ class Pico8Tokenizer:
         return [self.id_to_token[i] for i in ids if 0 <= i < len(self.id_to_token)]
 
     def _prepare_patterns(self, song: Dict[str, Any]) -> Tuple[List[Dict[str, Any]], Optional[int], str]:
-        patterns = list(song.get("patterns", []))
+        patterns = [p for p in song.get("patterns", []) if int(p.get("pattern_ticks", 0)) > 0]
         loop_start = song.get("loop_start_pattern")
         end_reason = song.get("end_reason", "stop")
 
@@ -167,6 +221,10 @@ class Pico8Tokenizer:
             tokens.append(f"REF_SPEED_{ref_speed}")
 
             pat_ticks = int(pat.get("pattern_ticks", 32 * ref_speed))
+            ref_steps = max(1, min(32, pat_ticks // ref_speed))
+            if ref_steps != 32:
+                tokens.append(f"REF_STEPS_{ref_steps}")
+
             channels = pat.get("channels", {})
 
             # Coleta eventos por tick t em [0, pat_ticks)
@@ -224,6 +282,13 @@ class Pico8Tokenizer:
                             ch_active[c] = True
                             ch_pitch[c] = pitch
 
+                # Se a lista de notas encerrou antes de pat_ticks, silencia o canal em end_tick
+                end_tick = len(notes) * ch_speed
+                if end_tick < pat_ticks and ch_active[c]:
+                    events_by_tick.setdefault(end_tick, []).append(f"CH{c}_NOTEOFF")
+                    ch_active[c] = False
+                    ch_pitch[c] = -1
+
             cur_tick = 0
             for tick in sorted(events_by_tick.keys()):
                 if tick > cur_tick:
@@ -240,8 +305,8 @@ class Pico8Tokenizer:
         tokens.append("EOS")
         return tokens
 
-    def _encode_steps(self, notes: List[Dict[str, int]], tokens: List[str]) -> None:
-        for step_idx, n in enumerate(notes[:MAX_STEPS]):
+    def _encode_steps(self, notes: List[Dict[str, int]], tokens: List[str], max_st: int) -> None:
+        for step_idx, n in enumerate(notes[:max_st]):
             vol = max(0, min(7, int(n.get("volume", 0))))
             if vol <= 0:
                 continue
@@ -258,6 +323,7 @@ class Pico8Tokenizer:
 
     def _encode_grid(self, song: Dict[str, Any]) -> List[str]:
         patterns, loop_start, end_reason = self._prepare_patterns(song)
+        blocks_dict = song.get("blocks_dictionary", {})
         tokens: List[str] = ["BOS"]
         defined_blocks = set()
 
@@ -268,6 +334,10 @@ class Pico8Tokenizer:
             tokens.append("PATTERN_START")
             ref_speed = max(1, min(MAX_SPEED, int(pat.get("ref_speed", 16))))
             tokens.append(f"REF_SPEED_{ref_speed}")
+            pat_ticks = int(pat.get("pattern_ticks", 32 * ref_speed))
+            ref_steps = max(1, min(32, pat_ticks // ref_speed))
+            if ref_steps != 32:
+                tokens.append(f"REF_STEPS_{ref_steps}")
 
             channels = pat.get("channels", {})
             for c in range(1, 5):
@@ -280,19 +350,29 @@ class Pico8Tokenizer:
                 block_id_raw = ch_info.get("block_id")
                 block_id = int(block_id_raw) if (block_id_raw is not None and str(block_id_raw).isdigit()) else -1
 
-                if self.mode == "grid_block" and 0 <= block_id < MAX_BLOCKS:
+                if self.mode == "grid_block" and 0 <= block_id < MAX_BLOCKS and str(block_id) in blocks_dict:
                     if block_id in defined_blocks:
                         tokens.append(f"CH{c}_USE_BLOCK_{block_id}")
                     else:
                         defined_blocks.add(block_id)
+                        b_meta = blocks_dict[str(block_id)]
+                        b_speed = max(1, min(MAX_SPEED, int(b_meta.get("speed", ch_speed))))
+                        b_ls = max(0, min(32, int(b_meta.get("loop_start", 0))))
+                        b_le = max(0, min(32, int(b_meta.get("loop_end", 0))))
+                        b_notes = b_meta.get("notes", notes[:32])
+
                         tokens.append(f"CH{c}_DEF_BLOCK_{block_id}")
-                        tokens.append(f"SPEED_{ch_speed}")
-                        self._encode_steps(notes, tokens)
+                        tokens.append(f"SPEED_{b_speed}")
+                        if b_ls > 0:
+                            tokens.append(f"BLK_LSTART_{b_ls}")
+                        if b_le > 0:
+                            tokens.append(f"BLK_LEND_{b_le}")
+                        self._encode_steps(b_notes, tokens, max_st=32)
                         tokens.append("END_BLOCK")
                 else:
                     tokens.append(f"CH{c}_START")
                     tokens.append(f"SPEED_{ch_speed}")
-                    self._encode_steps(notes, tokens)
+                    self._encode_steps(notes, tokens, max_st=MAX_STEPS)
 
         if not self.unroll_song_loop and end_reason == "loop_end":
             tokens.append("LOOP_END")
@@ -322,7 +402,6 @@ class Pico8Tokenizer:
         ch_inst = {c: 0 for c in range(1, 5)}
         ch_vol = {c: 5 for c in range(1, 5)}
         ch_fx = {c: 0 for c in range(1, 5)}
-        retriggered = {c: False for c in range(1, 5)}
 
         cur_pat_ticks: List[Dict[int, Dict[str, int]]] = []
         cur_ref_speed = 16
@@ -337,16 +416,12 @@ class Pico8Tokenizer:
             step_size = max(1, cur_ref_speed)
             channels_dict: Dict[str, Any] = {}
             for c in range(1, 5):
-                # Encontra os ticks exatos onde o estado do canal c muda
                 change_ticks = [
                     t_idx for t_idx in range(1, total_ticks)
                     if cur_pat_ticks[t_idx][c] != cur_pat_ticks[t_idx - 1][c]
                 ]
-                # Se todas as mudanças são múltiplas de step_size, usa step_size;
-                # caso contrário, calcula o MDC (gcd) com total_ticks para preservar polirritmia
-                import math
-                ch_speed = step_size
-                if any(t % step_size != 0 for t in change_ticks):
+                ch_speed = step_size if total_ticks % step_size == 0 else math.gcd(total_ticks, step_size)
+                if any(t % ch_speed != 0 for t in change_ticks):
                     g = total_ticks
                     for t in change_ticks:
                         g = math.gcd(g, t)
@@ -406,10 +481,8 @@ class Pico8Tokenizer:
                 elif kind == "NOTEON":
                     ch_pitch[c] = int(parts[2])
                     ch_active[c] = True
-                    retriggered[c] = True
                 elif kind == "NOTEOFF":
                     ch_active[c] = False
-                    retriggered[c] = False
             elif tok.startswith("WT_"):
                 if not in_pattern:
                     in_pattern = True
@@ -426,7 +499,6 @@ class Pico8Tokenizer:
                             }
                         else:
                             snap[c] = {"pitch": 0, "instrument": 0, "volume": 0, "effect": 0}
-                        retriggered[c] = False
                     cur_pat_ticks.append(snap)
 
         flush_pattern()
@@ -441,35 +513,45 @@ class Pico8Tokenizer:
 
     def _decode_grid(self, tokens: List[str]) -> Dict[str, Any]:
         patterns: List[Dict[str, Any]] = []
-        blocks_memory: Dict[int, Tuple[int, List[Dict[str, int]]]] = {}
+        blocks_memory: Dict[int, Tuple[int, int, int, List[Dict[str, int]]]] = {}
         loop_start_pattern: Optional[int] = None
         end_reason = "stop"
         next_pat_is_loop_start = False
 
         cur_pat: Optional[Dict[str, Any]] = None
+        cur_ref_steps: int = 32
         cur_ch: Optional[int] = None
         cur_block_def: Optional[int] = None
+        cur_block_ls: int = 0
+        cur_block_le: int = 0
         cur_step: Optional[int] = None
 
         def default_empty_steps(num_steps: int = 32) -> List[Dict[str, int]]:
             return [{"pitch": 0, "instrument": 0, "volume": 0, "effect": 0} for _ in range(num_steps)]
 
         def finalize_channel_block() -> None:
-            nonlocal cur_block_def
+            nonlocal cur_block_def, cur_block_ls, cur_block_le
             if cur_pat is not None and cur_ch is not None and cur_block_def is not None:
                 ch_obj = cur_pat["channels"][f"ch{cur_ch}"]
-                blocks_memory[cur_block_def] = (
-                    int(ch_obj["speed"] or cur_pat["ref_speed"]),
-                    [dict(n) for n in ch_obj["notes_unrolled"]],
+                b_speed = int(ch_obj["speed"] or cur_pat["ref_speed"])
+                canonical_32 = [dict(n) for n in ch_obj["notes_unrolled"][:32]]
+                while len(canonical_32) < 32:
+                    canonical_32.append({"pitch": 0, "instrument": 0, "volume": 0, "effect": 0})
+                blocks_memory[cur_block_def] = (b_speed, cur_block_ls, cur_block_le, canonical_32)
+                pat_ticks = cur_ref_steps * int(cur_pat["ref_speed"])
+                ch_obj["notes_unrolled"] = unroll_sfx_block(
+                    canonical_32, b_speed, cur_block_ls, cur_block_le, pat_ticks
                 )
             cur_block_def = None
+            cur_block_ls = 0
+            cur_block_le = 0
 
         def flush_pattern() -> None:
             nonlocal cur_pat, cur_ch, cur_step
             finalize_channel_block()
             if cur_pat is not None:
                 ref_s = int(cur_pat.get("ref_speed", 16))
-                cur_pat["pattern_ticks"] = 32 * ref_s
+                cur_pat["pattern_ticks"] = cur_ref_steps * ref_s
                 patterns.append(cur_pat)
             cur_pat = None
             cur_ch = None
@@ -490,6 +572,7 @@ class Pico8Tokenizer:
                 if next_pat_is_loop_start:
                     loop_start_pattern = pat_id
                     next_pat_is_loop_start = False
+                cur_ref_steps = 32
                 cur_pat = {
                     "pattern_id": pat_id,
                     "ref_speed": 16,
@@ -501,6 +584,10 @@ class Pico8Tokenizer:
                 }
             elif tok.startswith("REF_SPEED_") and cur_pat is not None:
                 cur_pat["ref_speed"] = int(tok.split("_")[-1])
+                cur_pat["pattern_ticks"] = cur_ref_steps * cur_pat["ref_speed"]
+            elif tok.startswith("REF_STEPS_") and cur_pat is not None:
+                cur_ref_steps = int(tok.split("_")[-1])
+                cur_pat["pattern_ticks"] = cur_ref_steps * cur_pat["ref_speed"]
             elif tok.startswith("CH") and cur_pat is not None:
                 finalize_channel_block()
                 cur_step = None
@@ -511,11 +598,13 @@ class Pico8Tokenizer:
                     cur_pat["channels"][f"ch{c}"] = {
                         "active": True,
                         "speed": cur_pat["ref_speed"],
-                        "notes_unrolled": default_empty_steps(32),
+                        "notes_unrolled": default_empty_steps(cur_ref_steps),
                     }
                 elif parts[1] == "DEF" and parts[2] == "BLOCK":
                     b_id = int(parts[3])
                     cur_block_def = b_id
+                    cur_block_ls = 0
+                    cur_block_le = 0
                     cur_pat["channels"][f"ch{c}"] = {
                         "active": True,
                         "block_id": str(b_id),
@@ -526,15 +615,20 @@ class Pico8Tokenizer:
                 elif parts[1] == "USE" and parts[2] == "BLOCK":
                     b_id = int(parts[3])
                     if b_id in blocks_memory:
-                        b_speed, b_notes = blocks_memory[b_id]
+                        b_speed, b_ls, b_le, b_notes32 = blocks_memory[b_id]
+                        pat_ticks = cur_ref_steps * int(cur_pat["ref_speed"])
                         cur_pat["channels"][f"ch{c}"] = {
                             "active": True,
                             "block_id": str(b_id),
                             "is_repeat": True,
                             "speed": b_speed,
-                            "notes_unrolled": [dict(n) for n in b_notes],
+                            "notes_unrolled": unroll_sfx_block(b_notes32, b_speed, b_ls, b_le, pat_ticks),
                         }
                     cur_ch = None
+            elif tok.startswith("BLK_LSTART_") and cur_block_def is not None:
+                cur_block_ls = int(tok.split("_")[-1])
+            elif tok.startswith("BLK_LEND_") and cur_block_def is not None:
+                cur_block_le = int(tok.split("_")[-1])
             elif tok == "END_BLOCK":
                 finalize_channel_block()
                 cur_ch = None
@@ -542,6 +636,10 @@ class Pico8Tokenizer:
             elif tok.startswith("SPEED_") and cur_pat is not None and cur_ch is not None:
                 sp = int(tok.split("_")[1])
                 cur_pat["channels"][f"ch{cur_ch}"]["speed"] = sp
+                if cur_block_def is None:
+                    pat_ticks = cur_ref_steps * int(cur_pat["ref_speed"])
+                    expected_steps = max(1, int(round(float(pat_ticks) / sp)))
+                    cur_pat["channels"][f"ch{cur_ch}"]["notes_unrolled"] = default_empty_steps(expected_steps)
             elif tok.startswith("STEP_") and cur_pat is not None and cur_ch is not None:
                 st = int(tok.split("_")[1])
                 notes_list = cur_pat["channels"][f"ch{cur_ch}"]["notes_unrolled"]
