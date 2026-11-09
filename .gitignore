@@ -1,0 +1,12 @@
+# Dados processados, caches e checkpoints
+data/
+outputs/
+checkpoints/
+*.pt
+*.pth
+*.wav
+__pycache__/
+*.pyc
+.venv/
+venv/
+
