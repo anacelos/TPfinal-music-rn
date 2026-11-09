@@ -1,8 +1,17 @@
-dataset_pico8/
+# Dados processados, caches e checkpoints
 data/
+outputs/
+checkpoints/
+*.pt
+*.pth
+*.wav
+__pycache__/
+*.pyc
+.venv/
+venv/
+dataset_pico8/
+dataset_pico8_v2/
 notes/
 _chat.txt
 tp2_autoregressivos.pdf
-__pycache__/
-*.pyc
 .DS_Store
