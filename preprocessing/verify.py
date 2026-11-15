@@ -291,7 +291,7 @@ def run_roundtrip(workers: int) -> list[str]:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser = argparse.ArgumentParser(description="Acceptance checks for data/splits/")
     parser.add_argument("--root", type=Path, default=DEFAULT_ROOT)
     parser.add_argument("--roundtrip", action="store_true", help="also encode and decode every split song")
     parser.add_argument("--workers", type=int, default=8)

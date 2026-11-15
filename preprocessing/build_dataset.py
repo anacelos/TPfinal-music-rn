@@ -97,10 +97,10 @@ def build_stats(rows: list[dict], config: Config) -> dict:
     kept = [row for row in rows if row["decision"] == "keep"]
     reasons = Counter(row["decision"] for row in rows)
     group_songs = Counter(row["group"] for row in kept)
-    group_games: dict[int, set[str]] = {}
+    games_of_group: dict[int, set[str]] = {}
     group_split = {}
     for row in kept:
-        group_games.setdefault(row["group"], set()).add(row["tid"])
+        games_of_group.setdefault(row["group"], set()).add(row["tid"])
         group_split[row["group"]] = row["split"]
     largest = sorted(group_songs, key=lambda g: (-group_songs[g], g))[:5]
     return {
@@ -114,14 +114,14 @@ def build_stats(rows: list[dict], config: Config) -> dict:
             for name in SPLIT_NAMES
         },
         "groups": len(group_songs),
-        "largest_groups": [{"group": g, "songs": group_songs[g], "games": len(group_games[g]),
+        "largest_groups": [{"group": g, "songs": group_songs[g], "games": len(games_of_group[g]),
                             "split": group_split[g]} for g in largest],
         "config": config,
     }
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
+    parser = argparse.ArgumentParser(description="Build data/splits/ from the songs.json files")
     parser.add_argument("--root", type=Path, default=DEFAULT_ROOT, help="folder holding audio/<tid>/songs.json")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
     args = parser.parse_args()
