@@ -132,7 +132,7 @@ def main() -> None:
     passed_quality = stats["kept"] + stats["dropped"]["duplicate"]
     print(f"duplicates: {len(duplicates):,} of {passed_quality:,} songs that pass the quality filters "
           f"({len(duplicates) / passed_quality:.1%}); {cross_game:,} of them copy a song from another game "
-          f"({cross_game / passed_quality:.1%})")
+          f"({cross_game / len(duplicates):.1%} of the duplicates)")
     for name, split in stats["splits"].items():
         print(f"{name}: {split['songs']:,} songs ({split['songs'] / stats['kept']:.1%}), {split['games']:,} games")
     print(f"groups: {stats['groups']:,}; largest: "
