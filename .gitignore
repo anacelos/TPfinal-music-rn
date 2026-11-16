@@ -9,4 +9,9 @@ __pycache__/
 *.pyc
 .venv/
 venv/
-
+dataset_pico8/
+dataset_pico8_v2/
+notes/
+_chat.txt
+tp2_autoregressivos.pdf
+.DS_Store

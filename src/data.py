@@ -1,103 +1,28 @@
 """
-Pipeline de dados, divisão sem vazamento por jogo (TID) e Datasets PyTorch
-para geração musical simbólica no PICO-8 (DCC831 - UFMG).
+Pipeline de dados e Datasets PyTorch para geração musical simbólica no
+PICO-8 (DCC831 - UFMG). A divisão sem vazamento vem de `preprocessing/build_dataset.py`.
 """
 
 import argparse
-import glob
 import json
 import os
-import random
+from itertools import islice
 from typing import Dict, List, Any, Optional, Tuple
 
 from tokenizer import Pico8Tokenizer
 from synth import synthesize_song_to_wav
 
-DEFAULT_DATASET_DIR = os.environ.get(
-    "PICO8_DATASET_DIR",
-    "/home/jcss/projetos/dataset_pico8/dataset_pico8/audio",
-)
+SPLIT_NAMES = ("train", "val", "test")
 
 
-def load_filtered_games(
-    dataset_dir: str = DEFAULT_DATASET_DIR,
-    only_standard_instruments: bool = True,
-    min_patterns: int = 2,
-    max_patterns: Optional[int] = None,
-    limit_games: Optional[int] = None,
+def load_splits(
+    split_dir: str = "data/splits",
+    limit_songs: Optional[int] = None,
 ) -> Dict[str, List[Dict[str, Any]]]:
-    """
-    Carrega os arquivos `songs.json` do diretório do dataset e aplica os filtros:
-    - `only_standard_instruments`: descarta músicas com `uses_custom_instruments == True`
-    - `min_patterns`: exige pelo menos N patterns na música (padrão: 2)
-    Retorna um dicionário `{tid: [song_dict, ...]}` contendo apenas jogos com >= 1 música válida.
-    """
-    pattern = os.path.join(dataset_dir, "*", "songs.json")
-    files = sorted(glob.glob(pattern))
-    if limit_games is not None:
-        files = files[:limit_games]
-
-    games: Dict[str, List[Dict[str, Any]]] = {}
-
-    for path in files:
-        try:
-            with open(path, "r", encoding="utf-8") as f:
-                data = json.load(f)
-        except Exception:
-            continue
-
-        tid = str(data.get("tid", os.path.basename(os.path.dirname(path))))
-        valid_songs: List[Dict[str, Any]] = []
-
-        for song in data.get("songs", []):
-            if int(song.get("total_ticks", 0)) <= 0:
-                continue
-            if only_standard_instruments and song.get("uses_custom_instruments", False):
-                continue
-            num_pat = int(song.get("num_patterns", len(song.get("patterns", []))))
-            if num_pat < min_patterns:
-                continue
-            if max_patterns is not None and num_pat > max_patterns:
-                continue
-
-            song_copy = dict(song)
-            song_copy["tid"] = tid
-            valid_songs.append(song_copy)
-
-        if valid_songs:
-            games[tid] = valid_songs
-
-    return games
-
-
-def split_games_by_tid(
-    games: Dict[str, List[Dict[str, Any]]],
-    train_ratio: float = 0.8,
-    val_ratio: float = 0.1,
-    seed: int = 42,
-) -> Dict[str, List[Dict[str, Any]]]:
-    """
-    Divide o dataset em `train`, `val` e `test` agrupando estritamente por jogo (`TID`).
-    Garante vazamento zero (data leakage = 0): músicas ou janelas do mesmo cartucho
-    jamais aparecem em conjuntos distintos.
-    """
-    tids = sorted(games.keys())
-    rng = random.Random(seed)
-    rng.shuffle(tids)
-
-    n_total = len(tids)
-    n_train = int(n_total * train_ratio)
-    n_val = int(n_total * val_ratio)
-
-    train_tids = tids[:n_train]
-    val_tids = tids[n_train : n_train + n_val]
-    test_tids = tids[n_train + n_val :]
-
-    splits = {
-        "train": [song for tid in train_tids for song in games[tid]],
-        "val": [song for tid in val_tids for song in games[tid]],
-        "test": [song for tid in test_tids for song in games[tid]],
-    }
+    splits: Dict[str, List[Dict[str, Any]]] = {}
+    for name in SPLIT_NAMES:
+        with open(os.path.join(split_dir, f"{name}.jsonl"), "r", encoding="utf-8") as f:
+            splits[name] = [json.loads(line) for line in islice(f, limit_songs)]
     return splits
 
 
@@ -290,45 +215,27 @@ def run_roundtrip_verification(
 
 def main() -> None:
     parser = argparse.ArgumentParser(description="Pré-processamento e Tokenização do Dataset PICO-8 (TP2)")
-    parser.add_argument("--dataset-dir", type=str, default=DEFAULT_DATASET_DIR)
+    parser.add_argument("--split-dir", type=str, default="data/splits")
     parser.add_argument("--out-dir", type=str, default="data/processed")
     parser.add_argument("--mode", type=str, default="all", choices=["nlm", "grid_unrolled", "grid_block", "all"])
-    parser.add_argument("--min-patterns", type=int, default=2)
-    parser.add_argument("--allow-custom-instruments", action="store_true")
     parser.add_argument("--unroll-song-loop", action="store_true")
-    parser.add_argument("--limit-games", type=int, default=None)
+    parser.add_argument("--limit-games", type=int, default=None, help="Lê só as N primeiras músicas de cada split")
     parser.add_argument("--test-roundtrip", action="store_true", help="Gera WAVs de verificação round-trip")
     args = parser.parse_args()
 
-    print(f"Carregando jogos de: {args.dataset_dir} ...")
-    games = load_filtered_games(
-        dataset_dir=args.dataset_dir,
-        only_standard_instruments=not args.allow_custom_instruments,
-        min_patterns=args.min_patterns,
-        limit_games=args.limit_games,
-    )
-    total_songs = sum(len(v) for v in games.values())
+    print(f"Carregando splits de: {args.split_dir} ...")
+    splits = load_splits(args.split_dir, limit_songs=args.limit_games)
     print(
-        f"Jogos válidos: {len(games)} | Músicas filtradas "
-        f"(standard_inst={not args.allow_custom_instruments}, min_patterns={args.min_patterns}): {total_songs}"
-    )
-
-    splits = split_games_by_tid(games, train_ratio=0.8, val_ratio=0.1, seed=42)
-    print(
-        f"Divisão por TID -> Train: {len(splits['train'])} músicas | "
+        f"Train: {len(splits['train'])} músicas | "
         f"Val: {len(splits['val'])} músicas | Test: {len(splits['test'])} músicas\n"
     )
 
     if args.test_roundtrip and splits["train"]:
-        # Escolhe TID 140614 se presente, ou a primeira música de treino com >= 4 patterns
-        sample_song = splits["train"][0]
-        if "140614" in games:
-            sample_song = games["140614"][0]
-        else:
-            for s in splits["train"]:
-                if s.get("num_patterns", 0) >= 4:
-                    sample_song = s
-                    break
+        # Escolhe a primeira música do TID 140614 se presente, ou a primeira música de treino com >= 4 patterns
+        all_songs = [s for name in SPLIT_NAMES for s in splits[name]]
+        sample_song = next((s for s in all_songs if s["tid"] == "140614"), None)
+        if sample_song is None:
+            sample_song = next((s for s in splits["train"] if s.get("num_patterns", 0) >= 4), splits["train"][0])
         run_roundtrip_verification(sample_song, os.path.join(args.out_dir, "roundtrip_check"))
         print()
 
