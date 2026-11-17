@@ -15,3 +15,10 @@ notes/
 _chat.txt
 tp2_autoregressivos.pdf
 .DS_Store
+
+# Saídas da avaliação
+plots/
+plots_demo/
+comparison_demo.csv
+
+results/
