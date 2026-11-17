@@ -56,7 +56,7 @@ def compute_split_statistics(
                 "tid": s["tid"],
                 "song_id": s["song_id"],
                 "num_patterns": s["num_patterns"],
-                "duration_seconds": s.get("duration_seconds", 0.0),
+                "duration_seconds": s.get("duration_sec", 0.0),
                 "token_ids": ids,
             })
 
