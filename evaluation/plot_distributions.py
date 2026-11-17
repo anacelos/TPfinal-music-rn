@@ -8,9 +8,8 @@ import matplotlib.pyplot as plt
 METRICS = {
     "pitch_range": "Pitch range",
     "pitch_class_entropy": "Pitch-class entropy",
-    "structural_note_density": "Structural note density",
+    "audible_step_rate": "Audible step rate",
     "audible_channel_utilization": "Audible channel utilization",
-    "sfx_repetition_ratio": "SFX repetition ratio",
 }
 
 

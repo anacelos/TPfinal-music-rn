@@ -2,372 +2,571 @@
 
 ## Status
 
-This document describes the current evaluation protocol for the PICO-8
+This document describes the symbolic evaluation protocol used in the PICO-8
 autoregressive music generation project.
 
-The protocol is provisional with respect to song segmentation and temporal
-reconstruction, because the final tokenization and full-song synthesis rules
-are still being defined by the data/model pipeline.
-
-The structural metrics below are already implemented and covered by automated
-tests.
-
----
-
-## Evaluation principle
-
-The goal is to compare three systems using the same representation and
-evaluation pipeline:
+The final preprocessing and canonical song representation are now defined. The
+main evaluation compares:
 
 1. Real music from the held-out test set
 2. Baseline generations
 3. Neural autoregressive model generations
 
-Dataset splitting must be performed by TID (game ID), not by individual
-patterns or songs, because different songs from the same game may reuse SFX.
-This prevents leakage of musical material between train, validation and test.
+All systems are evaluated after conversion to the same canonical song
+representation.
 
-Evaluation itself is performed at the piece/song level once the final
-segmentation rule is defined.
+The evaluator does not compare raw token sequences directly.
 
 ---
 
-## PICO-8 representation used by the evaluator
+## Evaluation pipeline
 
-Each `audio.json` contains:
+The canonical evaluation flow is:
 
-- `sfx`
-- `music`
+```text
+songs.json
+    ↓
+preprocessing
+    ↓
+data/splits/{train,val,test}.jsonl
+    ↓
+canonical song / decoded generation
+    ↓
+evaluate_song_data()
+    ↓
+per-song metrics
+    ↓
+distribution-level comparison
+```
 
-Each SFX contains:
+For generated samples, model tokens must first be decoded by the corresponding
+tokenizer.
 
-- `id`
+The evaluator consumes the reconstructed song representation rather than the
+token sequence itself.
+
+---
+
+## Canonical song representation
+
+A canonical song contains:
+
+- `song_id`
+- `tid`, for dataset songs
+- `start_pattern`
+- `end_pattern`
+- `loop_start_pattern`
+- `end_reason`
+- `num_patterns`
+- `total_ticks`
+- `duration_sec`
+- `patterns`
+- optionally `blocks_dictionary`
+
+Each pattern contains:
+
+- `pattern_id`
+- `ref_speed`
+- `pattern_ticks`
+- four channels
+
+Each channel may contain:
+
+- `active`
 - `speed`
-- `loop_start`
-- `loop_end`
-- 32 note slots
+- `notes_unrolled`
+- `block_id`, when block identity is preserved
+- `is_repeat`, when block identity is preserved
 
-Each note contains:
+Each symbolic note step contains:
 
 - `pitch`
 - `instrument`
 - `volume`
 - `effect`
 
-Each music pattern contains:
+A symbolic step is considered audible when:
 
-- `id`
-- `flags`
-- `ch1`
-- `ch2`
-- `ch3`
-- `ch4`
-
-### Current parsing rules
-
-For each music pattern:
-
-- Bit 6 of a channel value indicates that the channel is disabled.
-- Bits 0..5 identify the referenced SFX.
-- A note slot is considered audible when `volume > 0`.
-- A referenced but non-serialized SFX is treated as an implicit empty SFX.
-- An explicitly serialized SFX containing no audible notes is treated as an
-  explicit empty SFX.
-- Only SFX referenced by the evaluated piece are included in the metrics.
-- If an SFX is referenced multiple times, each occurrence is counted because
-  the musical material is played multiple times.
-- Music flags are currently interpreted semantically as `flags & 0x07`.
-- Raw flags are not currently used as a metric.
+```text
+volume > 0
+```
 
 ---
 
-## Primary structural metrics
+## Unrolled representation
 
-### 1. Pitch Range
+The primary metrics operate on `notes_unrolled`.
 
-Difference between the highest and lowest audible pitch in the evaluated
-piece:
+This timeline is already reconstructed by the canonical dataset or by the
+tokenizer decoder. The evaluator does not perform a second independent
+unrolling pass.
 
-`pitch_range = max(pitch) - min(pitch)`
+This is important because the project supports tokenizations with different
+internal structures:
 
-Only note slots with `volume > 0` are considered.
+- `nlm`
+- `grid_unrolled`
+- `grid_block`
 
-This measures the register span used by the piece.
+After decoding, the primary metrics operate on the resulting canonical
+timeline.
+
+Block-dependent information is treated separately because not every
+tokenization preserves block identity after decoding.
 
 ---
 
-### 2. Normalized Pitch-Class Entropy
+# Primary metrics
 
-Each audible pitch is converted to a pitch class:
+The following four metrics form the default comparison between Real, Baseline
+and Neural systems.
 
-`pitch_class = pitch % 12`
+They are intended to remain available independently of whether the original
+token representation preserved explicit block identity.
 
-Shannon entropy is calculated over the resulting pitch-class distribution and
-normalized by the maximum entropy for 12 pitch classes:
+---
 
-`H_norm = H / log2(12)`
+## 1. Pitch Range
 
-The resulting value is approximately bounded between 0 and 1.
+Pitch Range measures the register span of the song.
+
+Only audible symbolic steps are considered.
+
+```text
+pitch_range = max(pitch) - min(pitch)
+```
+
+where:
+
+```text
+volume > 0
+```
+
+If no audible pitch exists, the metric is undefined.
+
+Lower values indicate a narrower register.
+
+Higher values indicate a broader register.
+
+---
+
+## 2. Normalized Pitch-Class Entropy
+
+Each audible pitch is converted into one of 12 pitch classes:
+
+```text
+pitch_class = pitch % 12
+```
+
+Shannon entropy is then calculated:
+
+```text
+H = -sum(p_i * log2(p_i))
+```
+
+and normalized by the maximum entropy for 12 pitch classes:
+
+```text
+H_norm = H / log2(12)
+```
+
+The result is approximately bounded between 0 and 1.
 
 Lower values indicate concentration on fewer pitch classes.
+
 Higher values indicate greater pitch-class diversity.
 
----
-
-### 3. Structural Note Density
-
-Structural note density measures the proportion of active note slots among all
-available note slots in enabled SFX references:
-
-`density = active_note_slots / available_note_slots`
-
-An active slot is a note with `volume > 0`.
-
-A referenced implicit or explicit empty SFX contributes available slots but no
-active slots. This prevents empty generated material from obtaining an
-artificially high density score.
-
-This is a structural PICO-8 metric and is not currently interpreted as notes
-per second.
+Only audible symbolic steps are considered.
 
 ---
 
-### 4. Audible Channel Utilization
+## 3. Audible Step Rate
 
-PICO-8 music provides four possible channels per pattern.
+Audible Step Rate measures how many audible symbolic steps occur per second of
+the reconstructed song.
 
-Audible channel utilization is:
+An audible step satisfies:
 
-`audible_channel_utilization = audible_channel_refs / (4 * pattern_count)`
+```text
+volume > 0
+```
 
-A channel is considered audible only when:
+The project synthesizer uses:
 
-1. the channel is enabled;
-2. its referenced SFX exists; and
-3. the referenced SFX contains at least one note with `volume > 0`.
+```text
+SAMPLE_RATE = 44100
+SAMPLES_PER_TICK = 366
+```
 
-This differs from `enabled_channel_utilization`, which counts enabled channel
-references even when they point to empty SFX.
+Therefore the evaluator derives duration as:
 
----
+```text
+duration_seconds =
+    total_ticks * SAMPLES_PER_TICK / SAMPLE_RATE
+```
 
-### 5. SFX Repetition Ratio
+and computes:
 
-For all enabled SFX references in a piece:
+```text
+audible_step_rate =
+    audible_step_count / duration_seconds
+```
 
-`sfx_repetition_ratio = repeated_references / total_references`
+The term "step" is intentional.
 
-where repeated references correspond to occurrences beyond the first use of
-each SFX ID.
+Entries in `notes_unrolled` represent symbolic tracker steps and must not be
+interpreted automatically as independent musical note attacks.
 
-Equivalently:
-
-`repeated_references = total_references - number_of_unique_referenced_sfx`
-
-This measures reuse of PICO-8 musical building blocks.
-
-Its final status as a primary metric is still provisional.
-
----
-
-## Additional distributions collected
-
-The evaluator also records:
-
-- instrument distribution
-- effect distribution
-- SFX speed distribution
-- semantic music flags
-- enabled channel utilization
-- implicit empty SFX references
-- explicit empty SFX references
-
-Instrument and effect distributions may be used as additional domain-specific
-evaluation measures.
+This metric captures symbolic event activity over time.
 
 ---
 
-## Distribution-level comparison
+## 4. Audible Channel Utilization
 
-Metrics are computed per piece.
+PICO-8 provides a maximum of four simultaneous music channels.
 
-The final comparison will use distributions from:
+Audible Channel Utilization measures how much of this four-channel temporal
+capacity is occupied by audible symbolic material.
 
-- real test pieces
-- baseline generations
-- neural-model generations
+For each audible step, its duration is determined by the channel `speed`.
 
-For every scalar metric the current pipeline calculates:
+The occupied interval is clipped at the end of the corresponding pattern.
 
-- sample count
-- mean
-- median
-- standard deviation
-- first quartile
-- third quartile
-- minimum
-- maximum
+For one song:
 
-Two additional distribution distances are implemented:
+```text
+audible_channel_utilization =
+    audible_channel_ticks / (4 * total_ticks)
+```
 
-### Kolmogorov-Smirnov statistic
+The result lies between 0 and 1.
 
-Measures the maximum difference between the empirical cumulative distribution
-functions of a generated system and the real test distribution.
+Examples:
 
-`0` means identical empirical distributions.
+- `0.25` means that, on average, the equivalent of one of four channels is
+  sounding throughout the song;
+- `1.0` means all four channels are continuously occupied by audible material.
 
-### Wasserstein-1 distance
-
-Measures the one-dimensional transportation distance between a generated
-distribution and the real test distribution.
-
-Lower values indicate a distribution closer to the real test set.
-
-KS and Wasserstein-1 are currently implemented as candidate comparison tools;
-their inclusion in the final paper will be decided after observing the actual
-experimental results.
+This metric differs from simply counting channels marked `active`, because an
+active channel may still contain silent symbolic steps.
 
 ---
 
-## Automated validation
+# Auxiliary structural metrics
 
-Current implementation:
+The following metrics describe PICO-8 block structure.
+
+They are useful when that structure is available, but they are not included in
+the default cross-representation comparison.
+
+---
+
+## 5. Structural Note Density
+
+Canonical PICO-8 blocks contain 32 structural note slots.
+
+For every active block reference whose block can be resolved through
+`blocks_dictionary`, the evaluator counts:
+
+- available structural slots;
+- slots with `volume > 0`.
+
+The metric is:
+
+```text
+structural_note_density =
+    audible_structural_slots / available_structural_slots
+```
+
+Repeated uses of the same block are counted again because they correspond to
+new occurrences of that material during playback.
+
+This metric preserves the interpretation of the original structural evaluator.
+
+However, it requires explicit block identity.
+
+If the decoded representation does not preserve `blocks_dictionary` and
+`block_id`, the metric is returned as unavailable (`None`).
+
+---
+
+## 6. Block Repetition Ratio
+
+When block identity is preserved, each active block reference may indicate
+whether it is the first definition of the block or a later reuse.
+
+The metric is:
+
+```text
+block_repetition_ratio =
+    repeated_block_references / active_block_references
+```
+
+A reference is considered repeated when:
+
+```text
+is_repeat == True
+```
+
+The final tokenizer semantics use:
+
+- first occurrence: block definition;
+- later occurrence: block reuse.
+
+The test-set audit confirmed that these markers are consistent with block
+occurrence order.
+
+This metric is therefore suitable for representations such as `grid_block`.
+
+Representations such as `nlm` and `grid_unrolled` do not necessarily preserve
+block identity after decoding. In those cases, Block Repetition Ratio is
+returned as unavailable and is excluded from the default comparison.
+
+---
+
+# Additional diagnostics
+
+The evaluator also records several diagnostic quantities:
+
+- minimum pitch;
+- maximum pitch;
+- total ticks;
+- reconstructed duration;
+- number of patterns;
+- number of audible symbolic steps;
+- number of audible channel-ticks;
+- number of active channel references;
+- active-channel reference utilization;
+- instrument distribution;
+- effect distribution;
+- speed distribution;
+- structural active slots, when block information is available;
+- structural available slots, when block information is available.
+
+These values may support additional analyses but are not part of the default
+four-metric comparison.
+
+---
+
+# Distribution-level comparison
+
+Metrics are computed independently for each song.
+
+The main experiment compares distributions from:
+
+- real held-out test songs;
+- baseline-generated songs;
+- neural-model-generated songs.
+
+For each primary metric, the pipeline calculates:
+
+- sample count;
+- mean;
+- median;
+- standard deviation;
+- first quartile;
+- third quartile;
+- minimum;
+- maximum.
+
+Two distribution distances are also implemented.
+
+---
+
+## Kolmogorov-Smirnov statistic
+
+The two-sample Kolmogorov-Smirnov statistic measures the maximum absolute
+difference between two empirical cumulative distribution functions.
+
+```text
+KS = max_x |F_real(x) - F_generated(x)|
+```
+
+The statistic lies between 0 and 1.
+
+Lower values indicate a generated distribution closer to the real
+distribution.
+
+An identical empirical distribution gives:
+
+```text
+KS = 0
+```
+
+---
+
+## Wasserstein-1 distance
+
+Wasserstein-1 measures the one-dimensional transportation distance between two
+empirical distributions.
+
+Its unit is the same as the evaluated metric.
+
+Lower values indicate a generated distribution closer to the real
+distribution.
+
+An identical empirical distribution gives:
+
+```text
+W1 = 0
+```
+
+Because different metrics have different numerical scales, Wasserstein values
+should primarily be interpreted within each metric rather than compared
+directly across different metrics.
+
+---
+
+# Real test-set validation
+
+The final preprocessing pipeline produces:
+
+```text
+train: 9907 songs
+validation: 1242 songs
+test: 1235 songs
+```
+
+The canonical evaluator was executed on all 1,235 held-out test songs.
+
+Validation results:
+
+```text
+songs evaluated: 1235
+duration consistency: 1235 / 1235
+missing primary metric values: 0
+out-of-range normalized metric values: 0
+```
+
+The reconstructed duration uses:
+
+```text
+total_ticks * 366 / 44100
+```
+
+When rounded to two decimal places, it matched the dataset `duration_sec` field
+for all 1,235 test songs.
+
+---
+
+# Real test-set reference statistics
+
+The current real test set produced the following descriptive values.
+
+```text
+pitch_range
+    median: 33.000000
+    mean:   32.306883
+    min:     0.000000
+    max:    63.000000
+
+pitch_class_entropy
+    median: 0.661703
+    mean:   0.633397
+    min:   -0.000000
+    max:    0.993393
+
+audible_step_rate
+    median: 11.001937
+    mean:   17.467459
+    min:     0.941342
+    max:   481.967213
+
+audible_channel_utilization
+    median: 0.375000
+    mean:   0.397856
+    min:    0.014657
+    max:    1.000000
+```
+
+The auxiliary block-based metrics for the real test set were:
+
+```text
+structural_note_density
+    median: 0.687500
+    mean:   0.684470
+
+block_repetition_ratio
+    median: 0.142857
+    mean:   0.281292
+```
+
+These values are reference statistics for the real test distribution and are
+not, by themselves, results about baseline or neural-model quality.
+
+---
+
+# Automated validation
+
+The current evaluation code includes:
 
 - `pico8_metrics.py`
-- `evaluate_manifest.py`
+- `evaluate_split.py`
 - `compare_results.py`
 - `plot_distributions.py`
 
-Tests:
+Legacy compatibility code remains temporarily available:
 
-- `test_metrics.py`
-- `test_manifest.py`
-- `test_compare_results.py`
+- `evaluate_manifest.py`
+- `pieces.example.json`
 
-Current status:
-
-`18 automated tests passing`
+The automated test suite currently contains 24 passing tests.
 
 The tests cover:
 
-- entropy
-- normalized pitch-class entropy
-- pitch statistics
-- structural note density
-- channel utilization
-- disabled channels
-- implicit empty SFX
-- explicit empty SFX
-- SFX repetition
-- missing patterns
-- manifest-to-CSV evaluation
-- descriptive statistics
-- KS statistic
-- Wasserstein-1 distance
-- system comparison
-
----
-
-## Pending decisions
-
-The following aspects must be aligned with the final data/model pipeline before
-the real experiment:
-
-1. Exact definition of a complete musical piece inside a TID.
-2. How music patterns are grouped using loop-start, loop-end and stop semantics.
-3. Whether the final tokenization explicitly represents these structural flags.
-4. Exact held-out test manifest after the TID-level split.
-5. Output format of the baseline generator.
-6. Output format of the neural generator.
-7. Exact temporal reconstruction using SFX `speed`.
-8. Whether time-based/rhythmic metrics will be added.
-9. Whether instrument/effect distributions will become formal reported metrics.
-10. Which distribution distances will be reported in the final paper.
-
-The structural metric implementation should remain independent of the final
-piece-segmentation strategy.
-
----
-
-## Alignment with the provided dataset synthesizer
-
-Static inspection of the dataset's original `extract_audio.py` and
-`synthesize_audio.py` established additional implementation details.
-
-### Channel interpretation
-
-The provided synthesizer does not decode channel values using a bit mask.
-
-Its operational rule is:
-
-- values `0..63`: direct reference to the SFX with the same ID;
-- values `>= 64`: no audio for that channel.
-
-The evaluator follows this rule in order to remain aligned with the dataset
-pipeline.
-
-### Pattern synthesis
-
-The provided synthesizer renders each entry of `music` independently.
-
-Therefore:
-
-`music_XX.wav` represents one music pattern, not necessarily one complete
-musical piece.
-
-The synthesizer does not reconstruct a sequence of patterns into a complete
-song.
-
-### Flags and loops
-
-The extractor preserves:
-
-- music `flags`;
-- SFX `loop_start`;
-- SFX `loop_end`.
-
-However, the current synthesizer does not use these values during rendering.
-
-Consequently, full-song segmentation and loop reconstruction must not be
-inferred from the current WAV generation pipeline.
-
-### Timing
-
-SFX `speed` is used by the synthesizer.
-
-For each of the 32 note slots, nominal duration is:
-
-`duration_seconds = max(1, speed) / 120`
-
-The actual implementation converts this value to an integer number of audio
-samples per note.
-
-Temporal metrics based on complete songs remain pending because the current
-synthesizer renders patterns independently and does not execute music-level
-loop/stop semantics.
-
-### Instruments
-
-The symbolic representation preserves instrument values `0..15`.
-
-The provided synthesizer implements distinct waveform behavior primarily for
-values `0..7`; values outside that range fall back to a sine waveform.
-
-Therefore, the evaluator currently treats instrument distribution as a
-distribution of symbolic instrument codes, not as a distribution of distinct
-rendered timbres.
-
-### Consequence for the current protocol
-
-The existing structural metrics remain independent of full-song synthesis:
-
-- pitch range;
+- Shannon entropy;
 - normalized pitch-class entropy;
+- pitch statistics;
+- canonical song evaluation;
+- symbolic timing;
+- audible-step counting;
+- temporal channel utilization;
+- pattern-end clipping;
 - structural note density;
-- audible channel utilization;
-- SFX repetition ratio.
+- block repetition;
+- evaluation without block identity;
+- legacy `audio.json` compatibility;
+- manifest evaluation;
+- descriptive statistics;
+- percentiles;
+- KS statistic;
+- Wasserstein-1 distance;
+- comparison between systems;
+- synthesizer alignment.
 
-Metrics involving complete-song duration, temporal structure, loop behavior or
-rhythmic timing remain provisional until the group finalizes tokenization,
-decoding and full-song reconstruction.
+Current validated status:
+
+```text
+Ran 24 tests
+OK
+```
+
+---
+
+# Generated outputs
+
+The canonical real test-set command is:
+
+```bash
+python evaluation/evaluate_split.py \
+  --input data/splits/test.jsonl \
+  --output results/real_test_metrics.csv
+```
+
+The generated CSV contains one row per song.
+
+For the final experiment, equivalent metric CSV files should be produced for
+the baseline and neural model after their outputs are decoded into canonical
+songs.
+
+The default comparison uses:
+
+```text
+pitch_range
+pitch_class_entropy
+audible_step_rate
+audible_channel_utilization
+```
+
+Block-dependent metrics remain available for representation-specific or
+structural analyses when their required metadata is preserved.

@@ -8,9 +8,8 @@ from pathlib import Path
 DEFAULT_METRICS = [
     "pitch_range",
     "pitch_class_entropy",
-    "structural_note_density",
+    "audible_step_rate",
     "audible_channel_utilization",
-    "sfx_repetition_ratio",
 ]
 
 

@@ -15,9 +15,8 @@ from compare_results import (
 METRICS = [
     "pitch_range",
     "pitch_class_entropy",
-    "structural_note_density",
+    "audible_step_rate",
     "audible_channel_utilization",
-    "sfx_repetition_ratio",
 ]
 
 
@@ -116,16 +115,14 @@ class TestComparisonPipeline(unittest.TestCase):
                 {
                     "pitch_range": 40,
                     "pitch_class_entropy": 0.7,
-                    "structural_note_density": 0.5,
+                    "audible_step_rate": 0.5,
                     "audible_channel_utilization": 0.5,
-                    "sfx_repetition_ratio": 0.3,
                 },
                 {
                     "pitch_range": 50,
                     "pitch_class_entropy": 0.8,
-                    "structural_note_density": 0.6,
+                    "audible_step_rate": 0.6,
                     "audible_channel_utilization": 0.75,
-                    "sfx_repetition_ratio": 0.4,
                 },
             ]
 
@@ -133,16 +130,14 @@ class TestComparisonPipeline(unittest.TestCase):
                 {
                     "pitch_range": 10,
                     "pitch_class_entropy": 0.2,
-                    "structural_note_density": 0.2,
+                    "audible_step_rate": 0.2,
                     "audible_channel_utilization": 0.25,
-                    "sfx_repetition_ratio": 0.9,
                 },
                 {
                     "pitch_range": 20,
                     "pitch_class_entropy": 0.3,
-                    "structural_note_density": 0.3,
+                    "audible_step_rate": 0.3,
                     "audible_channel_utilization": 0.25,
-                    "sfx_repetition_ratio": 0.8,
                 },
             ]
 
@@ -150,16 +145,14 @@ class TestComparisonPipeline(unittest.TestCase):
                 {
                     "pitch_range": 38,
                     "pitch_class_entropy": 0.68,
-                    "structural_note_density": 0.48,
+                    "audible_step_rate": 0.48,
                     "audible_channel_utilization": 0.5,
-                    "sfx_repetition_ratio": 0.35,
                 },
                 {
                     "pitch_range": 48,
                     "pitch_class_entropy": 0.78,
-                    "structural_note_density": 0.58,
+                    "audible_step_rate": 0.58,
                     "audible_channel_utilization": 0.7,
-                    "sfx_repetition_ratio": 0.42,
                 },
             ]
 
@@ -186,10 +179,10 @@ class TestComparisonPipeline(unittest.TestCase):
                 }
             )
 
-            # 3 sistemas x 5 métricas.
+            # 3 sistemas x 4 métricas.
             self.assertEqual(
                 len(rows),
-                15,
+                12,
             )
 
             real_pitch = next(

@@ -3,6 +3,9 @@ import math
 from collections import Counter
 from pathlib import Path
 
+SYNTH_SAMPLE_RATE = 44100
+SYNTH_SAMPLES_PER_TICK = 366
+
 
 def shannon_entropy(values):
     if not values:
@@ -221,3 +224,198 @@ def evaluate_piece_file(audio_json, pattern_ids, tid=None):
         pattern_ids=pattern_ids,
         tid=tid,
     )
+
+
+# ---------------------------------------------------------------------------
+# Canonical songs.json evaluation
+# ---------------------------------------------------------------------------
+
+def evaluate_song_data(song):
+    """
+    Evaluate a canonical song dictionary produced by songs.json or by a
+    tokenizer decoder.
+
+    Metrics common to all representations are calculated from patterns /
+    notes_unrolled. Block-dependent metrics are returned only when the
+    representation preserves block metadata.
+    """
+
+    pitches = []
+    instruments = Counter()
+    effects = Counter()
+    speeds = Counter()
+
+    patterns = song.get("patterns", [])
+    blocks = song.get("blocks_dictionary", {})
+
+    total_ticks = 0
+    audible_ticks = 0
+    audible_note_steps = 0
+    active_refs = 0
+
+    structural_active_slots = 0
+    structural_available_slots = 0
+    block_metadata_complete = True
+
+    repeated_block_refs = 0
+    repeat_metadata_complete = True
+
+    for pattern in patterns:
+        pattern_ticks = max(0, int(pattern.get("pattern_ticks") or 0))
+        total_ticks += pattern_ticks
+
+        for channel in pattern.get("channels", {}).values():
+            if not channel.get("active"):
+                continue
+
+            active_refs += 1
+
+            speed = max(
+                1,
+                int(
+                    channel.get("speed")
+                    or pattern.get("ref_speed")
+                    or 1
+                ),
+            )
+            speeds[speed] += 1
+
+            notes = channel.get("notes_unrolled", [])
+
+            for step_index, note in enumerate(notes):
+                if note.get("volume", 0) <= 0:
+                    continue
+
+                audible_note_steps += 1
+
+                pitch = note.get("pitch")
+                if pitch is not None:
+                    pitches.append(pitch)
+
+                instruments[note.get("instrument")] += 1
+                effects[note.get("effect")] += 1
+
+                # Each unrolled symbolic step occupies `speed` ticks, clipped
+                # at the end of the pattern.
+                start_tick = step_index * speed
+                if start_tick < pattern_ticks:
+                    audible_ticks += min(
+                        speed,
+                        pattern_ticks - start_tick,
+                    )
+
+            # Structural 32-slot metric is available only when block identity
+            # was preserved by the representation.
+            block_id = channel.get("block_id")
+            block = blocks.get(str(block_id)) if block_id is not None else None
+
+            if block is None:
+                block_metadata_complete = False
+            else:
+                block_notes = block.get("notes", [])
+                structural_available_slots += len(block_notes)
+                structural_active_slots += sum(
+                    1
+                    for note in block_notes
+                    if note.get("volume", 0) > 0
+                )
+
+            if "is_repeat" not in channel:
+                repeat_metadata_complete = False
+            elif channel.get("is_repeat"):
+                repeated_block_refs += 1
+
+    if pitches:
+        pitch_min = min(pitches)
+        pitch_max = max(pitches)
+        pitch_range = pitch_max - pitch_min
+    else:
+        pitch_min = None
+        pitch_max = None
+        pitch_range = None
+
+    duration_seconds = (
+        total_ticks * SYNTH_SAMPLES_PER_TICK / SYNTH_SAMPLE_RATE
+        if total_ticks > 0
+        else None
+    )
+
+    audible_step_rate = (
+        audible_note_steps / duration_seconds
+        if duration_seconds
+        else None
+    )
+
+    audible_channel_utilization = (
+        audible_ticks / (4 * total_ticks)
+        if total_ticks > 0
+        else None
+    )
+
+    active_channel_reference_utilization = (
+        active_refs / (4 * len(patterns))
+        if patterns
+        else None
+    )
+
+    structural_note_density = (
+        structural_active_slots / structural_available_slots
+        if (
+            block_metadata_complete
+            and structural_available_slots > 0
+        )
+        else None
+    )
+
+    block_repetition_ratio = (
+        repeated_block_refs / active_refs
+        if (
+            repeat_metadata_complete
+            and active_refs > 0
+        )
+        else None
+    )
+
+    return {
+        "tid": song.get("tid"),
+        "song_id": song.get("song_id"),
+        "pattern_count": len(patterns),
+
+        "total_ticks": total_ticks,
+        "duration_seconds": duration_seconds,
+
+        "pitch_min": pitch_min,
+        "pitch_max": pitch_max,
+        "pitch_range": pitch_range,
+        "pitch_class_entropy": normalized_pitch_class_entropy(pitches),
+
+        # Common representation-independent metrics.
+        "audible_step_rate": audible_step_rate,
+        "audible_channel_utilization": audible_channel_utilization,
+
+        # Diagnostics.
+        "audible_note_steps": audible_note_steps,
+        "audible_ticks": audible_ticks,
+        "active_refs": active_refs,
+        "active_channel_reference_utilization":
+            active_channel_reference_utilization,
+
+        # Available only when block structure is preserved.
+        "structural_note_density": structural_note_density,
+        "block_repetition_ratio": block_repetition_ratio,
+
+        "structural_active_slots": (
+            structural_active_slots
+            if block_metadata_complete
+            else None
+        ),
+        "structural_available_slots": (
+            structural_available_slots
+            if block_metadata_complete
+            else None
+        ),
+
+        "instruments": dict(sorted(instruments.items())),
+        "effects": dict(sorted(effects.items())),
+        "speeds": dict(sorted(speeds.items())),
+    }

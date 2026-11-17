@@ -1,86 +1,161 @@
 # Avaliação do TP2
 
-Essa pasta é a parte de **avaliação/métricas** do projeto.
+Esta pasta contém a avaliação simbólica/estrutural do projeto de geração musical autoregressiva em PICO-8.
 
-A ideia é simples: usar o mesmo pipeline para comparar três conjuntos:
+O objetivo é comparar, com o mesmo pipeline de métricas:
 
 - músicas reais do test set;
 - músicas geradas pelo baseline;
-- músicas geradas pelo modelo principal.
+- músicas geradas pelo modelo neural principal.
 
-Tudo é avaliado direto na representação simbólica do PICO-8, sem precisar converter para MIDI.
+A avaliação é feita na representação simbólica canônica de música utilizada pelo projeto, sem necessidade de conversão para MIDI.
 
-## O que já funciona
+## Pipeline atual
 
-Hoje essa parte já consegue:
+O fluxo oficial é:
 
-- ler os `audio.json`;
-- avaliar uma peça a partir de um conjunto de music patterns;
-- calcular métricas estruturais;
-- processar várias peças de uma vez;
-- salvar os resultados em CSV;
-- comparar Real × Baseline × Neural;
-- calcular estatísticas e distâncias entre distribuições;
-- gerar boxplots automaticamente.
+```text
+songs.json
+    ↓
+preprocessing
+    ↓
+data/splits/{train,val,test}.jsonl
+    ↓
+música canônica / saída decodificada
+    ↓
+evaluate_song_data()
+    ↓
+CSV por música
+    ↓
+compare_results.py
+    ↓
+estatísticas + KS + Wasserstein-1 + plots
+```
 
-Também tem **20 testes automatizados passando**.
+Para músicas geradas, os tokens devem primeiro ser decodificados pelo tokenizer.
 
-## Métricas atuais
+A avaliação é executada sobre a música canônica reconstruída, e não diretamente sobre os tokens.
 
-Por enquanto estão implementadas:
+## Test set real
 
-- **Pitch Range**  
-  extensão entre o menor e o maior pitch usado;
+O preprocessing final produz:
 
-- **Pitch-Class Entropy**  
-  diversidade das classes de pitch;
+- train: 9.907 músicas;
+- validation: 1.242 músicas;
+- test: 1.235 músicas.
 
-- **Structural Note Density**  
-  proporção de slots realmente audíveis;
+O split evita vazamento entre jogos relacionados por material musical compartilhado, conforme definido pelo pipeline de preprocessing.
 
-- **Audible Channel Utilization**  
-  quanto dos 4 canais do PICO-8 é efetivamente usado;
+A avaliação canônica foi validada sobre as 1.235 músicas do test set.
 
-- **SFX Repetition Ratio**  
-  quanto os mesmos SFX são reutilizados dentro da peça.
+## Métricas primárias
 
-Além disso, o pipeline também coleta informações de instrumento, efeito, `speed`, flags e SFX vazios.
+As quatro métricas abaixo podem ser calculadas após o decode das diferentes representações e são usadas na comparação principal entre sistemas.
 
-As definições mais detalhadas estão em [`METRICS.md`](METRICS.md).
+### Pitch Range
 
-## Como a representação está sendo interpretada
+Diferença entre o maior e o menor pitch audível da música.
 
-A implementação foi conferida com o `extract_audio.py` e o `synthesize_audio.py` usados para gerar o dataset.
+Somente steps com `volume > 0` são considerados.
 
-As regras que estamos usando são:
+### Normalized Pitch-Class Entropy
 
-- valores de canal `0..63` apontam diretamente para um SFX;
-- valores `>= 64` não produzem áudio;
-- uma nota só é considerada audível quando `volume > 0`;
-- cada SFX possui 32 slots;
-- um SFX referenciado mas ausente é tratado como vazio;
-- reutilizações do mesmo SFX contam novamente, porque ele está sendo tocado outra vez.
+Entropia de Shannon das classes de pitch (`pitch % 12`), normalizada por `log2(12)`.
 
-O sintetizador atual renderiza cada `music pattern` separadamente, então um arquivo `music_XX.wav` não representa necessariamente uma música completa.
+Valores maiores indicam maior diversidade de classes de pitch.
 
-## Sobre o split
+### Audible Step Rate
 
-O split deve ser feito por **TID inteiro**.
+Quantidade de steps simbólicos audíveis por segundo.
 
-TID é o ID do jogo, e um mesmo jogo pode ter várias músicas reaproveitando os mesmos SFX. Então não devemos colocar músicas do mesmo TID em train e test, por exemplo.
+Um step é considerado audível quando possui `volume > 0`.
 
-## O que ainda não está fechado
+O relógio temporal segue o sintetizador atual:
 
-A parte estrutural da avaliação já funciona, mas algumas decisões ainda dependem das outras frentes do projeto:
+```text
+SAMPLE_RATE = 44100
+SAMPLES_PER_TICK = 366
 
-- como os patterns serão agrupados em uma música completa;
-- tokenização final;
-- split definitivo de train/val/test;
-- formato da saída/decoder do baseline;
-- formato da saída/decoder do modelo principal;
-- reconstrução de loops, stop e sequência completa de patterns.
+duration_seconds = total_ticks * 366 / 44100
+```
 
-Por isso, o avaliador recebe explicitamente quais patterns formam uma peça. Quando essa definição estiver fechada, basta trocar o manifesto, sem reescrever as métricas.
+Portanto:
+
+```text
+audible_step_rate = audible_steps / duration_seconds
+```
+
+O nome "step rate" é usado porque os elementos de `notes_unrolled` representam steps simbólicos, e não necessariamente ataques musicais independentes.
+
+### Audible Channel Utilization
+
+Mede a ocupação audível da capacidade total dos quatro canais do PICO-8 ao longo do tempo.
+
+Para cada step audível, sua duração é determinada por `speed`, limitada pelo fim do pattern.
+
+```text
+audible_channel_utilization =
+    audible_channel_ticks / (4 * total_ticks)
+```
+
+O resultado fica entre 0 e 1.
+
+## Métricas estruturais auxiliares
+
+Estas métricas dependem da preservação explícita da estrutura de blocos/SFX.
+
+### Structural Note Density
+
+Proporção de slots audíveis entre os slots estruturais disponíveis nos blocos referenciados.
+
+Cada bloco canônico possui 32 slots. Reutilizações de um bloco contam novamente porque representam novas ocorrências durante a execução da música.
+
+Esta métrica é calculada quando `blocks_dictionary` e `block_id` estão disponíveis.
+
+### Block Repetition Ratio
+
+Proporção de referências ativas que reutilizam um bloco já definido:
+
+```text
+block_repetition_ratio =
+    repeated_block_references / active_block_references
+```
+
+No formato `grid_block`, a primeira ocorrência é representada como definição do bloco e ocorrências posteriores como reutilizações.
+
+As representações `nlm` e `grid_unrolled` não preservam necessariamente a identidade dos blocos após o decode. Nesses casos, as métricas dependentes dessa informação retornam `None` e não fazem parte da comparação principal entre representações.
+
+## Distribuições auxiliares
+
+O evaluator também coleta:
+
+- instrumentos;
+- efeitos;
+- velocidades (`speed`);
+- número de patterns;
+- duração;
+- número de referências ativas;
+- número de steps audíveis;
+- utilização de referências de canal.
+
+Essas informações podem ser usadas para análises adicionais, mas não fazem parte do conjunto padrão de quatro métricas de comparação.
+
+## Comparação entre sistemas
+
+Para cada métrica primária, `compare_results.py` calcula:
+
+- número de amostras;
+- média;
+- mediana;
+- desvio padrão;
+- primeiro quartil;
+- terceiro quartil;
+- mínimo;
+- máximo;
+- estatística de Kolmogorov-Smirnov contra o conjunto real;
+- distância Wasserstein-1 contra o conjunto real.
+
+Menores valores de KS e Wasserstein indicam distribuições mais próximas da distribuição real.
 
 ## Estrutura da pasta
 
@@ -89,87 +164,93 @@ evaluation/
 ├── README_AVALIACAO.md
 ├── METRICS.md
 ├── pico8_metrics.py
-├── evaluate_manifest.py
+├── evaluate_split.py
 ├── compare_results.py
 ├── plot_distributions.py
-├── pieces.example.json
 ├── requirements.txt
+├── evaluate_manifest.py        # pipeline legado
+├── pieces.example.json         # exemplo legado
 └── tests/
+    ├── test_song_metrics.py
+    ├── test_metrics.py
+    ├── test_manifest.py
+    ├── test_compare_results.py
+    └── test_synth_alignment.py
 ```
 
-## Rodando os testes
+`evaluate_manifest.py` e `pieces.example.json` pertencem ao protótipo anterior baseado em `audio.json` e pattern IDs. Eles são mantidos temporariamente para compatibilidade e testes, mas não constituem o pipeline oficial da avaliação final.
 
-Dentro da pasta `evaluation`:
+## Ambiente
+
+A partir da raiz do repositório:
 
 ```bash
 python3 -m venv .venv
 source .venv/bin/activate
-pip install -r requirements.txt
+python -m pip install -r evaluation/requirements.txt
+```
+
+## Rodando os testes
+
+```bash
+cd evaluation
 python -m unittest discover -s tests -v
 ```
 
-Estado atual:
+Estado validado:
 
 ```text
-Ran 20 tests
+Ran 24 tests
 OK
 ```
 
-## Avaliando peças
+## Avaliando o test set real
 
-O manifesto diz quais patterns pertencem a cada peça.
-
-Exemplo:
-
-```json
-{
-  "pieces": [
-    {
-      "piece_id": "example_01",
-      "tid": "12345",
-      "patterns": [0, 1, 2, 3]
-    }
-  ]
-}
-```
-
-Depois:
+A partir da raiz do repositório:
 
 ```bash
-python evaluate_manifest.py \
-  --dataset /caminho/para/dataset_pico8 \
-  --manifest pieces.example.json \
-  --output results.csv
+python evaluation/evaluate_split.py \
+  --input data/splits/test.jsonl \
+  --output results/real_test_metrics.csv
 ```
 
-## Comparando os sistemas
+O test set final contém 1.235 músicas, portanto o CSV possui 1.236 linhas incluindo o cabeçalho.
 
-Quando tivermos os três conjuntos:
+## Comparando Real, Baseline e Neural
+
+Quando os três conjuntos estiverem disponíveis:
 
 ```bash
-python compare_results.py \
-  --real real_test.csv \
-  --baseline baseline.csv \
-  --neural neural.csv \
-  --output comparison_summary.csv
+python evaluation/compare_results.py \
+  --real results/real_test_metrics.csv \
+  --baseline results/baseline_metrics.csv \
+  --neural results/neural_metrics.csv \
+  --output results/comparison_summary.csv
 ```
 
-Isso gera estatísticas como média, mediana, desvio padrão, quartis e também KS/Wasserstein em relação ao conjunto real.
+A comparação padrão usa:
+
+- `pitch_range`;
+- `pitch_class_entropy`;
+- `audible_step_rate`;
+- `audible_channel_utilization`.
 
 ## Gerando os gráficos
 
 ```bash
-python plot_distributions.py \
-  --real real_test.csv \
-  --baseline baseline.csv \
-  --neural neural.csv \
-  --output-dir plots
+python evaluation/plot_distributions.py \
+  --real results/real_test_metrics.csv \
+  --baseline results/baseline_metrics.csv \
+  --neural results/neural_metrics.csv \
+  --output-dir results/plots
 ```
 
-Hoje os gráficos principais são boxplots das métricas estruturais.
+São gerados boxplots das quatro métricas primárias.
 
-## Observação
+## Resultados gerados
 
-Os arquivos de exemplo servem só para testar a infraestrutura.
+A pasta `results/` contém artefatos produzidos localmente e está ignorada pelo Git.
 
-Eles **não são resultados finais do TP2**.
+Os resultados atuais do test set real servem como referência para as futuras comparações com baseline e modelo neural.
+
+Os smoke tests que reutilizam o mesmo CSV nos três sistemas são apenas validação da infraestrutura e não constituem resultados experimentais do TP2.
