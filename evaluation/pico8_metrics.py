@@ -596,9 +596,10 @@ def evaluate_song_data(song):
     )
 
     block_repetition_ratio = (
-        repeated_block_refs / active_refs
+       repeated_block_refs / active_refs
         if (
-            repeat_metadata_complete
+            block_metadata_complete
+            and repeat_metadata_complete
             and active_refs > 0
         )
         else None
