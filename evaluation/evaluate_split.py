@@ -1,5 +1,6 @@
 import argparse
 import csv
+import gzip
 import json
 from pathlib import Path
 from statistics import mean, median
@@ -60,8 +61,9 @@ AUXILIARY_METRICS = [
 
 def load_jsonl(path):
     path = Path(path)
+    opener = gzip.open if path.suffix == ".gz" else open
 
-    with path.open(encoding="utf-8") as f:
+    with opener(path, "rt", encoding="utf-8") as f:
         for line_number, line in enumerate(f, start=1):
             line = line.strip()
 
