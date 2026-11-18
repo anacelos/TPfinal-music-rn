@@ -6,10 +6,9 @@ from pathlib import Path
 
 
 DEFAULT_METRICS = [
-    "pitch_range",
-    "pitch_class_entropy",
-    "audible_step_rate",
-    "audible_channel_utilization",
+    "pitch_entropy",
+    "scale_consistency",
+    "groove_consistency",
 ]
 
 

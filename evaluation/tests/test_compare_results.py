@@ -13,10 +13,9 @@ from compare_results import (
 
 
 METRICS = [
-    "pitch_range",
-    "pitch_class_entropy",
-    "audible_step_rate",
-    "audible_channel_utilization",
+    "pitch_entropy",
+    "scale_consistency",
+    "groove_consistency",
 ]
 
 
@@ -113,46 +112,40 @@ class TestComparisonPipeline(unittest.TestCase):
 
             real_rows = [
                 {
-                    "pitch_range": 40,
-                    "pitch_class_entropy": 0.7,
-                    "audible_step_rate": 0.5,
-                    "audible_channel_utilization": 0.5,
+                    "pitch_entropy": 2.8,
+                    "scale_consistency": 0.90,
+                    "groove_consistency": 0.85,
                 },
                 {
-                    "pitch_range": 50,
-                    "pitch_class_entropy": 0.8,
-                    "audible_step_rate": 0.6,
-                    "audible_channel_utilization": 0.75,
+                    "pitch_entropy": 3.0,
+                    "scale_consistency": 0.86,
+                    "groove_consistency": 0.80,
                 },
             ]
 
             baseline_rows = [
                 {
-                    "pitch_range": 10,
-                    "pitch_class_entropy": 0.2,
-                    "audible_step_rate": 0.2,
-                    "audible_channel_utilization": 0.25,
+                    "pitch_entropy": 1.5,
+                    "scale_consistency": 0.65,
+                    "groove_consistency": 0.55,
                 },
                 {
-                    "pitch_range": 20,
-                    "pitch_class_entropy": 0.3,
-                    "audible_step_rate": 0.3,
-                    "audible_channel_utilization": 0.25,
+                    "pitch_entropy": 1.7,
+                    "scale_consistency": 0.68,
+                    "groove_consistency": 0.60,
                 },
             ]
 
             neural_rows = [
                 {
-                    "pitch_range": 38,
-                    "pitch_class_entropy": 0.68,
-                    "audible_step_rate": 0.48,
-                    "audible_channel_utilization": 0.5,
+                    "pitch_entropy": 2.7,
+                    "scale_consistency": 0.88,
+                    "groove_consistency": 0.82,
                 },
                 {
-                    "pitch_range": 48,
-                    "pitch_class_entropy": 0.78,
-                    "audible_step_rate": 0.58,
-                    "audible_channel_utilization": 0.7,
+                    "pitch_entropy": 2.9,
+                    "scale_consistency": 0.84,
+                    "groove_consistency": 0.78,
                 },
             ]
 
@@ -179,46 +172,46 @@ class TestComparisonPipeline(unittest.TestCase):
                 }
             )
 
-            # 3 sistemas x 4 métricas.
+            # 3 sistemas x 3 métricas.
             self.assertEqual(
                 len(rows),
-                12,
+                9,
             )
 
-            real_pitch = next(
+            real_entropy = next(
                 row
                 for row in rows
                 if row["system"] == "real"
-                and row["metric"] == "pitch_range"
+                and row["metric"] == "pitch_entropy"
             )
 
-            baseline_pitch = next(
+            baseline_entropy = next(
                 row
                 for row in rows
                 if row["system"] == "baseline"
-                and row["metric"] == "pitch_range"
+                and row["metric"] == "pitch_entropy"
             )
 
-            neural_pitch = next(
+            neural_entropy = next(
                 row
                 for row in rows
                 if row["system"] == "neural"
-                and row["metric"] == "pitch_range"
+                and row["metric"] == "pitch_entropy"
+            )
+
+            self.assertAlmostEqual(
+                real_entropy["mean"],
+                2.9,
             )
 
             self.assertEqual(
-                real_pitch["mean"],
-                45,
-            )
-
-            self.assertEqual(
-                real_pitch["ks_vs_real"],
+                real_entropy["ks_vs_real"],
                 0.0,
             )
 
             self.assertGreater(
-                baseline_pitch["wasserstein_vs_real"],
-                neural_pitch["wasserstein_vs_real"],
+                baseline_entropy["wasserstein_vs_real"],
+                neural_entropy["wasserstein_vs_real"],
             )
 
 
