@@ -16,11 +16,15 @@ SCALAR_FIELDS = [
     "pitch_min",
     "pitch_max",
     "pitch_range",
+    "pitch_entropy",
     "pitch_class_entropy",
+    "scale_consistency",
+    "groove_consistency",
     "audible_step_rate",
     "audible_channel_utilization",
     "active_channel_reference_utilization",
     "audible_note_steps",
+    "note_onsets",
     "audible_ticks",
     "active_refs",
     "structural_note_density",
@@ -36,6 +40,12 @@ JSON_FIELDS = [
 ]
 
 PRIMARY_METRICS = [
+    "pitch_entropy",
+    "scale_consistency",
+    "groove_consistency",
+]
+
+COMPLEMENTARY_METRICS = [
     "pitch_range",
     "pitch_class_entropy",
     "audible_step_rate",
@@ -141,6 +151,10 @@ def print_summary(rows):
     print()
     print("Métricas primárias:")
     print_metric_summary(rows, PRIMARY_METRICS)
+
+    print()
+    print("Métricas complementares PICO-8:")
+    print_metric_summary(rows, COMPLEMENTARY_METRICS)
 
     print()
     print("Métricas estruturais auxiliares:")

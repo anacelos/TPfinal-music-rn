@@ -6,10 +6,9 @@ import matplotlib.pyplot as plt
 
 
 METRICS = {
-    "pitch_range": "Pitch range",
-    "pitch_class_entropy": "Pitch-class entropy",
-    "audible_step_rate": "Audible step rate",
-    "audible_channel_utilization": "Audible channel utilization",
+    "pitch_entropy": "Pitch entropy (bits)",
+    "scale_consistency": "Scale consistency",
+    "groove_consistency": "Groove consistency",
 }
 
 

@@ -6,6 +6,9 @@ from pathlib import Path
 SYNTH_SAMPLE_RATE = 44100
 SYNTH_SAMPLES_PER_TICK = 366
 
+GROOVE_RESOLUTION = 32
+MAJOR_SCALE_INTERVALS = frozenset({0, 2, 4, 5, 7, 9, 11})
+
 
 def shannon_entropy(values):
     if not values:
@@ -21,6 +24,12 @@ def shannon_entropy(values):
 
 
 def normalized_pitch_class_entropy(pitches):
+    """
+    Normalized Shannon entropy of the 12 pitch classes.
+
+    This is retained as a complementary metric from the original evaluation
+    protocol. Values are approximately bounded between 0 and 1.
+    """
     if not pitches:
         return None
 
@@ -30,9 +39,204 @@ def normalized_pitch_class_entropy(pitches):
     return entropy / math.log2(12)
 
 
+def pitch_entropy(pitches):
+    """
+    Shannon entropy, in bits, of the 12 pitch classes.
+
+    This follows the definition used in the course evaluation material:
+    minimum 0 and maximum log2(12).
+    """
+    if not pitches:
+        return None
+
+    pitch_classes = [pitch % 12 for pitch in pitches]
+    return shannon_entropy(pitch_classes)
+
+
+def scale_consistency(pitches):
+    """
+    Fraction of pitch occurrences belonging to the best-fitting major scale.
+
+    All 12 possible major-scale tonics are evaluated, and the maximum
+    fraction is returned.
+    """
+    if not pitches:
+        return None
+
+    pitch_classes = [pitch % 12 for pitch in pitches]
+
+    return max(
+        sum(
+            1
+            for pitch_class in pitch_classes
+            if (pitch_class - tonic) % 12 in MAJOR_SCALE_INTERVALS
+        ) / len(pitch_classes)
+        for tonic in range(12)
+    )
+
+
+def _extract_onset_features(patterns, resolution=GROOVE_RESOLUTION):
+    """
+    Extract note-on pitches and one binary groove vector per positive-duration
+    PICO-8 pattern.
+
+    State is preserved across pattern boundaries, matching the NLM tokenizer.
+    An identical consecutive pitch/instrument/volume/effect state is sustained,
+    except effects 3, 4 and 5, which force a new NOTEON.
+    """
+    if resolution <= 0:
+        raise ValueError("resolution must be positive")
+
+    onset_pitches = []
+    groove_vectors = []
+    channel_states = {}
+
+    for pattern in patterns:
+        pattern_ticks = max(0, int(pattern.get("pattern_ticks") or 0))
+        vector = [0] * resolution
+
+        channels = pattern.get("channels", {})
+
+        # An inactive/missing channel terminates any state carried from the
+        # preceding pattern, as in the NLM tokenizer.
+        for channel_name in set(channel_states) | set(channels):
+            channel = channels.get(channel_name, {})
+
+            if not channel.get("active") or not channel.get("notes_unrolled"):
+                channel_states[channel_name] = {
+                    "active": False,
+                    "pitch": None,
+                    "instrument": None,
+                    "volume": 0,
+                    "effect": None,
+                }
+                continue
+
+            state = channel_states.setdefault(
+                channel_name,
+                {
+                    "active": False,
+                    "pitch": None,
+                    "instrument": None,
+                    "volume": 0,
+                    "effect": None,
+                },
+            )
+
+            speed = max(
+                1,
+                int(
+                    channel.get("speed")
+                    or pattern.get("ref_speed")
+                    or 1
+                ),
+            )
+
+            notes = channel.get("notes_unrolled", [])
+
+            for step_index, note in enumerate(notes):
+                start_tick = step_index * speed
+
+                if start_tick >= pattern_ticks:
+                    break
+
+                pitch = int(note.get("pitch", 0))
+                instrument = int(note.get("instrument", 0))
+                volume = int(note.get("volume", 0))
+                effect = int(note.get("effect", 0))
+
+                if volume <= 0:
+                    state["active"] = False
+                    state["pitch"] = None
+                    state["volume"] = 0
+                    continue
+
+                is_sustained = (
+                    state["active"]
+                    and state["pitch"] == pitch
+                    and state["instrument"] == instrument
+                    and state["volume"] == volume
+                    and state["effect"] == effect
+                    and effect not in (3, 4, 5)
+                )
+
+                if not is_sustained:
+                    onset_pitches.append(pitch)
+
+                    if pattern_ticks > 0:
+                        bin_index = min(
+                            resolution - 1,
+                            (start_tick * resolution) // pattern_ticks,
+                        )
+                        vector[bin_index] = 1
+
+                state["active"] = True
+                state["pitch"] = pitch
+                state["instrument"] = instrument
+                state["volume"] = volume
+                state["effect"] = effect
+
+            # Same NOTE-OFF rule used by the tokenizer when the unrolled list
+            # ends before the end of the pattern.
+            end_tick = len(notes) * speed
+            if end_tick < pattern_ticks:
+                state["active"] = False
+                state["pitch"] = None
+                state["volume"] = 0
+
+        if pattern_ticks > 0:
+            groove_vectors.append(vector)
+
+    return onset_pitches, groove_vectors
+
+
+def groove_consistency_from_vectors(vectors):
+    """
+    Mean similarity between consecutive binary groove vectors.
+
+    GC = 1 - mean(normalized Hamming distance)
+    """
+    if len(vectors) < 2:
+        return None
+
+    resolution = len(vectors[0])
+
+    if resolution == 0:
+        return None
+
+    normalized_distances = []
+
+    for previous, current in zip(vectors, vectors[1:]):
+        hamming_distance = sum(
+            a != b
+            for a, b in zip(previous, current)
+        )
+        normalized_distances.append(
+            hamming_distance / resolution
+        )
+
+    return 1.0 - (
+        sum(normalized_distances) / len(normalized_distances)
+    )
+
+
+def groove_consistency(patterns, resolution=GROOVE_RESOLUTION):
+    """
+    Groove Consistency adapted to PICO-8 patterns.
+
+    Positive-duration music patterns are the temporal units analogous to
+    measures. Their NOTEON events are projected onto a normalized binary grid.
+    """
+    _, vectors = _extract_onset_features(patterns, resolution)
+    return groove_consistency_from_vectors(vectors)
+
+
 def evaluate_piece_data(data, pattern_ids, tid=None):
     """
     Avalia uma peça PICO-8 definida por um conjunto ordenado de pattern IDs.
+
+    Esta função é mantida para compatibilidade com o pipeline legado baseado
+    em audio.json.
 
     Regras atualmente validadas:
     - valores de canal 0..63 referenciam diretamente SFX 0..63;
@@ -214,6 +418,9 @@ def evaluate_piece_data(data, pattern_ids, tid=None):
 
 
 def evaluate_piece_file(audio_json, pattern_ids, tid=None):
+    """
+    Evaluate a legacy audio.json piece.
+    """
     audio_json = Path(audio_json)
 
     with audio_json.open(encoding="utf-8") as f:
@@ -226,10 +433,6 @@ def evaluate_piece_file(audio_json, pattern_ids, tid=None):
     )
 
 
-# ---------------------------------------------------------------------------
-# Canonical songs.json evaluation
-# ---------------------------------------------------------------------------
-
 def evaluate_song_data(song):
     """
     Evaluate a canonical song dictionary produced by songs.json or by a
@@ -238,9 +441,22 @@ def evaluate_song_data(song):
     Metrics common to all representations are calculated from patterns /
     notes_unrolled. Block-dependent metrics are returned only when the
     representation preserves block metadata.
+
+    Course-aligned symbolic metrics:
+    - pitch_entropy
+    - scale_consistency
+    - groove_consistency
+
+    Complementary PICO-8 metrics:
+    - pitch_range
+    - normalized pitch-class entropy
+    - audible step rate
+    - audible channel utilization
+    - structural note density
+    - block repetition ratio
     """
 
-    pitches = []
+    step_pitches = []
     instruments = Counter()
     effects = Counter()
     speeds = Counter()
@@ -261,7 +477,10 @@ def evaluate_song_data(song):
     repeat_metadata_complete = True
 
     for pattern in patterns:
-        pattern_ticks = max(0, int(pattern.get("pattern_ticks") or 0))
+        pattern_ticks = max(
+            0,
+            int(pattern.get("pattern_ticks") or 0),
+        )
         total_ticks += pattern_ticks
 
         for channel in pattern.get("channels", {}).values():
@@ -290,7 +509,7 @@ def evaluate_song_data(song):
 
                 pitch = note.get("pitch")
                 if pitch is not None:
-                    pitches.append(pitch)
+                    step_pitches.append(pitch)
 
                 instruments[note.get("instrument")] += 1
                 effects[note.get("effect")] += 1
@@ -298,6 +517,7 @@ def evaluate_song_data(song):
                 # Each unrolled symbolic step occupies `speed` ticks, clipped
                 # at the end of the pattern.
                 start_tick = step_index * speed
+
                 if start_tick < pattern_ticks:
                     audible_ticks += min(
                         speed,
@@ -307,7 +527,11 @@ def evaluate_song_data(song):
             # Structural 32-slot metric is available only when block identity
             # was preserved by the representation.
             block_id = channel.get("block_id")
-            block = blocks.get(str(block_id)) if block_id is not None else None
+            block = (
+                blocks.get(str(block_id))
+                if block_id is not None
+                else None
+            )
 
             if block is None:
                 block_metadata_complete = False
@@ -325,9 +549,11 @@ def evaluate_song_data(song):
             elif channel.get("is_repeat"):
                 repeated_block_refs += 1
 
-    if pitches:
-        pitch_min = min(pitches)
-        pitch_max = max(pitches)
+    onset_pitches, groove_vectors = _extract_onset_features(patterns)
+
+    if onset_pitches:
+        pitch_min = min(onset_pitches)
+        pitch_max = max(onset_pitches)
         pitch_range = pitch_max - pitch_min
     else:
         pitch_min = None
@@ -335,7 +561,9 @@ def evaluate_song_data(song):
         pitch_range = None
 
     duration_seconds = (
-        total_ticks * SYNTH_SAMPLES_PER_TICK / SYNTH_SAMPLE_RATE
+        total_ticks
+        * SYNTH_SAMPLES_PER_TICK
+        / SYNTH_SAMPLE_RATE
         if total_ticks > 0
         else None
     )
@@ -387,14 +615,26 @@ def evaluate_song_data(song):
         "pitch_min": pitch_min,
         "pitch_max": pitch_max,
         "pitch_range": pitch_range,
-        "pitch_class_entropy": normalized_pitch_class_entropy(pitches),
 
-        # Common representation-independent metrics.
+        # Course-aligned symbolic metrics.
+        "pitch_entropy": pitch_entropy(onset_pitches),
+        "scale_consistency": scale_consistency(onset_pitches),
+        "groove_consistency": groove_consistency_from_vectors(
+            groove_vectors
+        ),
+
+        # Complementary pitch metric retained from the previous protocol.
+        "pitch_class_entropy": normalized_pitch_class_entropy(
+            step_pitches
+        ),
+
+        # Common representation-independent PICO-8 metrics.
         "audible_step_rate": audible_step_rate,
         "audible_channel_utilization": audible_channel_utilization,
 
         # Diagnostics.
         "audible_note_steps": audible_note_steps,
+        "note_onsets": len(onset_pitches),
         "audible_ticks": audible_ticks,
         "active_refs": active_refs,
         "active_channel_reference_utilization":
