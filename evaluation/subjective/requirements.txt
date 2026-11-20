@@ -1,2 +1,4 @@
 # Versão usada pelo protocolo attention-check-v1 e registrada no manifest.
 numpy==2.5.5
+# Solver do matching symbolic-balanced-v1; não usado pelos attention checks.
+scipy==1.18.1
