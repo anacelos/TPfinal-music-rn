@@ -1,0 +1,2 @@
+# Versão usada pelo protocolo attention-check-v1 e registrada no manifest.
+numpy==2.5.5
