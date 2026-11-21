@@ -1,1 +1,5 @@
 matplotlib==3.11.2
+# audio_metrics.py (FAD / CLAP score / AudioSet KLD)
+scipy>=1.13
+transformers>=4.45,<5  # audio_metrics.py checked with 4.57
+torch>=2.2  # audio_metrics.py runs CLAP and AST on torch
