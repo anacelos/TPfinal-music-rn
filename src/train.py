@@ -11,7 +11,8 @@ Fluxo de Execução:
 2. Carregamento dos datasets, vocabulário (V e pad_id) e DataLoaders
 3. Instanciação do modelo, função de perda (CrossEntropyLoss) e otimizador
 4. Laço de treino (com gradient clipping) e validação por época
-5. Salvamento do melhor checkpoint (best.pt) e do histórico (history.json)
+5. Salvamento do melhor checkpoint (best.pt, com o vocabulário do tokenizador)
+   e do histórico (history.json)
 
 Notas:
 - Os valores de vocab_size (V) e pad_id são lidos dinamicamente de
@@ -207,6 +208,13 @@ def main():
                     "config": config,
                     "epoch": epoch,
                     "val_loss": val_loss,
+                    # vocabulário e modo do tokenizador, para que o checkpoint
+                    # baste sozinho na amostragem (decodificar os ids em música)
+                    "vocab": {
+                        "mode": vocab_info["mode"],
+                        "unroll_song_loop": vocab_info.get("unroll_song_loop", False),
+                        "id_to_token": vocab_info["id_to_token"],
+                    },
                 },
                 os.path.join(out_path, "best.pt"),
             )
