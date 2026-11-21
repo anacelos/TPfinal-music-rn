@@ -9,8 +9,12 @@ import os
 from itertools import islice
 from typing import Dict, List, Any, Optional, Tuple
 
-from tokenizer import Pico8Tokenizer
-from synth import synthesize_song_to_wav
+try:  # imported as part of the src package (repo root on sys.path)
+    from .tokenizer import Pico8Tokenizer
+    from .synth import synthesize_song_to_wav
+except ImportError:  # run as `python3 src/data.py`, src/ on sys.path
+    from tokenizer import Pico8Tokenizer
+    from synth import synthesize_song_to_wav
 
 SPLIT_NAMES = ("train", "val", "test")
 
