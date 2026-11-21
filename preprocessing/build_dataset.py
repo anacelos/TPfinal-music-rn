@@ -124,7 +124,9 @@ def main() -> None:
     parser = argparse.ArgumentParser(description="Build data/splits/ from the songs.json files")
     parser.add_argument("--root", type=Path, default=DEFAULT_ROOT, help="folder holding audio/<tid>/songs.json")
     parser.add_argument("--config", type=Path, default=DEFAULT_CONFIG)
+    parser.add_argument("--out-dir", type=Path, default=OUT_DIR, help="where train/val/test.jsonl and the reports go")
     args = parser.parse_args()
+    out_dir = args.out_dir
     try:
         config = load_config(args.config)
     except ValueError as e:
@@ -134,11 +136,11 @@ def main() -> None:
     if not rows:
         sys.exit(f"no audio/<tid>/songs.json under {args.root}")
     split_kept(rows, config)
-    OUT_DIR.mkdir(parents=True, exist_ok=True)
-    write_splits(args.root, rows, OUT_DIR)
-    write_report(rows, OUT_DIR)
+    out_dir.mkdir(parents=True, exist_ok=True)
+    write_splits(args.root, rows, out_dir)
+    write_report(rows, out_dir)
     stats = build_stats(rows, config)
-    with open(OUT_DIR / "build_stats.json", "w") as f:
+    with open(out_dir / "build_stats.json", "w") as f:
         json.dump(stats, f, indent=2)
         f.write("\n")
 
@@ -148,7 +150,7 @@ def main() -> None:
     print(f"kept: {stats['kept']} in {stats['groups']} groups")
     for name, split in stats["splits"].items():
         print(f"  {name}: {split['songs']} songs, {split['games']} games")
-    print(f"wrote {OUT_DIR.relative_to(REPO_ROOT)}/")
+    print(f"wrote {out_dir}/")
 
 
 if __name__ == "__main__":
