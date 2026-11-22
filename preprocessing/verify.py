@@ -19,7 +19,7 @@ BALANCE_TOLERANCE = 0.01
 SPEC_CONFIG = {
     "min_notes": 16,
     "shared_block_min_notes": 4,
-    "split_ratios": {"train": 0.8, "val": 0.1, "test": 0.1},
+    "split_ratios": {"train": 0.7, "val": 0.15, "test": 0.15},
     "force_train_group_frac": 0.01,
     "seed": 831,
 }
