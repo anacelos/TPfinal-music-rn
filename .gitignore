@@ -9,6 +9,8 @@ checkpoints/
 *.pt
 *.pth
 *.wav
+# os exemplos de entrega (samples/) entram no repositório com o áudio
+!samples/**/*.wav
 __pycache__/
 *.pyc
 .venv/
