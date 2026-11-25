@@ -247,8 +247,8 @@ Falta fazer:
 - [ ] Artigo: escrever resultados e discussão com as tabelas e figuras acima.
 - [ ] Slides da apresentação.
 - [x] `requirements.txt` na raiz do repositório.
-- [ ] README: link do dataset bruto (seção 3) e, de cada integrante, a contribuição e a declaração
-  de uso de IA (seções 4 e 5).
+- [x] README: como obter o dataset (pedido ao João) e amostra de 300 jogos em `data/amostra/`.
+- [ ] README: de cada integrante, a contribuição e a declaração de uso de IA (seções 4 e 5).
 - [x] Músicas de entrega: 5 do modelo e 5 do Markov em JSON e WAV ([samples/](../samples/README.md)).
 
 Opcional, se sobrar tempo (nada disso muda a conclusão):

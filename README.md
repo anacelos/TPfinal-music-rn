@@ -71,12 +71,22 @@ pip install -r requirements.txt
 
 ### Dataset
 
-Baixe o `dataset_pico8_v2.zip` (TODO: link do Drive do João) e descompacte numa pasta
-`dataset_pico8_v2/` na raiz do repositório, de modo que existam os arquivos
-`dataset_pico8_v2/dataset_pico8_v2/audio/<tid>/songs.json`:
+O `dataset_pico8_v2` (8.367 jogos, 24.077 músicas, 2,8 GB de `songs.json`) não é distribuído
+neste repositório. Para obter o `dataset_pico8_v2.zip` completo, escreva para o João
+(joao.c.silveira@ufv.br). Descompacte-o numa pasta `dataset_pico8_v2/` na raiz do repositório,
+de modo que existam os arquivos `dataset_pico8_v2/dataset_pico8_v2/audio/<tid>/songs.json`:
 
 ```bash
 unzip dataset_pico8_v2.zip -d dataset_pico8_v2
+```
+
+Sem o dataset completo, use a amostra de 300 jogos que vem no repositório
+([data/amostra/](data/amostra/README.md), 1,4 MB). Ela segue o mesmo layout, então todos os
+comandos abaixo rodam sem mudança; só os números (splits, métricas) saem diferentes dos do
+artigo:
+
+```bash
+unzip data/amostra/dataset_pico8_amostra.zip -d dataset_pico8_v2
 ```
 
 ### Dados
