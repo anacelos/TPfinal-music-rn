@@ -4,6 +4,12 @@ Sintetiza músicas em representação canônica JSONL para WAV usando src.synth.
 
 O mesmo script pode ser usado para saídas do baseline de Markov e do modelo neural,
 desde que sigam o formato canônico do projeto.
+
+O songs.json não guarda os filtros de SFX (noiz, buzz, detune, reverb, dampen).
+Para músicas reais, --sfx-filters src/sfx_filters.json anexa os filtros lidos dos
+carts (ver src/sfx_filters.py), e o áudio fica mais perto do PICO-8. Músicas geradas
+não têm filtros; não use a opção nelas, porque uma música que copia a estrutura de
+uma música de treino (o baseline de Markov) herdaria os filtros desse jogo.
 """
 
 import argparse
@@ -16,6 +22,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 if str(ROOT) not in sys.path:
     sys.path.insert(0, str(ROOT))
+from src.sfx_filters import attach, load_table
 from src.synth import synthesize_song_to_wav
 
 
@@ -40,7 +47,18 @@ def main() -> None:
         action="store_true",
         help="Recria WAVs que já existirem",
     )
+    parser.add_argument(
+        "--sfx-filters",
+        default=None,
+        help="Tabela de filtros de SFX (src/sfx_filters.json) para músicas reais; padrão: sem filtros",
+    )
     args = parser.parse_args()
+
+    filter_table = None
+    if args.sfx_filters:
+        filter_table = load_table(Path(args.sfx_filters))
+        if filter_table is None:
+            parser.error(f"tabela de filtros não encontrada: {args.sfx_filters}")
 
     input_path = Path(args.input)
     output_dir = Path(args.output_dir)
@@ -74,6 +92,8 @@ def main() -> None:
                 duration = wav_duration(wav_path)
                 reused += 1
             else:
+                if filter_table is not None:
+                    song = attach(song, filter_table)
                 duration = synthesize_song_to_wav(song, str(wav_path))
                 synthesized += 1
 

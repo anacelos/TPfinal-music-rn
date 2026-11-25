@@ -640,6 +640,9 @@ class Pico8Tokenizer:
                     pat_ticks = cur_ref_steps * int(cur_pat["ref_speed"])
                     expected_steps = max(1, int(round(float(pat_ticks) / sp)))
                     cur_pat["channels"][f"ch{cur_ch}"]["notes_unrolled"] = default_empty_steps(expected_steps)
+                    # The step list was rebuilt, so the step pointer is stale. Encoded songs always put
+                    # SPEED_ before the first STEP_, but sampled sequences may not.
+                    cur_step = None
             elif tok.startswith("STEP_") and cur_pat is not None and cur_ch is not None:
                 st = int(tok.split("_")[1])
                 notes_list = cur_pat["channels"][f"ch{cur_ch}"]["notes_unrolled"]
