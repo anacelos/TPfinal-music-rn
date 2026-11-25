@@ -146,7 +146,12 @@ _(a preencher)_
 
 ### Yuri Dantas
 
-_(a preencher)_
+- Desenvolvimento e calibração do baseline generativo baseado em cadeias de Markov de primeira ordem.
+- Implementação das métricas simbólicas PE, SC e GC e comparação das distribuições por Kolmogorov–Smirnov e Wasserstein-1.
+- Desenvolvimento do pareamento global entre músicas reais e geradas pelo algoritmo Húngaro, utilizando descritores de altura, ritmo e textura.
+- Planejamento da avaliação subjetiva, seleção e contextualização dos cenários, balanceamento das condições experimentais e elaboração das checagens de atenção.
+- Preparação do pacote de 240 cenários para integração com a aplicação web e desenvolvimento do pipeline de análise estatística.
+- Redação e revisão das seções de avaliação objetiva e subjetiva do artigo e elaboração dos respectivos slides.
 
 ---
 
@@ -196,6 +201,6 @@ usou escreve "Não usei IA".
 
 ### Yuri Dantas
 
-- **Ferramentas:** _(a preencher)_
-- **Para quê:** _(a preencher)_
-- **Conversas:** _(links)_
+- **Ferramentas:** OpenAI ChatGPT e OpenAI Codex.
+- **Para quê:** apoio ao planejamento metodológico, estudo das métricas musicais, definição do protocolo experimental, implementação e depuração de código, elaboração de testes automatizados, interpretação dos resultados, documentação, revisão científica e preparação do artigo e da apresentação. As implementações e decisões metodológicas foram supervisionadas, revisadas e validadas pelo integrante.
+- **Conversa:** [links dos registros de interação com as ferramentas de IA.](https://chatgpt.com/s/t_6b076c3e437481918dbccb26c0f424b5)
