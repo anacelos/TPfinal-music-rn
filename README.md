@@ -4,6 +4,8 @@ Repositório do Trabalho Prático Final de **IA Generativa para Música (DCC831 
 
 **Mapa do projeto, etapa por etapa, com o que falta fazer:** [docs/ETAPAS.md](docs/ETAPAS.md).
 
+**Notebooks passo a passo (dados, tokenização, treino, geração, avaliação):** [notebooks/](notebooks/README.md).
+
 **Resultados e glossário das métricas:** [docs/RESULTADOS.md](docs/RESULTADOS.md) (o que já foi rodado, o que cada métrica significa, tabelas e como reproduzir).
 
 ---

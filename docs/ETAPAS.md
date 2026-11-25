@@ -10,6 +10,7 @@ as músicas geradas com músicas reais.
 - Código: este repositório.
 - Checkpoints, músicas geradas e tabelas: [Drive](https://drive.google.com/drive/folders/1wirkz0ZRidwRh7db2YXRPaPeTJ1zr4cO) (o `README.md` de lá mapeia cada arquivo).
 - Significado de cada métrica, tabelas completas e comandos: [RESULTADOS.md](RESULTADOS.md).
+- Cada etapa explicada com os dados reais, figuras e áudio: [notebooks](../notebooks/README.md).
 
 ## O caminho, de ponta a ponta
 
