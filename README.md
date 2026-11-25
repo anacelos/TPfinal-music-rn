@@ -64,3 +64,77 @@ O módulo [`src/tokenizer.py`](src/tokenizer.py) implementa três esquemas rever
 python3 -s -m preprocessing.build_dataset
 python3 src/data.py --out-dir data/processed --test-roundtrip
 ```
+
+---
+
+## 4. Contribuição de cada integrante
+
+Cada integrante escreve a sua parte, na própria subseção.
+
+### Ana Clara Barcelos
+
+_(a preencher)_
+
+### Carlos Henrique Brito Malta Leão
+
+_(a preencher)_
+
+### Giovanni Martinelli
+
+_(a preencher)_
+
+### Igor Varejão
+
+_(a preencher)_
+
+### João
+
+_(a preencher)_
+
+### Yuri Dantas
+
+_(a preencher)_
+
+---
+
+## 5. Uso de IA
+
+O enunciado permite usar ferramentas de IA como apoio na implementação e na escrita, desde que o
+uso seja declarado aqui: o que foi usado, com qual objetivo e os links das conversas. Quem não
+usou escreve "Não usei IA".
+
+### Ana Clara Barcelos
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### Carlos Henrique Brito Malta Leão
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### Giovanni Martinelli
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### Igor Varejão
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### João
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### Yuri Dantas
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
