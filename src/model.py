@@ -22,8 +22,6 @@ Referências:
 """
 import torch.nn as nn
 
-# Definindo a classe
-# nn.Module: classe-base do modelo (usada em model.py).
 class ModelMusic(nn.Module):
 
     def __init__(self, vocab_size, embedding_dim, hidden_dim, num_layers,
@@ -51,18 +49,13 @@ class ModelMusic(nn.Module):
 
         super(ModelMusic, self).__init__()
 
-        # nn.Embedding: troca cada id por um vetor.
         self.embedding = nn.Embedding(vocab_size, embedding_dim,
                                       padding_idx=padding_idx)
 
-        # nn.LSTM: a rede recorrente. Leia com calma as seções Inputs e
-        # Outputs, porque elas explicam os shapes de output, h_n e c_n.
         self.lstm = nn.LSTM(input_size=embedding_dim, hidden_size=hidden_dim,
                             num_layers=num_layers, batch_first=True,
                             dropout=dropout)
 
-        # nn.Linear: transforma os hidden_dim núm. da LSTM em vocab_size
-        # logits, uma pontuação para cada token possível ser o próximo.
         self.fc = nn.Linear(hidden_dim, vocab_size)
 
     def forward(self, x, hidden=None):
