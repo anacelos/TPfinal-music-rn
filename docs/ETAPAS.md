@@ -43,7 +43,7 @@ flowchart LR
 | 8 | Síntese | `src/synth.py`, `evaluation/synthesize_jsonl.py` | ✅ feito, fechado |
 | 9 | Avaliação simbólica | `evaluation/evaluate_split.py`, `evaluation/distribution_compare.py` | ✅ feito |
 | 10 | Avaliação de áudio | `evaluation/audio_metrics.py` | ✅ feito |
-| 11 | Teste de escuta | à parte | ⏳ confirmar com o grupo |
+| 11 | Teste de escuta | [GiowGiow/pico8-listening-test](https://github.com/GiowGiow/pico8-listening-test) | 🟡 no ar, coletando respostas |
 | 12 | Artigo e slides | latex.dcc.ufmg.br | ⏳ confirmar com o grupo |
 
 ## Etapa por etapa
@@ -185,18 +185,65 @@ distância entre o conjunto gerado e o real (FAD).
 
 ### 11. Teste de escuta
 
-Pessoas ouvem músicas reais e geradas e tentam distinguir umas das outras. Formato e sistemas:
-a confirmar com o grupo.
+**O que é.** As métricas dizem se as músicas geradas se parecem com as reais nos números. O
+teste de escuta pergunta a pessoas se elas combinam com um jogo.
+
+- Teste: <https://pico8-bh.giow.dev>
+- Código do site e do servidor: <https://github.com/GiowGiow/pico8-listening-test>
+- Cenários, pareamento e checagens de atenção: branch `yuri/subjective-evaluation`.
+
+**Como funciona um cenário.**
+
+```mermaid
+flowchart LR
+    J["Jogo do teste<br/>imagem + descrição"] --> P{"Quanto esta música combina<br/>com esse contexto?"}
+    A["Quatro faixas de 30 s<br/>A, B, C e D"] --> P
+    P --> R["Uma nota de 1 a 5<br/>para cada faixa"]
+```
+
+- As quatro faixas são três condições musicais e uma checagem de atenção. A pessoa não sabe a
+  origem de nenhuma.
+- A escala vai de "Não combina nada" (1) a "Combina muito bem" (5).
+- Cada pessoa responde seis perguntas de perfil (faixa etária, experiência musical, frequência
+  com jogos, familiaridade com jogos retrô, região, uso de fones) e avalia 2 cenários.
+- São 240 cenários. Cada cenário é avaliado por uma pessoa só; se ela abandona, ele volta para
+  a fila depois de 45 minutos.
+
+**Decisões e porquê.**
+
+| Decisão | Porquê |
+|---|---|
+| Perguntar se a música combina com o jogo, e não se ela é real. | Mede se a música serve ao jogo, que é o uso dela. |
+| Dar uma nota a cada faixa, com todas as condições no mesmo cenário. | Todas as condições são julgadas pela mesma pessoa diante do mesmo jogo. |
+| Posição das condições (A a D) balanceada de antemão. | Nenhuma condição ganha por aparecer sempre primeiro. |
+| Uma faixa de checagem de atenção por cenário. | Permite descartar quem respondeu sem ouvir. |
+| O site não conhece a origem das faixas; a chave fica com quem analisa. | Nem o participante nem o servidor conseguem revelar qual faixa é qual. |
+
+**Análise.** O site exporta um CSV com as quatro notas de cada cenário e o perfil. A chave
+das origens e a análise ficam com o Yuri.
+
+**Limitações.**
+
+- A coleta começou em 25/11, o dia da entrega, então o número de respostas será pequeno.
+- O contexto mostrado é o do cartucho (imagem e descrição), não a cena exata em que a música
+  toca.
+
+**Desenho anterior.** Antes deste protocolo, o site ficou algumas horas no ar com pares
+(faixa original contra faixa gerada para o mesmo gênero, escolha forçada). Para ele treinamos
+uma LSTM `grid_block` com um token de gênero (job 23775, loss de validação 0,7901). Esse
+modelo não faz parte do estudo atual nem dos resultados das etapas 9 e 10; a versão de pares
+continua no histórico do repositório do site.
 
 ## O que falta
 
 Precisa de decisão do grupo:
 
 - [ ] **Escolher o sistema oficial** para o artigo. Sugestão: `lstm-grid_block-k10`.
-- [ ] **Teste de escuta:** entra no artigo? Se entrar, os clipes precisam vir do sistema oficial.
+- [ ] **Teste de escuta:** entra no artigo? Se entrar, dizer de qual sistema vêm as faixas neurais.
 
 Falta fazer:
 
+- [ ] Teste de escuta: divulgar o link, coletar respostas e fazer a análise.
 - [ ] Artigo: escrever resultados e discussão com as tabelas e figuras acima.
 - [ ] Slides da apresentação.
 - [x] `requirements.txt` na raiz do repositório.
