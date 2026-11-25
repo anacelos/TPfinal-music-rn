@@ -1,6 +1,6 @@
 # Mapa do projeto: etapas, decisões e o que falta
 
-Estado em 25/11/2026. Entrega: 25/11, 23:59. Apresentação: 01/12 (terça).
+Estado em 25/11/2026. Entrega: 25/11, 23:59. Apresentação: 26/11 (quinta).
 
 **A tarefa.** Ensinar uma rede neural a compor música de PICO-8 (chiptune de 4 canais) nota por
 nota, e mostrar que ela faz isso melhor que um baseline simples (cadeia de Markov), comparando
