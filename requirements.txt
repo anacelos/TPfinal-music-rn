@@ -1,0 +1,21 @@
+# Dependências do projeto (Python 3.10 ou mais novo; testado com 3.13)
+# Instalação: pip install -r requirements.txt
+
+# Modelo, treino, teste e geração (src/)
+# torch 2.6+ por causa de torch.accelerator em train.py e sample.py
+torch>=2.6
+numpy>=1.26
+
+# Figuras (preprocessing/analysis.py, src/plot_history.py, evaluation/, docs/figuras/)
+matplotlib>=3.9
+
+# Métricas de áudio: FAD, CLAP score e KLD (evaluation/audio_metrics.py)
+scipy>=1.13
+transformers>=4.45,<5
+
+# Testes (src/tests/, evaluation/tests/)
+pytest>=8
+
+# Notebooks (notebooks/)
+jupyterlab
+gdown
