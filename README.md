@@ -112,7 +112,19 @@ _(a preencher)_
 
 ### Giovanni Martinelli
 
-_(a preencher)_
+- Execução de todos os treinos, gerações e avaliações no cluster de GPUs do laboratório (jobs,
+  checkpoints e predições publicados no Drive do grupo).
+- Reescrita do sintetizador do PICO-8 a partir do zepto8 (`src/synth.py`), com os filtros de SFX
+  lidos dos cartuchos (`src/sfx_filters.py`), conferida com gravações do player oficial.
+- Métricas de áudio: FAD sobre embeddings do CLAP, CLAP score e KLD (`evaluation/audio_metrics.py`),
+  clipes de 10 s (`src/render.py`, `evaluation/audio_clips_eval.py`).
+- Bits por segundo por música inteira, comparável entre tokenizadores (`src/nll.py`,
+  `evaluation/bits_per_second.py`).
+- Correções no decodificador do tokenizador e no pipeline de dados; vocabulário gravado no
+  checkpoint do `train.py`.
+- Documentação: `docs/RESULTADOS.md`, `docs/ETAPAS.md` com as figuras, os notebooks de
+  `notebooks/` e os exemplos de `samples/` (`evaluation/export_samples.py`).
+- Site e servidor do teste de escuta ([GiowGiow/pico8-listening-test](https://github.com/GiowGiow/pico8-listening-test)).
 
 ### Igor Varejão
 
@@ -148,9 +160,17 @@ usou escreve "Não usei IA".
 
 ### Giovanni Martinelli
 
-- **Ferramentas:** _(a preencher)_
-- **Para quê:** _(a preencher)_
-- **Conversas:** _(links)_
+- **Ferramentas:** Claude Code (Anthropic), no terminal e no app de desktop.
+- **Para quê:** apoio de implementação, revisão e documentação: correções no tokenizador e no
+  pipeline de dados (PR #11); reescrita do sintetizador e tabela de filtros de SFX (PR #12);
+  métricas de áudio (PR #13); gravação do vocabulário no checkpoint do `train.py` (PR #14, mudança
+  pequena no código da Ana); documentação de resultados, mapa do projeto, figuras e notebooks
+  (PRs #17 a #21); bits/s por música, clipes de áudio e exemplos de `samples/` (PRs #23 e #25);
+  scripts para rodar os jobs no cluster (fora do repositório); site do teste de escuta. Não usei
+  IA na classe do modelo, no laço de treinamento nem na amostragem (`src/model.py`,
+  `src/train.py`, `src/sample.py`), exceto a mudança do PR #14.
+- **Conversas:** sessões do Claude Code no terminal, que não geram link público. As transcrições
+  ficam guardadas localmente e podem ser enviadas ao professor sob pedido.
 
 ### Igor Varejão
 
