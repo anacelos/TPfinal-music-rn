@@ -107,10 +107,10 @@ Referência: `real_test`. Média real: PE 2,27, SC 0,93, GC 0,88.
 | Sistema | OA médio | KS médio | PE (média / KS) | SC (média / KS) | GC (média / KS) |
 |---|---|---|---|---|---|
 | `lstm-grid_block-k10` | **0,89** | **0,22** | 2,23 / 0,06 | 0,95 / 0,15 | 0,75 / 0,45 |
-| `lstm-grid_block-t1` | 0,87 | 0,37 | 2,62 / 0,31 | 0,88 / 0,32 | 0,73 / 0,49 |
+| `lstm-grid_block-t1` | 0,86 | 0,37 | 2,62 / 0,31 | 0,88 / 0,32 | 0,73 / 0,49 |
 | `lstm-nlm-t1` | 0,83 | 0,35 | 2,37 / 0,12 | 0,91 / 0,34 | 0,66 / 0,60 |
 | `lstm-nlm-k10` | 0,81 | 0,38 | 1,81 / 0,30 | 0,97 / 0,26 | 0,68 / 0,57 |
-| `markov` | 0,79 | 0,54 | 3,27 / 0,75 | 0,76 / 0,69 | 0,89 / 0,16 |
+| `markov` | 0,79 | 0,53 | 3,27 / 0,75 | 0,76 / 0,69 | 0,89 / 0,16 |
 
 Tabela completa, com as métricas de diagnóstico: `docs/resultados/simbolico_distribution_compare.csv`.
 
