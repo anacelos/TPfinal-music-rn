@@ -173,10 +173,12 @@ A geração usou `--max-len 1828` e `--seed 42`, os padrões do `sample.py`.
 ## 5. Limitações
 
 - O top-k 10 não foi ajustado na validação.
-- Os números de áudio vieram de clipes cortados em 10 s por um script do cluster (as 200
-  primeiras músicas de cada sistema; 400 sorteadas do teste real). O `synthesize_jsonl.py`
-  sintetiza a música inteira, então refazer pelo caminho acima dá valores próximos, não idênticos.
-- O bits/s foi calculado só na validação, por um script do cluster.
+- As métricas de áudio usam clipes de 10 s (as 200 primeiras músicas de cada sistema; 400
+  sorteadas do teste real), feitos pelo `evaluation/audio_clips_eval.py`. O `synthesize_jsonl.py`
+  sintetiza a música inteira, então as métricas calculadas sobre os WAVs dele dão valores
+  próximos, não idênticos.
+- O bits/s foi calculado só na validação (`evaluation/bits_per_second.py`; `--split test`
+  calcula no teste).
 - Filtros de SFX (noiz, buzz, detune, reverb, dampen) não estão nos tokens. As músicas reais são
   sintetizadas com eles e as geradas sem. Tirar os filtros das reais reduz a distância das LSTMs
   ao piso do FAD em cerca de 13% e não muda a ordem dos sistemas.
