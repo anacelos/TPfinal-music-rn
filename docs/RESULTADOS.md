@@ -87,7 +87,7 @@ As músicas são sintetizadas (`src/synth.py`) e comparadas por modelos de áudi
 | Métricas de áudio (FAD, KLD, CLAP score) | feito | 22986 | `docs/resultados/`, Drive `resultados/audio/` |
 | Curvas de treino (`src/plot_history.py`) | feito | local | Drive `checkpoints/<modo>/history.json` |
 | Escolha do top-k pela validação | não feito | | |
-| Teste de escuta | à parte (branch `yuri/subjective-evaluation`) | | |
+| Teste de escuta | no ar, coletando respostas | 23775 (modelo condicionado por gênero) | [ETAPAS.md, etapa 11](ETAPAS.md#11-teste-de-escuta), <https://pico8-bh.giow.dev> |
 
 ## 3. Resultados
 
