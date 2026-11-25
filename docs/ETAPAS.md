@@ -183,77 +183,60 @@ distância entre o conjunto gerado e o real (FAD).
 ### 11. Teste de escuta
 
 **O que é.** As métricas dizem se as músicas geradas se parecem com as reais nos números. O
-teste de escuta pergunta a pessoas se elas servem para um jogo.
+teste de escuta pergunta a pessoas se elas combinam com um jogo.
 
 - Teste: <https://pico8-bh.giow.dev>
-- Código do site e do servidor: <https://github.com/GiowGiow/pico8-listening-test> (o README de
-  lá descreve o protocolo completo).
+- Código do site e do servidor: <https://github.com/GiowGiow/pico8-listening-test>
+- Cenários, pareamento e checagens de atenção: branch `yuri/subjective-evaluation`.
 
-**Como funciona um par.**
+**Como funciona um cenário.**
 
 ```mermaid
 flowchart LR
-    J["Jogo do teste<br/>capa do cartucho + gênero"] --> P{"Qual das duas músicas<br/>combina mais com este jogo?"}
-    O["Faixa original do jogo<br/>20 s"] --> P
-    G["Faixa gerada para o<br/>mesmo gênero, 20 s"] --> P
-    P --> R["Escolha: faixa 1 ou faixa 2"]
+    J["Jogo do teste<br/>imagem + descrição"] --> P{"Quanto esta música combina<br/>com esse contexto?"}
+    A["Quatro faixas de 30 s<br/>A, B, C e D"] --> P
+    P --> R["Uma nota de 1 a 5<br/>para cada faixa"]
 ```
 
-- A pessoa não sabe qual faixa é a original: os lados e a ordem são sorteados.
-- Cada pessoa avalia 9 pares: 2 de cada gênero (platformer, puzzle, arcade, shmup) e 1 par de
-  controle, em que a original enfrenta o Markov.
-- O catálogo tem 33 pares: 8 jogos por gênero mais o controle. O servidor entrega primeiro os
-  pares menos avaliados.
-- No fim há um questionário curto de perfil (idade, experiência musical, familiaridade com
-  chiptune).
+- As quatro faixas são três condições musicais e uma checagem de atenção. A pessoa não sabe a
+  origem de nenhuma.
+- A escala vai de "Não combina nada" (1) a "Combina muito bem" (5).
+- Cada pessoa responde seis perguntas de perfil (faixa etária, experiência musical, frequência
+  com jogos, familiaridade com jogos retrô, região, uso de fones) e avalia 2 cenários.
+- São 240 cenários. Cada cenário é avaliado por uma pessoa só; se ela abandona, ele volta para
+  a fila depois de 45 minutos.
 
 **Decisões e porquê.**
 
 | Decisão | Porquê |
 |---|---|
-| Perguntar "qual combina mais com o jogo", e não "qual é a real". | Mede se a música serve ao jogo, que é o uso dela. Adivinhar a origem mede só se há defeitos audíveis. |
-| Escolha forçada entre duas faixas. | É mais fácil e mais consistente do que dar notas. Se as geradas forem tão adequadas quanto as originais, a original vence em cerca de 50% das vezes. |
-| Gerar a música para o gênero do jogo. | Sem isso, a faixa gerada seria uma música qualquer, e a original venceria só por ser do gênero certo. |
-| As duas faixas sem filtros de SFX, com 20 s e o mesmo volume (-16 LUFS). | O modelo não gera filtros de SFX (ver etapa 8). Assim ninguém reconhece a original pelo timbre ou pelo volume. |
-| A faixa gerada é sorteada entre as do mesmo gênero. | Escolher a mais parecida com a original favoreceria o modelo. |
-| Um par de controle contra o Markov. | Se as pessoas não preferirem a original nem contra o Markov, o teste não está medindo nada. |
+| Perguntar se a música combina com o jogo, e não se ela é real. | Mede se a música serve ao jogo, que é o uso dela. |
+| Dar uma nota a cada faixa, com todas as condições no mesmo cenário. | Todas as condições são julgadas pela mesma pessoa diante do mesmo jogo. |
+| Posição das condições (A a D) balanceada de antemão. | Nenhuma condição ganha por aparecer sempre primeiro. |
+| Uma faixa de checagem de atenção por cenário. | Permite descartar quem respondeu sem ouvir. |
+| O site não conhece a origem das faixas; a chave fica com quem analisa. | Nem o participante nem o servidor conseguem revelar qual faixa é qual. |
 
-**O modelo das faixas geradas é outro.** Os checkpoints das etapas 5 e 6 não recebem nenhuma
-informação sobre o jogo. Para o teste treinamos uma LSTM `grid_block` com um token de gênero
-no início de cada janela (`<TAG_platformer>`, `<TAG_puzzle>`, ...):
-
-| | Modelo das etapas 5 e 6 | Modelo do teste de escuta |
-|---|---|---|
-| Tokenizador | `grid_block` | `grid_block` + token de gênero |
-| Loss de validação | 0,7723 | 0,7901 (melhor época: 12 de 16; outro código de treino, não comparar direto) |
-| Sorteio | temperatura 1 e top-k 10 | top-p 0,95 |
-| Músicas geradas | 1.854 por sistema | 100 por gênero |
-| Código | `src/train.py`, `src/sample.py` | treino e geração condicionados, fora da `main` (job 23775) |
-
-O gênero de um jogo é a primeira tag dele no BBS da Lexaloffle entre as 8 mais comuns do treino.
-
-**Como os pares foram escolhidos.** Músicas do conjunto de teste com pelo menos 20 s, uma por
-cartucho, em ordem sorteada (semente 831), com capa disponível e clipe audível.
-
-**Análise prevista.** Fração das respostas que escolheu a original (geral, por gênero e por
-par), com intervalo de confiança, comparada a 50%.
+**Análise.** O site exporta um CSV com as quatro notas de cada cenário e o perfil. A chave
+das origens e a análise ficam com o Yuri.
 
 **Limitações.**
 
-- O modelo conhece só o gênero, não o jogo.
-- Não há medida automática de que a música gerada segue o gênero pedido; o teste é a medida.
 - A coleta começou em 25/11, o dia da entrega, então o número de respostas será pequeno.
-- Os resultados das etapas 9 e 10 são dos modelos sem condicionamento, não deste.
-- A branch `yuri/subjective-evaluation` tem outro desenho (quatro faixas por cenário, nota de
-  1 a 5). O que está no ar é o de pares descrito aqui.
+- O contexto mostrado é o do cartucho (imagem e descrição), não a cena exata em que a música
+  toca.
+
+**Desenho anterior.** Antes deste protocolo, o site ficou algumas horas no ar com pares
+(faixa original contra faixa gerada para o mesmo gênero, escolha forçada). Para ele treinamos
+uma LSTM `grid_block` com um token de gênero (job 23775, loss de validação 0,7901). Esse
+modelo não faz parte do estudo atual nem dos resultados das etapas 9 e 10; a versão de pares
+continua no histórico do repositório do site.
 
 ## O que falta
 
 Precisa de decisão do grupo:
 
 - [ ] **Escolher o sistema oficial** para o artigo. Sugestão: `lstm-grid_block-k10`.
-- [ ] **Teste de escuta:** entra no artigo? Se entrar, o texto precisa dizer que as faixas vêm do
-  modelo condicionado por gênero (etapa 11), e não do sistema oficial.
+- [ ] **Teste de escuta:** entra no artigo? Se entrar, dizer de qual sistema vêm as faixas neurais.
 
 Falta fazer:
 
