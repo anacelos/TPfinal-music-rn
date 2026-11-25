@@ -32,8 +32,15 @@ Regras que valem para todos os dados:
 | Arquivo | O que é |
 |---|---|
 | `ratings.csv` | Uma linha por cenário avaliado. É o arquivo para a análise. |
-| `scenarios.db` | Cópia do banco SQLite do servidor. Tem também cadastros sem avaliação e reservas abandonadas. |
+| `participants.csv` | Uma linha por pessoa que entrou no app, com o questionário, inclusive quem não avaliou nada. |
+| `reservations.csv` | Uma linha por entrega de cenário a uma pessoa: concluída, em andamento ou perdida. |
+| `scenarios.csv` | Os 240 cenários, a posição na fila e quais já foram concluídos. |
 | `study_texts_and_questionnaire.json` | A pergunta, as cinco opções da escala e o rótulo de cada código do questionário. |
+
+Os identificadores de participante e de reserva nesses arquivos são códigos curtos de 12
+caracteres, derivados dos identificadores internos do app. O mesmo participante tem o mesmo
+código em todos os arquivos e em todos os snapshots, mas o código não serve para entrar no app
+no lugar dele.
 
 Um snapshot é uma foto do momento em que foi baixado. Enquanto a coleta estiver aberta, um
 snapshot mais novo contém todas as linhas do anterior e mais as novas.
@@ -44,7 +51,7 @@ Cada linha é um cenário avaliado por um participante (quatro notas).
 
 | Coluna | Significado |
 |---|---|
-| `participant_id` | Identificador anônimo do participante. Aparece em até 2 linhas. |
+| `participant_id` | Código anônimo do participante (12 caracteres). Aparece em até 2 linhas. |
 | `presented_order` | 1 ou 2: se foi o primeiro ou o segundo cenário daquela pessoa. |
 | `external_id` | Identificador do cenário no pacote. É a chave para cruzar com a tabela das origens. |
 | `collection_order_v2` | Posição do cenário na fila do pacote (0 a 239). |
@@ -103,18 +110,22 @@ Os horários estão em UTC; o horário de Brasília é UTC menos 3 horas.
 - Buracos em `collection_order_v2` são cenários reservados por alguém que não concluiu. Eles
   voltam para a fila depois de 45 minutos sem atividade.
 
-## 7. `scenarios.db` (para auditoria)
+## 7. Os outros três CSVs (para auditoria)
 
-Três tabelas:
-
-- `participant`: um registro por pessoa que entrou, com o questionário (vazio se ela não
-  respondeu) e os horários.
-- `scenario`: os 240 cenários, a posição na fila, quem está com cada um e quando foi concluído.
-- `reservation`: cada entrega de cenário a uma pessoa, com estado `active` (em andamento),
-  `completed` (avaliado, com as notas) ou `lost` (expirou e passou para outra pessoa).
+- `participants.csv`: `id` (o mesmo código de `participant_id`), `created_at`, `ui_locale`, as
+  seis respostas do questionário, `questionnaire_version`, `profile_completed_at` (vazio se a
+  pessoa não respondeu o questionário) e `finished_at` (preenchido quando ela concluiu os dois
+  cenários).
+- `scenarios.csv`: `external_id`, `position` (o `collection_order_v2`), `holder_id` (a reserva
+  que está com o cenário) e `completed_at`.
+- `reservations.csv`: `id`, `participant_id`, `scenario_id` (o `external_id`), `state`,
+  `reserved_at`, `expires_at`, `completed_at`, as quatro notas, `time_spent_ms` e os segundos
+  ouvidos. O estado é `active` (em andamento), `completed` (avaliado) ou `lost` (expirou e o
+  cenário passou para outra pessoa).
 
 O `ratings.csv` é exatamente a lista das reservas `completed`, com o questionário do participante
-ao lado.
+ao lado. No snapshot de 20:16 havia 83 cadastros, 160 reservas (139 concluídas, 11 em andamento
+e 10 perdidas).
 
 ## 8. Snapshot de 25/11/2026, 20:16 (horário de Brasília)
 
