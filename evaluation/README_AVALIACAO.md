@@ -167,6 +167,8 @@ evaluation/
 ├── evaluate_split.py
 ├── compare_results.py
 ├── plot_distributions.py
+├── bits_per_second.py         # NLL por música inteira, em bits por segundo
+├── audio_clips_eval.py        # clipes de 10 s + audio_metrics.py
 ├── requirements.txt
 ├── evaluate_manifest.py        # pipeline legado
 ├── pieces.example.json         # exemplo legado
@@ -246,6 +248,38 @@ python evaluation/plot_distributions.py \
 ```
 
 São gerados boxplots das quatro métricas primárias.
+
+## Bits por segundo
+
+Compara tokenizadores: a perda e a perplexidade são por token, e cada tokenizador gasta um
+número diferente de tokens por segundo de música. O script lê cada música do split inteira,
+soma a NLL de todos os tokens e divide pela duração da música (`src/nll.py`).
+
+```bash
+python evaluation/bits_per_second.py \
+  --checkpoint outputs/grid_block/best.pt \
+  --data-dir data/processed/grid_block \
+  --split val
+```
+
+Com os checkpoints dos jobs 21901 (nlm) e 21902 (grid_block), dá 85,59 e 27,88 bits/s na
+validação, os valores de `docs/RESULTADOS.md`.
+
+## Métricas de áudio em clipes de 10 s
+
+Sorteia 400 músicas do teste e 200 da validação (semente 831), pega as 200 primeiras de cada
+sistema, corta cada música em 10 s, sintetiza (`src/render.py`) e chama o `audio_metrics.py`.
+Pede `torch` além do `requirements.txt`.
+
+```bash
+python evaluation/audio_clips_eval.py \
+  --test data/splits/test.jsonl --val data/splits/val.jsonl \
+  --system lstm-grid_block=outputs/grid_block/samples/samples.jsonl \
+  --system markov=results/markov/samples.jsonl \
+  --out-dir results/audio
+```
+
+`--quick` roda com 24 e 12 músicas, só para testar o caminho. `--render-only` para nos WAVs.
 
 ## Resultados gerados
 
