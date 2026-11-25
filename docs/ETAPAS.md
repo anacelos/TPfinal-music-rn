@@ -1,4 +1,4 @@
-# Mapa do projeto: etapas, o que foi feito e o que falta
+# Mapa do projeto: etapas, decisões e o que falta
 
 Estado em 25/11/2026. Entrega: 25/11, 23:59. Apresentação: 26/11.
 
@@ -9,66 +9,180 @@ as músicas geradas com músicas reais.
 **Onde estão as coisas.**
 - Código: este repositório.
 - Checkpoints, músicas geradas e tabelas: [Drive](https://drive.google.com/drive/folders/1wirkz0ZRidwRh7db2YXRPaPeTJ1zr4cO) (o `README.md` de lá mapeia cada arquivo).
-- Números e significado de cada métrica: [RESULTADOS.md](RESULTADOS.md).
+- Significado de cada métrica, tabelas completas e comandos: [RESULTADOS.md](RESULTADOS.md).
 
 ## O caminho, de ponta a ponta
 
+```mermaid
+flowchart LR
+    A["1 Dataset<br/>24.077 músicas"] --> B["2 Filtros e split<br/>12.384 músicas<br/>70/15/15"]
+    B --> C["3 Tokenização<br/>nlm, grid_block"]
+    C --> D["4-5 LSTM<br/>treino e teste"]
+    D --> E["6 Geração<br/>1.854 músicas<br/>por sistema"]
+    B --> M["7 Baseline<br/>Markov"]
+    M --> F
+    E --> F["9 Métricas nas notas<br/>PE, SC, GC"]
+    E --> S["8 Síntese<br/>áudio"]
+    M --> S
+    S --> G["10 Métricas no som<br/>FAD, KLD"]
+    S --> H["11 Teste de escuta"]
+    B -. músicas reais do teste .-> F
+    B -. músicas reais do teste .-> S
 ```
-jogos de PICO-8 ─► filtros e split ─► tokens ─► treino da LSTM ─► músicas geradas ─┬─► métricas nas notas
-     (1)              (2)             (3)          (4, 5)             (6)          └─► síntese ─► métricas no som
-                                                                                        (8)          (9, 10)
-                          baseline de Markov (7) ─────────────────────────────────────► mesmas métricas
+
+| # | Etapa | Código | Estado |
+|---|---|---|---|
+| 1 | Dataset | Drive do João | ✅ feito |
+| 2 | Filtros e split | `preprocessing/` | ✅ feito, congelado |
+| 3 | Tokenização | `src/tokenizer.py`, `src/data.py` | ✅ feito |
+| 4 | Modelo | `src/model.py` | ✅ feito |
+| 5 | Treino e teste | `src/train.py`, `src/test_perplexity.py`, `src/plot_history.py` | ✅ feito (`nlm`, `grid_block`) |
+| 6 | Geração | `src/sample.py` | ✅ feito (4 conjuntos) |
+| 7 | Baseline de Markov | `evaluation/markov_baseline.py` | ✅ feito |
+| 8 | Síntese | `src/synth.py`, `evaluation/synthesize_jsonl.py` | ✅ feito, fechado |
+| 9 | Avaliação simbólica | `evaluation/evaluate_split.py`, `evaluation/distribution_compare.py` | ✅ feito |
+| 10 | Avaliação de áudio | `evaluation/audio_metrics.py` | ✅ feito |
+| 11 | Teste de escuta | à parte | ⏳ confirmar com o grupo |
+| 12 | Artigo e slides | latex.dcc.ufmg.br | ⏳ confirmar com o grupo |
+
+## Etapa por etapa
+
+### 1 e 2. Dataset, filtros e split
+
+**O que é.** O ponto de partida são 24.077 músicas extraídas de 8.367 jogos de PICO-8. Nem todas
+servem, e as que servem precisam ser separadas em treino, validação e teste.
+
+![Funil de filtros e tamanho dos splits](figuras/funil_e_split.png)
+
+**Decisões e porquês.**
+
+| Decisão | Por quê |
+|---|---|
+| Tirar músicas com menos de 16 notas | São curtas demais ou silenciosas. |
+| Tirar músicas com instrumentos customizados | O sintetizador e o vocabulário só cobrem os 8 instrumentos padrão. |
+| Tirar músicas com velocidades incompatíveis entre canais | Não cabem numa grade comum de tempo. |
+| Tirar duplicadas | A mesma música aparece copiada em vários jogos; sem isso o modelo veria o teste no treino. |
+| Dividir por grupos de jogos, não por música | Jogos que compartilham trechos vão juntos para o mesmo lado. Na divisão antiga, só por jogo, 34,6% das músicas de teste eram idênticas a músicas de treino. |
+| Split 70/15/15, congelado | Validação e teste com cerca de 1.850 músicas cada; a lista exata está em `data/splits/split_manifest.csv` e ninguém gera outro split. |
+
+### 3. Tokenização
+
+**O que é.** A rede só entende sequências de símbolos (tokens). Tokenizar é escolher como
+escrever uma música como sequência.
+
+**Opções.** O começo da mesma música, nos dois formatos que treinamos:
+
+```
+nlm         BOS LOOP_START PATTERN_START REF_SPEED_16 CH1_INST_7 CH1_VOL_7 CH1_NOTEON_21 WT_16 CH1_NOTEOFF ...
+grid_block  BOS LOOP_START PATTERN_START REF_SPEED_16 CH1_DEF_BLOCK_0 SPEED_16 STEP_0 PITCH_21 INST_7 VOL_7 STEP_3 PITCH_26 ...
 ```
 
-## Etapas
+| Tokenizador | Ideia | Tokens por música (média) |
+|---|---|---|
+| `nlm` | Lista de eventos: "canal 1 ligou a nota 21", "espere 16 ticks". | 711 |
+| `grid_unrolled` | A grade do tracker, passo a passo, repetindo tudo. | 1.529 |
+| `grid_block` | A mesma grade, mas cada bloco repetido é escrito uma vez e depois só referenciado. | 615 |
 
-| # | Etapa | Em uma frase | Código | Estado |
-|---|---|---|---|---|
-| 1 | Dataset | 24.077 músicas extraídas de 8.367 jogos de PICO-8 (`songs.json`). | Drive do João | feito |
-| 2 | Filtros e split | Tira músicas curtas, duplicadas ou fora do escopo (sobram 12.384) e divide em treino / validação / teste sem que um jogo vaze entre eles. | `preprocessing/` | feito, congelado |
-| 3 | Tokenização | Escreve cada música como uma sequência de tokens, de três formas: `nlm`, `grid_unrolled`, `grid_block`. | `src/tokenizer.py`, `src/data.py` | feito |
-| 4 | Modelo | LSTM de 2 camadas que, dada a sequência até aqui, prevê o próximo token. | `src/model.py` | feito |
-| 5 | Treino e teste | Treina no split de treino, guarda a época com menor loss de validação (`best.pt`) e mede a perplexidade no teste. | `src/train.py`, `src/test_perplexity.py`, `src/plot_history.py` | feito para `nlm` e `grid_block` |
-| 6 | Geração | Sorteia um token por vez a partir do modelo até ele encerrar a música; gera 1.854 músicas por sistema (o tamanho do teste). | `src/sample.py` | feito (4 conjuntos) |
-| 7 | Baseline | Cadeia de Markov de 1ª ordem por canal; a temperatura (1,6) foi escolhida na validação. | `evaluation/markov_baseline.py`, `evaluation/markov_selection.md` | feito |
-| 8 | Síntese | Transforma a música simbólica em áudio, imitando o som do PICO-8. | `src/synth.py`, `src/sfx_filters.py`, `evaluation/synthesize_jsonl.py` | feito, fechado |
-| 9 | Avaliação simbólica | Mede PE, SC e GC em cada música e compara a distribuição de cada sistema com a do teste real (OA, KS). | `evaluation/evaluate_split.py`, `evaluation/distribution_compare.py` | feito |
-| 10 | Avaliação de áudio | Compara o som gerado com o real usando modelos de áudio pré-treinados (FAD, KLD, CLAP score). | `evaluation/audio_metrics.py` | feito |
-| 11 | Teste de escuta | Pessoas ouvem músicas reais e geradas e tentam distinguir umas das outras. | branch `yuri/subjective-evaluation` | confirmar com o grupo |
-| 12 | Artigo e slides | Artigo no formato ISMIR e apresentação. | latex.dcc.ufmg.br | confirmar com o grupo |
+**Decisão.** Treinar `nlm` e `grid_block` e comparar. O `nlm` é o formato já usado na literatura
+(LakhNES); o `grid_block` aproveita que música de tracker repete muitos blocos. O
+`grid_unrolled` ficou de fora do treino final: é o `grid_block` sem o reaproveitamento, com
+sequências 2,5 vezes mais longas.
 
-## O que cada etapa produziu
+### 4 e 5. Modelo, treino e teste
 
-**2. Split 70/15/15.** 8.669 músicas de treino, 1.861 de validação, 1.854 de teste. A lista
-exata está em `data/splits/split_manifest.csv`; ninguém deve gerar outro split.
+**O que é.** Uma LSTM de 2 camadas que lê os tokens até aqui e dá a probabilidade de cada
+próximo token. Treinar é ajustar a rede para acertar o próximo token das músicas de treino.
 
-**3. Tokenizadores.** `nlm` descreve a música como eventos (nota ligou, tempo passou).
-`grid_block` descreve a grade do tracker e escreve cada bloco repetido uma vez só.
-`grid_unrolled` é a grade sem esse reaproveitamento (sequências 2,5 vezes mais longas).
+![Curvas de treino](figuras/treino.png)
 
-**5. Treino.** Dois modelos, com os hiperparâmetros padrão do `train.py`:
+**Decisões e porquês.**
 
-| Tokenizador | Melhor época | Val bits/s | Perplexidade no teste |
+| Decisão | Por quê |
+|---|---|
+| Guardar a época com menor loss de validação (`best.pt`) | Depois desse ponto a rede começa a decorar o treino: no `nlm`, a validação piora a partir da época 4. |
+| Medir no teste só no fim | O teste não participa de nenhuma escolha; escolhas usam a validação. |
+| Comparar tokenizadores por bits por segundo | Loss e perplexidade são por token, e cada tokenizador tem tokens diferentes. Bits/s mede o custo por segundo de música. |
+
+**Resultado.**
+
+| Tokenizador | Melhor época | Val bits/s (menor é melhor) | Perplexidade no teste |
 |---|---|---|---|
 | `nlm` | 4 de 10 | 85,6 | 7,85 |
 | `grid_block` | 8 de 10 | 27,9 | 2,15 |
 
-**6. Geração.** Para cada modelo, dois jeitos de sortear: temperatura 1 sem filtro (`t1`) e
-top-k 10 (`k10`, só os 10 tokens mais prováveis entram no sorteio). São os quatro arquivos de
-`predicoes-teste/` no Drive.
+### 6. Geração
 
-**9 e 10. Avaliação.** Quanto mais perto do real, melhor: OA alto, KS baixo, FAD baixo.
+**O que é.** Usar a rede para compor: sorteia um token, coloca na sequência, pergunta de novo,
+até a rede emitir o token de fim. Geramos 1.854 músicas por sistema, o tamanho do teste.
 
-| Sistema | OA | KS | FAD (piso real: 0,096) |
-|---|---|---|---|
-| `lstm-grid_block-k10` | 0,89 | 0,22 | 0,118 |
-| `lstm-grid_block-t1` | 0,87 | 0,37 | 0,125 |
-| `lstm-nlm-t1` | 0,83 | 0,35 | 0,171 |
-| `lstm-nlm-k10` | 0,81 | 0,38 | 0,145 |
-| `markov` | 0,79 | 0,54 | 0,323 |
+**Opções de sorteio.**
 
-Em resumo: a LSTM com `grid_block` é o melhor sistema, e todas as LSTMs ficam à frente do
-Markov. O ponto fraco das LSTMs é o ritmo (groove consistency).
+| Sufixo | Como sorteia | Efeito |
+|---|---|---|
+| `t1` | Direto das probabilidades da rede (temperatura 1). | Mais variado, às vezes escolhe tokens improváveis. |
+| `k10` | Só entre os 10 tokens mais prováveis (top-k 10). | Mais seguro; corta escolhas estranhas. |
+
+**Decisão.** Gerar os dois para cada modelo (4 conjuntos). O valor 10 não foi ajustado na
+validação.
+
+### 7. Baseline de Markov
+
+**O que é.** Um gerador simples para servir de régua: cada canal escolhe a próxima nota olhando
+só a nota anterior (cadeia de Markov de 1ª ordem), aprendida no treino.
+
+**Decisão.** A temperatura (1,6) foi escolhida na validação, pelo menor KS médio
+(`evaluation/markov_selection.md`).
+
+### 8. Síntese
+
+**O que é.** Transformar a música simbólica em áudio, imitando o chip de som do PICO-8.
+
+**Decisões e porquês.**
+
+| Decisão | Por quê |
+|---|---|
+| Reescrever o sintetizador seguindo o emulador aberto zepto8 | O anterior tocava as notas certas com o timbre errado. Comparado com gravações do PICO-8 real, a distância espectral caiu de 7,1 para 5,7 dB. |
+| Filtros de SFX (reverb, dampen etc.) só nas músicas reais | Eles não estão no `songs.json` nem nos tokens, então o modelo não os gera. As reais os recebem de `src/sfx_filters.json`. |
+
+### 9 e 10. Avaliação
+
+**O que é.** Uma música gerada não tem "gabarito". O que se mede é se o conjunto de músicas
+geradas se parece com o conjunto de músicas reais.
+
+![Uma música real, uma gerada pela LSTM e uma gerada pelo Markov](figuras/piano_rolls.png)
+
+**Nas notas (simbólica).** Três medidas por música: variedade de notas (pitch entropy), o quanto
+as notas cabem numa escala (scale consistency) e o quanto o ritmo se repete (groove
+consistency). Depois compara-se a distribuição de cada sistema com a do teste real:
+
+![Distribuições das três métricas](figuras/distribuicoes.png)
+
+A LSTM acompanha o real em variedade de notas e em escala; o Markov espalha as notas demais.
+No ritmo, a LSTM repete menos que as músicas reais.
+
+**No som (áudio).** As músicas são sintetizadas e um modelo de áudio pré-treinado (CLAP) mede a
+distância entre o conjunto gerado e o real (FAD).
+
+**Decisões e porquês.**
+
+| Decisão | Por quê |
+|---|---|
+| PE, SC e GC como métricas principais | São as métricas do curso. |
+| Resumir com OA e KS | Dizem, num número, o quanto duas distribuições coincidem. |
+| Medir também real contra real (piso do FAD) | Duas amostras de música real já diferem um pouco; o piso mostra quanto. |
+
+**Resultado.**
+
+![OA, KS e FAD por sistema](figuras/resultados.png)
+
+- A LSTM com `grid_block` é o melhor sistema nas três medidas.
+- Todas as LSTMs ficam à frente do Markov.
+- O ponto fraco das LSTMs é o ritmo (groove consistency).
+
+### 11. Teste de escuta
+
+Pessoas ouvem músicas reais e geradas e tentam distinguir umas das outras. Formato e sistemas:
+a confirmar com o grupo.
 
 ## O que falta
 
@@ -79,20 +193,26 @@ Precisa de decisão do grupo:
 
 Falta fazer:
 
-- [ ] Artigo: escrever resultados e discussão com as tabelas acima.
+- [ ] Artigo: escrever resultados e discussão com as tabelas e figuras acima.
 - [ ] Slides da apresentação.
 - [ ] `requirements.txt` na raiz do repositório.
 - [ ] README: instruções de reprodução de ponta a ponta e contribuição de cada integrante.
 
 Opcional, se sobrar tempo (nada disso muda a conclusão):
 
-- [ ] Escolher o top-k pela validação (o valor 10 não foi ajustado).
+- [ ] Escolher o top-k pela validação.
 - [ ] Treinar o `grid_unrolled` com o `train.py`, para a comparação ter os três tokenizadores.
 - [ ] Calcular bits/s no teste (hoje só existe na validação).
 
 ## Limitações já conhecidas
 
-- Os filtros de SFX do PICO-8 (reverb, dampen etc.) não estão nos tokens: as músicas reais são
-  sintetizadas com eles, as geradas sem. O efeito no FAD é pequeno e não muda a ordem dos sistemas.
 - As músicas geradas não têm par no teste: a comparação é sempre entre distribuições.
-- Detalhes e demais ressalvas: [RESULTADOS.md](RESULTADOS.md), seção 5.
+- As músicas reais são sintetizadas com filtros de SFX e as geradas sem. O efeito no FAD é
+  pequeno e não muda a ordem dos sistemas.
+- Demais ressalvas: [RESULTADOS.md](RESULTADOS.md), seção 5.
+
+## Como refazer as figuras
+
+```bash
+python docs/figuras/gerar_figuras.py --artefatos <pasta do Drive baixada> --splits data/splits
+```
