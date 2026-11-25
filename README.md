@@ -8,6 +8,8 @@ Repositório do Trabalho Prático Final de **IA Generativa para Música (DCC831 
 
 **Resultados e glossário das métricas:** [docs/RESULTADOS.md](docs/RESULTADOS.md) (o que já foi rodado, o que cada métrica significa, tabelas e como reproduzir).
 
+**Músicas geradas (5 do modelo e 5 do baseline, em JSON e WAV):** [samples/](samples/README.md).
+
 ---
 
 ## 1. Pré-processamento e Divisão sem Vazamento (`preprocessing/`)
@@ -59,11 +61,40 @@ O módulo [`src/tokenizer.py`](src/tokenizer.py) implementa três esquemas rever
 
 ## 3. Como Executar
 
+### Instalação
+
 ```bash
-# Gerar os splits e depois processar todos os modos (nlm, grid_unrolled, grid_block) e gerar WAVs de verificação round-trip
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Dataset
+
+Baixe o `dataset_pico8_v2.zip` (TODO: link do Drive do João) e descompacte numa pasta
+`dataset_pico8_v2/` na raiz do repositório, de modo que existam os arquivos
+`dataset_pico8_v2/dataset_pico8_v2/audio/<tid>/songs.json`:
+
+```bash
+unzip dataset_pico8_v2.zip -d dataset_pico8_v2
+```
+
+### Dados
+
+```bash
+# Gerar os splits e depois processar todos os modos (nlm, grid_unrolled, grid_block);
+# --test-roundtrip também gera WAVs de verificação round-trip
 python3 -s -m preprocessing.build_dataset
 python3 src/data.py --out-dir data/processed --test-roundtrip
 ```
+
+### Treino, geração e avaliação
+
+Os comandos de treino, teste, geração, métricas simbólicas, áudio e exemplos estão em
+[docs/RESULTADOS.md, seção 4](docs/RESULTADOS.md#4-como-reproduzir). Os checkpoints e as músicas
+geradas que deram os números do artigo estão no
+[Drive](https://drive.google.com/drive/folders/1wirkz0ZRidwRh7db2YXRPaPeTJ1zr4cO), para quem
+quiser pular o treino.
 
 ---
 

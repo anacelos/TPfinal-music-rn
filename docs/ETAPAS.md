@@ -1,6 +1,6 @@
 # Mapa do projeto: etapas, decisões e o que falta
 
-Estado em 25/11/2026. Entrega: 25/11, 23:59. Apresentação: 26/11.
+Estado em 25/11/2026. Entrega: 25/11, 23:59. Apresentação: 01/12 (terça).
 
 **A tarefa.** Ensinar uma rede neural a compor música de PICO-8 (chiptune de 4 canais) nota por
 nota, e mostrar que ela faz isso melhor que um baseline simples (cadeia de Markov), comparando
@@ -106,10 +106,13 @@ próximo token. Treinar é ajustar a rede para acertar o próximo token das mús
 
 **Resultado.**
 
-| Tokenizador | Melhor época | Val bits/s (menor é melhor) | Perplexidade no teste |
-|---|---|---|---|
-| `nlm` | 4 de 10 | 85,6 | 7,85 |
-| `grid_block` | 8 de 10 | 27,9 | 2,15 |
+| Tokenizador | Melhor época | Val bits/s | Teste bits/s (menor é melhor) | Perplexidade no teste |
+|---|---|---|---|---|
+| `nlm` | 4 de 10 | 85,6 | 84,5 | 7,69 |
+| `grid_block` | 8 de 10 | 27,9 | 27,7 | 2,12 |
+
+Bits/s e perplexidade calculados em cada música inteira (`evaluation/bits_per_second.py`), com
+cada token contado uma vez. As perplexidades por janela do `test_perplexity.py` são 7,85 e 2,15.
 
 ### 6. Geração
 
@@ -196,14 +199,16 @@ Falta fazer:
 
 - [ ] Artigo: escrever resultados e discussão com as tabelas e figuras acima.
 - [ ] Slides da apresentação.
-- [ ] `requirements.txt` na raiz do repositório.
-- [ ] README: instruções de reprodução de ponta a ponta e contribuição de cada integrante.
+- [x] `requirements.txt` na raiz do repositório.
+- [ ] README: link do dataset bruto (seção 3) e, de cada integrante, a contribuição e a declaração
+  de uso de IA (seções 4 e 5).
+- [x] Músicas de entrega: 5 do modelo e 5 do Markov em JSON e WAV ([samples/](../samples/README.md)).
 
 Opcional, se sobrar tempo (nada disso muda a conclusão):
 
 - [ ] Escolher o top-k pela validação.
 - [ ] Treinar o `grid_unrolled` com o `train.py`, para a comparação ter os três tokenizadores.
-- [ ] Calcular bits/s no teste (hoje só existe na validação).
+- [x] Calcular bits/s no teste (`evaluation/bits_per_second.py --split test`).
 
 ## Limitações já conhecidas
 
