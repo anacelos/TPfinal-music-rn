@@ -58,3 +58,30 @@ O módulo [`src/tokenizer.py`](src/tokenizer.py) implementa três esquemas rever
 python3 -s -m preprocessing.build_dataset
 python3 src/data.py --out-dir data/processed --test-roundtrip
 ```
+
+---
+
+## 4. Modelo (`src/model.py`)
+
+**Responsável:** Ana (branch `model`).
+
+O arquivo [`src/model.py`](src/model.py) define a classe `ModelMusic` (`nn.Module`), um modelo de linguagem autoregressivo sobre os tokens do `src/tokenizer.py`: recebe uma sequência de ids e devolve, para cada posição, os logits do próximo token no vocabulário (`V = 709` no modo `nlm`).
+
+Arquitetura:
+1. **`nn.Embedding(vocab_size, embedding_dim, padding_idx)`**: troca cada id por um vetor denso; o embedding do `PAD` (id 0) fica zerado e não é atualizado no treino.
+2. **`nn.LSTM(embedding_dim, hidden_dim, num_layers, batch_first=True, dropout)`**: rede recorrente que carrega o contexto musical no estado oculto `(h_n, c_n)`.
+3. **`nn.Linear(hidden_dim, vocab_size)`**: projeta a saída da LSTM em uma pontuação por token.
+
+O `forward(x, hidden=None)` recebe `x` com shape `(batch, seq_len)` e devolve `(logits, hidden)`, com `logits` de shape `(batch, seq_len, vocab_size)`. Devolver o `hidden` permite gerar token a token na amostragem, sem reprocessar a sequência inteira. A estrutura segue o tutorial oficial do PyTorch ([Build the Neural Network](https://docs.pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html)).
+
+---
+
+## 5. Declaração de Uso de IA
+
+**Parte do Modelo (`src/model.py`):** Claude Code (modelo Claude Opus 5.5, Anthropic), usado como tutor. A IA **não escreveu o código** do modelo: explicou conceitos (Embedding, LSTM, `padding_idx`, shapes de `output`, `h_n` e `c_n`), mostrou exemplos numéricos para rodar no terminal, revisou o código que eu escrevi e apontou erros.
+
+| Data | Uso | Conversa |
+|---|---|---|
+| 27/10/2026 | Ler o enunciado e montar o cronograma de estudo e execução até a entrega; revisar um exercício de MLP em NumPy (XOR), só apontando erros | `ChatsClaude/2026-10-27_planejamento_TPFinal.md` (arquivo local, resumido) |
+| 16–22/11/2026 | Tutoria do `src/model.py`: explicação dos módulos do PyTorch e dos shapes, exemplos numéricos e revisão do código | Sessões do Claude Code (Code tab) |
+| 25/11/2026 | Redigir as seções 4 e 5 deste README a partir do meu código, e conferir os comandos git para subir a branch `model` | Sessão do Claude Code (Code tab) |
