@@ -175,9 +175,11 @@ usou escreve "Não usei IA".
 
 ### Carlos Henrique Brito Malta Leão
 
-- **Ferramentas:** _(a preencher)_
-- **Para quê:** _(a preencher)_
-- **Conversas:** _(links)_
+- **Ferramentas:** Claude Code (Anthropic), no terminal.
+- **Para quê:** entender a estrutura dos dados de música dos cartuchos do PICO-8; revisão do pré-processamento, e das análises do corpus; conferir os números do artigo com o código; pesquisar referências e montar o `.bib`; revisar o português das seções "Dataset e pré-processamento" e "Trabalhos
+  relacionados".
+- **Conversas:** sessões do Claude Code no terminal, que não geram link público. As transcrições
+  ficam guardadas localmente e podem ser enviadas ao professor sob pedido.
 
 ### Giovanni Martinelli
 
