@@ -32,3 +32,26 @@ def test_kl_divergence_of_identical_distributions_is_zero():
     p = np.array([0.2, 0.5, 0.3])
     assert kl_divergence(p, p * 4) == pytest.approx(0.0, abs=1e-9)  # inputs are normalized first
     assert kl_divergence(p, np.array([0.6, 0.2, 0.2])) > 0
+
+
+def test_fad_bootstrap_with_size_zero_is_the_whole_set_distance():
+    from audio_metrics import fad_bootstrap
+
+    rng = np.random.default_rng(2)
+    ref, emb = rng.normal(size=(600, 6)), rng.normal(loc=0.5, size=(400, 6))
+    r = fad_bootstrap(ref, emb, 0, 20, np.random.default_rng(0))
+    assert r["fad"] == pytest.approx(frechet_distance(ref, emb))
+    assert r["fad_std"] is None
+
+
+def test_wav_files_follow_the_render_index_when_present(tmp_path):
+    import json
+
+    from audio_metrics import wav_files
+
+    for name in ("0", "1", "10", "2"):
+        (tmp_path / f"{name}.wav").write_bytes(b"")
+    assert [p.name for p in wav_files(tmp_path)] == ["0.wav", "1.wav", "10.wav", "2.wav"]  # by name, no index
+    rows = [{"wav": "0.wav"}, {"wav": "1.wav"}, {"wav": "2.wav"}, {"wav": None, "empty": True}, {"wav": "10.wav"}]
+    (tmp_path / "render_index.json").write_text(json.dumps(rows))
+    assert [p.name for p in wav_files(tmp_path)] == ["0.wav", "1.wav", "2.wav", "10.wav"]  # render order

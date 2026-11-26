@@ -25,6 +25,9 @@ Uso, a partir da raiz do repositório (pede evaluation/requirements.txt e torch)
 Saídas em --out-dir: audio_metrics.csv, audio_metrics.json, embeddings.npz e
 render/<conjunto>.json (um registro por clipe). Os WAVs ficam em --wav-dir
 (padrão: <out-dir>/wav). --quick usa 24 e 12 músicas, só para testar o caminho.
+--full usa todas as músicas do teste, da validação e de cada samples.jsonl (1.854 de cada):
+o FAD passa a ser a distância entre o teste real inteiro e o conjunto gerado inteiro, sem
+bootstrap.
 """
 
 import argparse
@@ -54,11 +57,18 @@ def main(argv=None):
     ap.add_argument("--out-dir", type=Path, default=Path("results/audio"))
     ap.add_argument("--wav-dir", type=Path, default=None)
     ap.add_argument("--quick", action="store_true")
+    ap.add_argument("--full", action="store_true", help="todas as músicas de todos os conjuntos, FAD sem bootstrap")
+    ap.add_argument("--boot-size", type=int, default=None,
+                    help="clipes por reamostra do FAD (padrão min(100, n); 0 = conjuntos inteiros, como --full)")
     ap.add_argument("--no-sfx-filters", action="store_true", help="sintetiza as músicas reais sem os filtros de SFX")
     ap.add_argument("--render-only", action="store_true", help="só renderiza os clipes, sem calcular as métricas")
     args = ap.parse_args(argv)
     if args.quick:
         args.n_real, args.n = 24, 12
+    if args.full:
+        args.n_real = args.n = None
+    if args.boot_size is None:
+        args.boot_size = 0 if args.full else min(100, args.n)
     out = args.out_dir
     wav = args.wav_dir or out / "wav"
     rng = random.Random(SEED)
@@ -66,7 +76,7 @@ def main(argv=None):
     sets = {}
     for name, path, n in (("real_test", args.test, args.n_real), ("real_val", args.val, args.n)):
         songs = render.read_jsonl(path)
-        sets[name] = rng.sample(songs, min(n, len(songs)))  # os arquivos de split vêm ordenados por jogo
+        sets[name] = rng.sample(songs, min(n or len(songs), len(songs)))  # os arquivos de split vêm ordenados por jogo
     for s in args.system:
         name, path = s.split("=", 1)
         sets[name] = render.read_jsonl(path)[: args.n]
@@ -82,7 +92,7 @@ def main(argv=None):
         return
 
     audio_metrics.main(["--reference", f"real_test={wav / 'real_test'}", "--out-dir", str(out),
-                        "--boot-size", str(min(100, args.n)), "--boot-rounds", "5" if args.quick else "20"]
+                        "--boot-size", str(args.boot_size), "--boot-rounds", "5" if args.quick else "20"]
                        + [a for name in sets if name != "real_test" for a in ("--set", f"{name}={wav / name}")])
 
 
