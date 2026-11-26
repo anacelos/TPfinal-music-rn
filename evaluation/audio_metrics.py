@@ -13,9 +13,12 @@ dominate the loading time; the clips do not need to have the same length.
         Embeddings come from CLAP (laion/clap-htsat-unfused). The music-only checkpoint
         laion/larger_clap_music was tried first, but its transformers port returns
         collapsed embeddings (cosine 0.99 between any two clips, uniform zero-shot
-        scores, on CPU and GPU, transformers 4.57 and 5.23). FAD grows when the set is small, so every set is
-        scored with bootstrap resamples of the same size (mean and std reported), and a
-        second real set (val) gives the floor: what two sets of real songs score.
+        scores, on CPU and GPU, transformers 4.57 and 5.23). With --boot-size 0 the two
+        Gaussians are fit to the whole sets (the whole real test against the whole
+        generated set) and the FAD is a single number. FAD grows when the set is small,
+        so with --boot-size N > 0 every set is instead scored with bootstrap resamples of
+        N clips (mean and std reported). A second real set (val) gives the floor: what
+        two sets of real songs score.
   CLAP  cosine similarity between each clip and a text prompt in CLAP's joint space
         ("8-bit chiptune video game music"); higher = sounds more like the prompt. Two
         tempo prompts give an audio-side check of the tempo conditioning.
@@ -137,6 +140,10 @@ def frechet_distance(a: np.ndarray, b: np.ndarray) -> float:
 
 
 def fad_bootstrap(ref: np.ndarray, emb: np.ndarray, size: int, rounds: int, rng) -> Dict[str, float]:
+    """FAD of `emb` against `ref`. size 0: the whole sets, one number; size N: mean/std over
+    `rounds` resamples of N clips of `emb`."""
+    if size <= 0:
+        return {"fad": frechet_distance(ref, emb), "fad_std": None}
     vals = [frechet_distance(ref, emb[rng.integers(0, len(emb), size)]) for _ in range(rounds)]
     return {"fad": float(np.mean(vals)), "fad_std": float(np.std(vals))}
 
@@ -147,7 +154,15 @@ def kl_divergence(p: np.ndarray, q: np.ndarray, eps=1e-8) -> float:
 
 
 def wav_files(folder) -> List[Path]:
-    return sorted(Path(folder).glob("*.wav"))
+    """Clips of a set, in render order when src/render.py left its index, else by file name."""
+    folder = Path(folder)
+    index = folder / "render_index.json"
+    if index.exists():
+        rows = json.loads(index.read_text())
+        paths = [folder / r["wav"] for r in rows if r.get("wav")]
+        if paths and all(p.exists() for p in paths):
+            return paths
+    return sorted(folder.glob("*.wav"))
 
 
 def evaluate(sets: Dict[str, Path], reference: str, out_dir: Path, device="cpu", boot_size=100, boot_rounds=20,
@@ -203,7 +218,8 @@ def main(argv=None):
     p.add_argument("--set", action="append", default=[], help="name=folder, repeatable")
     p.add_argument("--out-dir", required=True)
     p.add_argument("--device", default="auto")
-    p.add_argument("--boot-size", type=int, default=100, help="clips per bootstrap resample (same for every set)")
+    p.add_argument("--boot-size", type=int, default=100,
+                   help="clips per bootstrap resample (same for every set); 0 = FAD of the whole sets, no resampling")
     p.add_argument("--boot-rounds", type=int, default=20)
     p.add_argument("--limit", type=int, default=None, help="use only the first N clips of each set")
     args = p.parse_args(argv)
