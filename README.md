@@ -8,6 +8,8 @@ Repositório do Trabalho Prático Final de **IA Generativa para Música (DCC831 
 
 **Resultados e glossário das métricas:** [docs/RESULTADOS.md](docs/RESULTADOS.md) (o que já foi rodado, o que cada métrica significa, tabelas e como reproduzir).
 
+**Músicas geradas (5 do modelo e 5 do baseline, em JSON e WAV):** [samples/](samples/README.md).
+
 ---
 
 ## 1. Pré-processamento e Divisão sem Vazamento (`preprocessing/`)
@@ -59,8 +61,146 @@ O módulo [`src/tokenizer.py`](src/tokenizer.py) implementa três esquemas rever
 
 ## 3. Como Executar
 
+### Instalação
+
 ```bash
-# Gerar os splits e depois processar todos os modos (nlm, grid_unrolled, grid_block) e gerar WAVs de verificação round-trip
+python3 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+
+### Dataset
+
+O `dataset_pico8_v2` (8.367 jogos, 24.077 músicas, 2,8 GB de `songs.json`) não é distribuído
+neste repositório. Para obter o `dataset_pico8_v2.zip` completo, escreva para o João
+(joao.c.silveira@ufv.br). Descompacte-o numa pasta `dataset_pico8_v2/` na raiz do repositório,
+de modo que existam os arquivos `dataset_pico8_v2/dataset_pico8_v2/audio/<tid>/songs.json`:
+
+```bash
+unzip dataset_pico8_v2.zip -d dataset_pico8_v2
+```
+
+Sem o dataset completo, use a amostra de 300 jogos que vem no repositório
+([data/amostra/](data/amostra/README.md), 1,4 MB). Ela segue o mesmo layout, então todos os
+comandos abaixo rodam sem mudança; só os números (splits, métricas) saem diferentes dos do
+artigo:
+
+```bash
+unzip data/amostra/dataset_pico8_amostra.zip -d dataset_pico8_v2
+```
+
+### Dados
+
+```bash
+# Gerar os splits e depois processar todos os modos (nlm, grid_unrolled, grid_block);
+# --test-roundtrip também gera WAVs de verificação round-trip
 python3 -s -m preprocessing.build_dataset
 python3 src/data.py --out-dir data/processed --test-roundtrip
 ```
+
+### Treino, geração e avaliação
+
+Os comandos de treino, teste, geração, métricas simbólicas, áudio e exemplos estão em
+[docs/RESULTADOS.md, seção 4](docs/RESULTADOS.md#4-como-reproduzir). Os checkpoints e as músicas
+geradas que deram os números do artigo estão no
+[Drive](https://drive.google.com/drive/folders/1wirkz0ZRidwRh7db2YXRPaPeTJ1zr4cO), para quem
+quiser pular o treino.
+
+---
+
+## 4. Contribuição de cada integrante
+
+Cada integrante escreve a sua parte, na própria subseção.
+
+### Ana Clara Barcelos
+
+_(a preencher)_
+
+### Carlos Henrique Brito Malta Leão
+
+_(a preencher)_
+
+### Giovanni Martinelli
+
+- Execução de todos os treinos, gerações e avaliações no cluster de GPUs do laboratório (jobs,
+  checkpoints e predições publicados no Drive do grupo).
+- Reescrita do sintetizador do PICO-8 a partir do zepto8 (`src/synth.py`), com os filtros de SFX
+  lidos dos cartuchos (`src/sfx_filters.py`), conferida com gravações do player oficial.
+- Métricas de áudio: FAD sobre embeddings do CLAP, CLAP score e KLD (`evaluation/audio_metrics.py`),
+  clipes de 10 s (`src/render.py`, `evaluation/audio_clips_eval.py`).
+- Bits por segundo por música inteira, comparável entre tokenizadores (`src/nll.py`,
+  `evaluation/bits_per_second.py`).
+- Correções no decodificador do tokenizador e no pipeline de dados; vocabulário gravado no
+  checkpoint do `train.py`.
+- Documentação: `docs/RESULTADOS.md`, `docs/ETAPAS.md` com as figuras, os notebooks de
+  `notebooks/` e os exemplos de `samples/` (`evaluation/export_samples.py`).
+- Site e servidor do teste de escuta ([GiowGiow/pico8-listening-test](https://github.com/GiowGiow/pico8-listening-test)).
+
+### Igor Varejão
+
+_(a preencher)_
+
+### João
+
+_(a preencher)_
+
+### Yuri Dantas
+
+- Desenvolvimento e calibração do baseline generativo baseado em cadeias de Markov de primeira ordem.
+- Implementação das métricas simbólicas PE, SC e GC e comparação das distribuições por Kolmogorov–Smirnov e Wasserstein-1.
+- Desenvolvimento do pareamento global entre músicas reais e geradas pelo algoritmo Húngaro, utilizando descritores de altura, ritmo e textura.
+- Planejamento da avaliação subjetiva, seleção e contextualização dos cenários, balanceamento das condições experimentais e elaboração das checagens de atenção.
+- Preparação do pacote de 240 cenários para integração com a aplicação web e desenvolvimento do pipeline de análise estatística.
+- Redação e revisão das seções de avaliação objetiva e subjetiva do artigo e elaboração dos respectivos slides.
+
+---
+
+## 5. Uso de IA
+
+O enunciado permite usar ferramentas de IA como apoio na implementação e na escrita, desde que o
+uso seja declarado aqui: o que foi usado, com qual objetivo e os links das conversas. Quem não
+usou escreve "Não usei IA".
+
+### Ana Clara Barcelos
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### Carlos Henrique Brito Malta Leão
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### Giovanni Martinelli
+
+- **Ferramentas:** Claude Code (Anthropic), no terminal e no app de desktop.
+- **Para quê:** apoio de implementação, revisão e documentação: correções no tokenizador e no
+  pipeline de dados (PR #11); reescrita do sintetizador e tabela de filtros de SFX (PR #12);
+  métricas de áudio (PR #13); gravação do vocabulário no checkpoint do `train.py` (PR #14, mudança
+  pequena no código da Ana); documentação de resultados, mapa do projeto, figuras e notebooks
+  (PRs #17 a #21); bits/s por música, clipes de áudio e exemplos de `samples/` (PRs #23 e #25);
+  scripts para rodar os jobs no cluster (fora do repositório); site do teste de escuta. Não usei
+  IA na classe do modelo, no laço de treinamento nem na amostragem (`src/model.py`,
+  `src/train.py`, `src/sample.py`), exceto a mudança do PR #14.
+- **Conversas:** sessões do Claude Code no terminal, que não geram link público. As transcrições
+  ficam guardadas localmente e podem ser enviadas ao professor sob pedido.
+
+### Igor Varejão
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### João
+
+- **Ferramentas:** _(a preencher)_
+- **Para quê:** _(a preencher)_
+- **Conversas:** _(links)_
+
+### Yuri Dantas
+
+- **Ferramentas:** OpenAI ChatGPT e OpenAI Codex.
+- **Para quê:** apoio ao planejamento metodológico, estudo das métricas musicais, definição do protocolo experimental, implementação e depuração de código, elaboração de testes automatizados, interpretação dos resultados, documentação, revisão científica e preparação do artigo e da apresentação. As implementações e decisões metodológicas foram supervisionadas, revisadas e validadas pelo integrante.
+- **Conversa:** [links dos registros de interação com as ferramentas de IA.](https://chatgpt.com/s/t_6b076c3e437481918dbccb26c0f424b5)

@@ -87,16 +87,30 @@ As músicas são sintetizadas (`src/synth.py`) e comparadas por modelos de áudi
 | Métricas de áudio (FAD, KLD, CLAP score) | feito | 22986 | `docs/resultados/`, Drive `resultados/audio/` |
 | Curvas de treino (`src/plot_history.py`) | feito | local | Drive `checkpoints/<modo>/history.json` |
 | Escolha do top-k pela validação | não feito | | |
-| Teste de escuta | à parte (branch `yuri/subjective-evaluation`) | | |
+| Teste de escuta | no ar, coletando respostas | | [ETAPAS.md, etapa 11](ETAPAS.md#11-teste-de-escuta), <https://pico8-bh.giow.dev> |
 
 ## 3. Resultados
 
 ### Modelo
 
-| Tokenizador | Melhor época | Val loss | Val bits/s | Test loss | Test perplexidade |
+Por música inteira (`evaluation/bits_per_second.py`: cada música é lida inteira, levando o estado
+da LSTM de um trecho para o outro, e cada token conta uma vez):
+
+| Tokenizador | Melhor época | Val bits/s | Test bits/s | Test loss | Test perplexidade |
 |---|---|---|---|---|---|
-| nlm | 4 de 10 | 2,0429 | 85,6 | 2,0607 | 7,85 |
-| grid_block | 8 de 10 | 0,7723 | 27,9 | 0,7668 | 2,15 |
+| nlm | 4 de 10 | 85,6 | 84,5 | 2,0393 | 7,69 |
+| grid_block | 8 de 10 | 27,9 | 27,7 | 0,7509 | 2,12 |
+
+Por janela de 512 tokens (`src/test_perplexity.py`, a mesma conta da loss de treino):
+
+| Tokenizador | Val loss | Test loss | Test perplexidade |
+|---|---|---|---|
+| nlm | 2,0429 | 2,0607 | 7,85 |
+| grid_block | 0,7723 | 0,7668 | 2,15 |
+
+As duas contas diferem porque a janela recomeça a LSTM a cada 512 tokens e conta duas vezes os
+tokens da última janela das músicas longas. Para comparar os tokenizadores, a primeira tabela é a
+que vale (bits/s), sem esses efeitos.
 
 O nlm passa a piorar na validação depois da época 4 (overfitting); o `best.pt` é o da época 4.
 
@@ -153,18 +167,27 @@ python test_perplexity.py --checkpoint outputs/grid_block/best.pt --data-dir ../
 python sample.py --checkpoint outputs/grid_block/best.pt --mode grid_block --n-samples 1854 \
     --top-k 10 --out ../results/lstm-grid_block-k10.jsonl
 
+# bits/s por música inteira, na validação e no teste (da raiz)
+python evaluation/bits_per_second.py --checkpoint src/outputs/grid_block/best.pt \
+    --data-dir data/processed/grid_block --split test
+
+# baseline de Markov (da raiz; cerca de 15 min, reproduz o markov.jsonl.gz do Drive música a música)
+python evaluation/markov_baseline.py --output results/markov.jsonl --num-songs 1854 --temperature 1.6 --seed 42
+
 # métricas simbólicas (da raiz)
 python evaluation/evaluate_split.py --input data/splits/test.jsonl --output results/real_test.csv
 python evaluation/evaluate_split.py --input results/lstm-grid_block-k10.jsonl --output results/lstm-grid_block-k10.csv
 python evaluation/distribution_compare.py --real results/real_test.csv \
     --system lstm-grid_block-k10=results/lstm-grid_block-k10.csv --out-dir results/compare
 
-# áudio
-python evaluation/synthesize_jsonl.py --input data/splits/test.jsonl --output-dir wav/real_test \
-    --sfx-filters src/sfx_filters.json
-python evaluation/synthesize_jsonl.py --input results/lstm-grid_block-k10.jsonl --output-dir wav/lstm-grid_block-k10
-python evaluation/audio_metrics.py --reference real_test=wav/real_test \
-    --set lstm-grid_block-k10=wav/lstm-grid_block-k10 --out-dir results/audio
+# áudio: clipes de 10 s (400 do teste real, 200 da validação, 200 de cada sistema) e métricas
+python evaluation/audio_clips_eval.py --test data/splits/test.jsonl --val data/splits/val.jsonl \
+    --system lstm-grid_block-k10=results/lstm-grid_block-k10.jsonl \
+    --system markov=results/markov.jsonl --out-dir results/audio
+
+# músicas de entrega (samples/): JSON e WAV
+python evaluation/export_samples.py --system lstm-grid_block-k10=results/lstm-grid_block-k10.jsonl \
+    --system markov=results/markov.jsonl --n 5 --out-dir samples
 ```
 
 Para o nlm, troque `grid_block` por `nlm`. Para a amostragem sem filtro, tire `--top-k 10`.
@@ -173,13 +196,14 @@ A geração usou `--max-len 1828` e `--seed 42`, os padrões do `sample.py`.
 ## 5. Limitações
 
 - O top-k 10 não foi ajustado na validação.
-- Os números de áudio vieram de clipes cortados em 10 s por um script do cluster (as 200
-  primeiras músicas de cada sistema; 400 sorteadas do teste real). O `synthesize_jsonl.py`
-  sintetiza a música inteira, então refazer pelo caminho acima dá valores próximos, não idênticos.
-- O bits/s foi calculado só na validação, por um script do cluster.
+- As métricas de áudio usam clipes de 10 s (as 200 primeiras músicas de cada sistema; 400
+  sorteadas do teste real), feitos pelo `evaluation/audio_clips_eval.py`. O `synthesize_jsonl.py`
+  sintetiza a música inteira, então as métricas calculadas sobre os WAVs dele dão valores
+  próximos, não idênticos.
 - Filtros de SFX (noiz, buzz, detune, reverb, dampen) não estão nos tokens. As músicas reais são
   sintetizadas com eles e as geradas sem. Tirar os filtros das reais reduz a distância das LSTMs
   ao piso do FAD em cerca de 13% e não muda a ordem dos sistemas.
 - A groove consistency fica indefinida em parte das músicas (673 das 1.854 reais; de 245 a 426
   das geradas pelas LSTMs; 630 do Markov) e é calculada só nas demais.
-- O `test_perplexity.py` conta duas vezes os tokens da última janela de cada música longa.
+- O `test_perplexity.py` conta duas vezes os tokens da última janela de cada música longa; o
+  `evaluation/bits_per_second.py` não tem esse problema (seção 3).

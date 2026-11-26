@@ -4,11 +4,14 @@ data/*
 data/splits/*
 !data/splits/split_manifest.csv
 !data/splits/split_hashes.sha256
+!data/amostra/
 outputs/
 checkpoints/
 *.pt
 *.pth
 *.wav
+# os exemplos de entrega (samples/) entram no repositório com o áudio
+!samples/**/*.wav
 __pycache__/
 *.pyc
 .venv/
