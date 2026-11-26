@@ -1,0 +1,404 @@
+{
+  "basis": "Relatório de investigação anterior; somente fatos seguros, sem opiniões comunitárias ou referências musicais.",
+  "entries": [
+    {
+      "after": "Um jogo de tiro em que uma nave enfrenta inimigos e um chefe. O jogador desvia de ataques, dispara e recolhe melhorias durante uma sequência de confrontos.",
+      "before": "Um jogo de tiro com apresentação retrô.",
+      "evidence_strength": "strong",
+      "external_id": "5e44ecc1-1624-5a67-b144-758efdef70a1",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "28966",
+      "review_reason": "",
+      "safe_fact_basis": "Implementação de colisões, dano ao chefe, coleta de melhorias e etapas de combate; comentário de Jackamikaz confirma chefe.",
+      "selection_index": 31,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/28966/28966.p8",
+          "sha256": "e86a0128379e9c4028963e4753b1c12ea922c5cb12396a7dcfe442fa1de2fa7b"
+        },
+        {
+          "dataset_ref": "metadata/28966/game_info.json",
+          "sha256": "221045c493a27d7e58a81dab98e627f5cd82df213c3e8966c1ee69c3272747fa"
+        },
+        {
+          "dataset_ref": "metadata/28966/comments.jsonl",
+          "sha256": "4376cc191d08c6a2d5bf0ae74a3e859840fad6f16f988970b6abc663a064b9e6"
+        }
+      ]
+    },
+    {
+      "after": "Um minijogo de pesca em que capturas dependem de acertar uma zona com um marcador em movimento. Peixes e outras criaturas podem ser colecionados e vendidos, permitindo progredir e encontrar capturas mais raras.",
+      "before": "Um minijogo de pesca com apresentação em arte pixelada, centrado na atividade de pescar.",
+      "evidence_strength": "strong",
+      "external_id": "6393ebd3-188b-5ebe-a6c7-4549ce844ca8",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "150377",
+      "review_reason": "",
+      "safe_fact_basis": "Tabela de capturas, marcador, coleção, venda e experiência implementados; comentários corroboram captura e progressão.",
+      "selection_index": 36,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/150377/150377.p8",
+          "sha256": "6ee076557ad6a3267ca49e3546d4bff4d090d5c8921c73aef0599ee4b31838dd"
+        },
+        {
+          "dataset_ref": "metadata/150377/game_info.json",
+          "sha256": "cf4b9075da448590aef41dc423d4dff21dd6dbe68a58ce80796dd153cef9c51f"
+        },
+        {
+          "dataset_ref": "metadata/150377/comments.jsonl",
+          "sha256": "71122ec6fa4859f1e1979e80fe25fc4b19263314913957bec0bdd864e30035ce"
+        }
+      ]
+    },
+    {
+      "after": "Uma demonstração simples de movimentação apresenta uma pequena figura humana que caminha em quatro direções sobre um fundo escuro. A atividade implementada se limita a deslocar e animar esse personagem.",
+      "before": "Uma pequena figura humana caminha sobre um fundo escuro, numa demonstração simples de movimentação.",
+      "evidence_strength": "moderate",
+      "external_id": "de1f893a-a0aa-5324-9d28-a9d1632e5f60",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "153902",
+      "review_reason": "",
+      "safe_fact_basis": "Lua completo implementa deslocamento e desenho; coleta de maçãs aparece apenas como plano futuro.",
+      "selection_index": 41,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/153902/153902.p8",
+          "sha256": "e06a438707a8aeb433d1bb0f31a0df1806b0e9d24d6cf5d0a662d96e87e2b83e"
+        },
+        {
+          "dataset_ref": "metadata/153902/game_info.json",
+          "sha256": "552ea40ae2cf38f3ceafb7bc65005f799d8df93cd316849a60229830f36be78e"
+        }
+      ]
+    },
+    {
+      "after": "Um protótipo inspirado em Tetris mostra peças quadradas compostas caindo em uma grade. O jogador desloca as peças lateralmente enquanto novos conjuntos são adicionados ao tabuleiro.",
+      "before": "Um quebra-cabeça de encaixe inspirado em Tetris.",
+      "evidence_strength": "moderate",
+      "external_id": "3be1b733-3f99-50ef-8778-987f61fac8d4",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "2996",
+      "review_reason": "",
+      "safe_fact_basis": "Queda, deslocamento lateral e criação de peças implementados; não afirmar rotação ou eliminação de linhas.",
+      "selection_index": 61,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/2996/2996.p8",
+          "sha256": "5de2f5f57951e64d53324f9a79317b972a466d95045462b76f4cb70f34148cbb"
+        },
+        {
+          "dataset_ref": "metadata/2996/game_info.json",
+          "sha256": "ead684b647af81607b4519a2bc14045e7339db427638461d5476ec6c03bb7707"
+        }
+      ]
+    },
+    {
+      "after": "Uma experiência de flutuação em que o jogador recolhe bolhas e as incorpora a um conjunto que pode girar. O deslocamento combina a organização dessas bolhas com a passagem por um cenário com terreno.",
+      "before": "Uma experiência de flutuação em que bolhas podem girar, apresentada com formas e cores contrastantes.",
+      "evidence_strength": "strong",
+      "external_id": "ad9dc3b0-9c38-5e87-a698-e22cebd9b0f7",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "3436",
+      "review_reason": "",
+      "safe_fact_basis": "Incorporação por contato e rotação implementadas; comentários de Jupiter_Hadley, tyroney e matt corroboram as ações.",
+      "selection_index": 62,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/3436/3436.p8",
+          "sha256": "f0b6b241a118c51472516fa03190e7b0f6308932ae238c006ca54d01df70ccfb"
+        },
+        {
+          "dataset_ref": "metadata/3436/game_info.json",
+          "sha256": "841050957ceef7326f702643f7d6e01d5c624b1623aacb14b8a50709d6220266"
+        },
+        {
+          "dataset_ref": "metadata/3436/comments.jsonl",
+          "sha256": "d8fb1499fd3f188e73b16e78683ea6b1918795895b24b046e2adb0552cc3fb29"
+        }
+      ]
+    },
+    {
+      "after": "Uma aventura de luta se passa numa vila tomada por Jack Daniels e sua gangue. O jogador percorre áreas de cidade, ruínas e floresta, combinando saltos, golpes e defesa para enfrentar os adversários.",
+      "before": "Um jogo de ação com saltos, golpes, defesa e encontros com personagens amistosos.",
+      "evidence_strength": "strong",
+      "external_id": "78b75d25-ffb0-5d3e-822b-ad3e0b333051",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "29503",
+      "review_reason": "",
+      "safe_fact_basis": "Diálogos internos identificam a vila e a gangue; tabela de fases nomeia cidade, ruínas e floresta.",
+      "selection_index": 99,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/29503/29503.p8",
+          "sha256": "44599f629c3e739a45c39afb9f02f285675600d6ce0daa8f5b993bbe86fc76f5"
+        },
+        {
+          "dataset_ref": "metadata/29503/game_info.json",
+          "sha256": "c450b1692191ee4f1e4612669354c55cf6b6a9ee064e577a767409206da13f7d"
+        },
+        {
+          "dataset_ref": "metadata/29503/comments.jsonl",
+          "sha256": "c805ba8f98824e5979893dae0e57fd7c9f1b9eb6b18ff41c6a3597ff0a49e6cf"
+        }
+      ]
+    },
+    {
+      "after": "Um sapo explora uma masmorra procurando chaves coloridas que abrem portas e baús correspondentes. O percurso inclui espinhos, recursos para recuperar a saúde e uma saída que exige uma chave dourada.",
+      "before": "Uma aventura com um sapo que explora salas onde há inimigos, espinhos e lava.",
+      "evidence_strength": "strong",
+      "external_id": "5b7fa5c2-7367-590c-a0d6-8be9842f8fc4",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "45927",
+      "review_reason": "",
+      "safe_fact_basis": "Textos internos descrevem masmorra, chaves, baús, espinhos, corações e saída; vitória é implementada por contato com o destino.",
+      "selection_index": 171,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/45927/45927.p8",
+          "sha256": "91378ee3d535fa621f3b7d8baacd924e7ba7094d3cfaba8e8d7337eeb7280d51"
+        },
+        {
+          "dataset_ref": "metadata/45927/game_info.json",
+          "sha256": "921e2b3aeb3247a4005694fab82ef0e701c4f0ebe6739608c0396bdeeb1c69a0"
+        },
+        {
+          "dataset_ref": "metadata/45927/comments.jsonl",
+          "sha256": "cdca41119848a1426902257d5a129d8c01cbe47ad4b13d1123233f83c1489a96"
+        }
+      ]
+    },
+    {
+      "after": "Um jogo de tiro multijogador local apresenta áreas de jardim e de uma casa abandonada. Os participantes enfrentam uns aos outros e encontram melhorias que alteram suas capacidades de combate.",
+      "before": "Um jogo de tiro para vários participantes, com um ambiente de exploração aberto.",
+      "evidence_strength": "moderate",
+      "external_id": "7679de1c-c931-5564-a3be-c2fdf43d90d1",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "32086",
+      "review_reason": "",
+      "safe_fact_basis": "Mapas gardens e abandoned house, batalha e melhorias implementados; comentários de rik-x confirmam participação local e IA apenas futura.",
+      "selection_index": 183,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/32086/32086.p8",
+          "sha256": "cb01fdb2d03fff629579c04afdac9b3b64495dc5630241aace4b450ed4c73390"
+        },
+        {
+          "dataset_ref": "metadata/32086/game_info.json",
+          "sha256": "04c76237719574ed0e87b1817af6ead1d75bef583340f417a9ee9d280c066545"
+        },
+        {
+          "dataset_ref": "metadata/32086/comments.jsonl",
+          "sha256": "7e0317e984b5ef9462f955e37739a25f39b012ba2a31596e75c997f1b7da7392"
+        }
+      ]
+    },
+    {
+      "after": "Uma coletânea reúne vários minijogos de propostas diferentes em um único cartucho.",
+      "before": "Uma coletânea reúne vários minijogos de propostas diferentes em um único cartucho.",
+      "evidence_strength": "weak",
+      "external_id": "51ec93a6-bb56-51c7-a6eb-a0572e2a8efc",
+      "manual_review_recommended": true,
+      "real_song_id": 0,
+      "real_tid": "27582",
+      "review_reason": "Coletânea documentada, sem identificação de atividade específica para o cenário.",
+      "safe_fact_basis": "Coletânea com dezesseis minijogos comprovada; não atribuir uma atividade específica ao cenário.",
+      "selection_index": 188,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/27582/27582.p8",
+          "sha256": "3d0c70b3b95d3671786e65ecb1262726662ec6c6e618a9509ebb6b5faa479cfe"
+        },
+        {
+          "dataset_ref": "metadata/27582/game_info.json",
+          "sha256": "3caeaca67c2cd45e637cae2168f1c863ae65ad714535f19ee93d8a49dce43db2"
+        },
+        {
+          "dataset_ref": "metadata/27582/comments.jsonl",
+          "sha256": "37ca69b9758eb5a48faf847717bc814507b866bba365af548b7bef57a482af1c"
+        }
+      ]
+    },
+    {
+      "after": "Um quebra-cabeça com sapos envolve explorar uma casa e sua área externa junto ao mar. O jogador interage com uma bola e com o espaço ao redor para resolver o desafio.",
+      "before": "Um quebra-cabeça protagonizado por um sapo, apresentado como uma sequência de desafios de movimentação.",
+      "evidence_strength": "strong",
+      "external_id": "7f22abc4-a13b-5d12-a524-1f6e8978903d",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "2796",
+      "review_reason": "",
+      "safe_fact_basis": "Entidades e transição interior/exterior implementadas; JTE confirma que empurrar a bola faz parte do único quebra-cabeça.",
+      "selection_index": 194,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/2796/2796.p8",
+          "sha256": "3f0278848f2ef796c6d7811ee3c75fec36e3f4c380a86e96282bbaf659edc12c"
+        },
+        {
+          "dataset_ref": "metadata/2796/game_info.json",
+          "sha256": "89274f8dd05df7d4a97e9df4a391cdf2d9238c14364693c45c534c0f08976d8d"
+        },
+        {
+          "dataset_ref": "metadata/2796/comments.jsonl",
+          "sha256": "6dfc7cb77740c2e0786c19bb1029070b1e13028df12ff62f9210afd9580de5d4"
+        }
+      ]
+    },
+    {
+      "after": "Um jogo de tiro em que uma nave enfrenta inimigos e um chefe. O jogador desvia de ataques, dispara e recolhe melhorias durante uma sequência de confrontos.",
+      "before": "Um jogo de tiro com apresentação retrô.",
+      "evidence_strength": "strong",
+      "external_id": "0f29abe7-eb2e-5b64-a68c-5826827f5bf8",
+      "manual_review_recommended": false,
+      "real_song_id": 1,
+      "real_tid": "28966",
+      "review_reason": "",
+      "safe_fact_basis": "Mesmo cartucho do índice 31; mesmos fatos, sem inferir outra fase a partir da faixa Real.",
+      "selection_index": 198,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/28966/28966.p8",
+          "sha256": "e86a0128379e9c4028963e4753b1c12ea922c5cb12396a7dcfe442fa1de2fa7b"
+        },
+        {
+          "dataset_ref": "metadata/28966/game_info.json",
+          "sha256": "221045c493a27d7e58a81dab98e627f5cd82df213c3e8966c1ee69c3272747fa"
+        },
+        {
+          "dataset_ref": "metadata/28966/comments.jsonl",
+          "sha256": "4376cc191d08c6a2d5bf0ae74a3e859840fad6f16f988970b6abc663a064b9e6"
+        }
+      ]
+    },
+    {
+      "after": "Uma interface de sistema operacional fictício permite explorar janelas, arquivos e uma ferramenta de pintura. A apresentação também inclui um pequeno jogo em que uma bola precisa ficar afastada de uma área vermelha.",
+      "before": "Uma interface gráfica experimental em miniatura apresenta janelas e ícones entre os quais é possível navegar.",
+      "evidence_strength": "strong",
+      "external_id": "ebfc4a9a-9dbd-5967-88aa-ec7b1f3549cf",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "43948",
+      "review_reason": "",
+      "safe_fact_basis": "Textos desenhados e implementação de arquivos, janelas, pintura e minijogo; comentários do autor corroboram desenho.",
+      "selection_index": 211,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/43948/43948.p8",
+          "sha256": "37db3cdee4df3be6862360007765c9088deae2226cee4428a2de6f02291501bd"
+        },
+        {
+          "dataset_ref": "metadata/43948/game_info.json",
+          "sha256": "e592445c61214ac75aaef130f33e32b6b68c07827374e7d77acb2284eae90fe3"
+        },
+        {
+          "dataset_ref": "metadata/43948/comments.jsonl",
+          "sha256": "105353f1e904efb1553e5aff42c961784edbadd7ed690b3bc5d488a5624e7fbb"
+        }
+      ]
+    },
+    {
+      "after": "Uma adaptação de Rayman apresenta percursos de plataformas em que o personagem pode correr, saltar e desferir socos. A travessia se concentra em usar essas ações para avançar pelo cenário.",
+      "before": "Uma aventura de plataformas com Rayman, em que o jogador percorre o cenário correndo e saltando.",
+      "evidence_strength": "strong",
+      "external_id": "119a17ea-bbe8-5126-95d6-f6270826d20b",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "152191",
+      "review_reason": "",
+      "safe_fact_basis": "Instruções desenhadas no cartucho confirmam movimentação, salto e soco; não acrescentar uma missão de resgate.",
+      "selection_index": 220,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/152191/152191.p8",
+          "sha256": "c745d4b59a95f7031fd0b231c05ec9a14c2cc558adda7f76ff74acd903adb5c9"
+        },
+        {
+          "dataset_ref": "metadata/152191/game_info.json",
+          "sha256": "a729ee308e790407b9d7eb0bc4332d191c9cd4d637075432f40421971863bf13"
+        },
+        {
+          "dataset_ref": "metadata/152191/comments.jsonl",
+          "sha256": "6598ada0a82a5d5e4a2ad4d84fd4780b6983e8c5448dec67789648616062b6d2"
+        }
+      ]
+    },
+    {
+      "after": "Uma aventura de quebra-cabeças se passa dentro de uma rede digital representada por células coloridas. O jogador modifica e transfere cores para atravessar conexões e alcançar saídas, podendo desfazer ações durante a resolução.",
+      "before": "Um quebra-cabeça apresenta uma grade de pequenos elementos, alguns conectados por linhas coloridas.",
+      "evidence_strength": "strong",
+      "external_id": "10366abf-443f-521f-b25e-ab63375fc655",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "37068",
+      "review_reason": "",
+      "safe_fact_basis": "Narrativa interna de rede, regras de passagem por cores, transferência, saídas e reversão de ações implementadas; comentários corroboram mecânicas.",
+      "selection_index": 236,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/37068/37068.p8",
+          "sha256": "357940ac32f836737d485522c4d5cb6524498716516a6f40d2b554667e3ef874"
+        },
+        {
+          "dataset_ref": "metadata/37068/game_info.json",
+          "sha256": "9b683d297dfb77fa4f21c2f47ad044e67cd7a37aac72e852beea80b59c1287ff"
+        },
+        {
+          "dataset_ref": "metadata/37068/comments.jsonl",
+          "sha256": "a83e8193e17acc6550078cd21fdadc91eb964ac6d655a35c7e2b7bced3499ba1"
+        }
+      ]
+    },
+    {
+      "after": "Uma animação em arte pixelada apresenta uma figura azul e branca cercada por uma forma rosa, acompanhada de palavras em movimento. A apresentação varia posições, proporções e cores, sem propor uma tarefa ao observador.",
+      "before": "Uma imagem em arte pixelada mostra uma figura azul e branca cercada por uma forma rosa, sobre fundo escuro.",
+      "evidence_strength": "moderate",
+      "external_id": "490dbe54-5ef1-56b3-a34c-b300c0a8d73f",
+      "manual_review_recommended": false,
+      "real_song_id": 0,
+      "real_tid": "33885",
+      "review_reason": "",
+      "safe_fact_basis": "Lua completo contém animação de sprite e palavras; não lê comandos nem implementa um objetivo de jogo.",
+      "selection_index": 239,
+      "short_description_rationale": "Escopo factual limitado; não ampliar além das ações confirmadas.",
+      "sources": [
+        {
+          "dataset_ref": "p8/33885/33885.p8",
+          "sha256": "df129522f3c0a27874eb278040d22924b66ee0af29c0128f8d312075f924c570"
+        },
+        {
+          "dataset_ref": "metadata/33885/game_info.json",
+          "sha256": "6865bacc1cdad8adc6f2cfcdee4e7bb5ebbcfdc250754f97f33c7f9cb7ba70cf"
+        },
+        {
+          "dataset_ref": "metadata/33885/comments.jsonl",
+          "sha256": "aa54a9723c8cc8b701bd2be3c089afb1f7c7b28a5d851e786ccb378dc0c630ad"
+        }
+      ]
+    }
+  ],
+  "protocol": "context-description-ptbr-v1",
+  "revision": "documentary-final-review-v1"
+}

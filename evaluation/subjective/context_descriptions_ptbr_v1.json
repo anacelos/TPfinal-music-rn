@@ -1,0 +1,3068 @@
+{
+  "entries": [
+    {
+      "description_ptbr": "Um jogo retrô de quebrar blocos em que o jogador controla uma plataforma para rebater uma bola e destruir os tijolos da fase. Durante a partida, é possível coletar melhorias e avançar por diferentes estágios.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "11b862fe58a2cddffee01f9de560192b44e0e576c86d824a0501c1391831efc4",
+      "external_ids": [
+        "2609c316-1e32-50cd-9c75-935260d29907"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "34636"
+    },
+    {
+      "description_ptbr": "Um jogo de estratégia por turnos em que dois lados constroem estruturas e posicionam armas para atacar a base adversária. A disputa envolve administrar recursos, sustentar as construções e decidir como empregar diferentes tipos de canhão.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "72dbbff39de595adb6957e53e65f5cbefcf5427b917e9c120a5856abfe662efc",
+      "external_ids": [
+        "36f697c4-2d9c-5803-8960-1ac198b4e438"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "45995"
+    },
+    {
+      "description_ptbr": "Um pequeno gato percorre um mundo de plataformas com o objetivo de salvar almas. A aventura combina exploração, saltos e interação com elementos do cenário, em uma estrutura inspirada nos jogos de exploração com áreas interligadas.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "7921a5e4417c7c95f1dc1229e6f1034e9f1c604a71a044add15a2a038adb16e0",
+      "external_ids": [
+        "70cb465d-5c35-5769-b9fe-119ca6e939d7"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "53538"
+    },
+    {
+      "description_ptbr": "Um jogo de combate contra inimigos alienígenas em que uma nave ou máquina de combate pode aprimorar suas armas ao recolher núcleos deixados pelos adversários. Escudos, disparos e confrontos com chefes fazem parte da ação.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "34a486a6c5258b10f0d71a3c34ea052e1f965154f508da903a89d619a55f4d29",
+      "external_ids": [
+        "85d5614b-0efb-523b-a463-3e0c008baf46"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "148341"
+    },
+    {
+      "description_ptbr": "Uma pequena vila habitada por animais muda de aparência conforme o horário e as estações do ano. O jogador explora esse ambiente com árvores, flores e pedras, encontrando moradores que circulam pela vila e oferecem saudações.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "ec8150630c5193af550270356d7cb35387e9fee8b636e83e8102e03a3dea1d2d",
+      "external_ids": [
+        "b3d2aff1-df24-5247-845c-a5ed12fb7c23",
+        "e905ed52-3111-5270-be92-95e7e487232a"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "43829"
+    },
+    {
+      "description_ptbr": "Um jogo com coelho, raposa e caçador em que a movimentação ocorre na vertical. A ação envolve recolher cenouras, enfrentar a raposa e lidar com perigos que variam entre as fases, incluindo disparos pelo cenário.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "efe9198af85fe500a0c0486bd2fc17e7efbaad227012d904dd1bcce326acb2d0",
+      "external_ids": [
+        "348bd3c4-c769-5fbb-ad48-21b4b3e953f3"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "3565"
+    },
+    {
+      "description_ptbr": "Uma coleção de cem problemas de xadrez em que as peças brancas devem obter xeque-mate em duas jogadas. O jogador examina também as respostas das peças pretas para verificar as diferentes possibilidades de cada posição.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "b8e4da3c20fbf624ab68c13b28e1143d8aa9c2621a8e131fc0f6b88aaa16ed72",
+      "external_ids": [
+        "5944d865-381e-5c96-8b24-ad7c8fcaa9a8",
+        "d985eeb3-03a6-5e0b-a843-5cd6efdff871"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "147467"
+    },
+    {
+      "description_ptbr": "Um jogo de defesa contra invasores em que dois emissores produzem feixes de cores diferentes. O jogador combina esses feixes e procura atingir cada inimigo com a cor correspondente, evitando que os adversários se multipliquem.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "e5e9c447442978bc89578084297e5476525b6777b1822a3b2dd4ca0b265dfe03",
+      "external_ids": [
+        "cb610220-7a56-50b3-b492-8885850619c5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "1983"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça inspirado em Tetris, centrado no posicionamento de peças geométricas que podem ser deslocadas e giradas. A organização dessas peças no espaço disponível constitui a atividade principal da partida.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "391d1be2b103e989b8176217c25b3b61249100241613697e665bc330a766caa5",
+      "external_ids": [
+        "f5bd2c25-3a5c-5a2e-aed6-dc56c2afaf4c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "44074"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça formado por peças em uma grade. O jogador modifica a orientação de pequenos conjuntos de peças para criar um caminho que possa atravessar o tabuleiro, relacionando as conexões de cada parte.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "da0146d7b38f95965cc43d6d2794731d9fbcc6b30c822f909f33e8d0d5be8933",
+      "external_ids": [
+        "476d1dd5-769c-50b3-b578-d8d5f341c0b2",
+        "9ac43970-b49a-5e84-9c1b-2871c156b13d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "42414"
+    },
+    {
+      "description_ptbr": "Um garoto ninja precisa chegar à escola antes que o tempo termine. A jornada é apresentada como uma sequência de dias escolares, com deslocamentos e saltos duplos para superar os desafios do percurso.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "c94601e1f62e9b241209a3b7610c2a521eb968721ab4ee51e0177e7655bfc6f9",
+      "external_ids": [
+        "a9845287-c383-542e-a901-c5af617c7c04",
+        "56175e5f-22c7-558e-8f51-6d1bf48709ab"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "141352"
+    },
+    {
+      "description_ptbr": "Uma aventura de mergulho em busca de riquezas no fundo do mar. Durante a exploração, o jogador encontra gemas e pode enfrentar um kraken, utilizando os tesouros descobertos para ajudá-lo no confronto.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "ce58a4a924c8f7df00172c00918240008e2112811a46752362a50f67be05b3da",
+      "external_ids": [
+        "997ed99c-60ff-584e-bbf9-92c13e7d76af"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "143676"
+    },
+    {
+      "description_ptbr": "Tijolos ameaçam cair do céu sobre as cidades, e uma enorme plataforma voadora é enviada para defendê-las. O jogador rebate bolas contra esses blocos, em fases que também podem oferecer melhorias capazes de multiplicar as bolas.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "ded204e9a490e06cf7c430112d93c584d2b1ee3754b5e607ad98be3b7bdd42ae",
+      "external_ids": [
+        "8527914a-0f24-58dc-90d8-2065ddcc214b",
+        "fd668ee4-ba20-5f5f-b357-a8e215df5726"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "4139"
+    },
+    {
+      "description_ptbr": "Um jogo inspirado na cobrinha em que uma minhoca percorre o cenário para comer frutas. Conforme se alimenta, ela se move cada vez mais depressa, e o avanço da partida leva a novas fases.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "e52ccc7246582190251ab5787e0d187f4250b32f70d826994f779ea5db288584",
+      "external_ids": [
+        "deb910f9-e243-5f0f-a1ad-799987b0aff5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "152954"
+    },
+    {
+      "description_ptbr": "O personagem POF enfrenta criaturas que representam pesadelos e procura eliminá-las com disparos. Cada adversário apresenta um comportamento próprio, exigindo que o jogador adapte sua maneira de enfrentar os diferentes inimigos.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "0152d40a11ac42101a21a5b7e9bafc067bdcfcd519825111e25119c8b4bca24b",
+      "external_ids": [
+        "24050543-903f-517a-a4ac-a3376bb2d47a",
+        "ef3d014a-ca74-518b-9f3d-0d2c155b7edf"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "46519"
+    },
+    {
+      "description_ptbr": "Um drone do Papai Noel sobrevoa o cenário para recuperar presentes perdidos e entregá-los às casas. Durante os voos, o jogador também recolhe baterias para manter o drone funcionando e continuar as entregas natalinas.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "c138b360bbae8085d2627d076388a4cc1e4966de859495daaf5e44ac67fa21b2",
+      "external_ids": [
+        "c18e5077-c7fe-5b61-b8d8-33f2b8b050bd",
+        "d7c5a3c0-a101-5318-bdd8-530d581a6e9d",
+        "e07dd1ff-1eb3-5ba5-8174-db335fafec74"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "45840"
+    },
+    {
+      "description_ptbr": "Condenado a permanecer numa pequena ilha cercada por um lago de ácido, um arquiteto precisa construir uma torre para escapar. O nível do líquido sobe a cada dia, tornando a construção de pisos e escadas parte central da sobrevivência.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "b12a44dd0e02431737ee7fb28b1fca3eb35b7377d0b717c7b85b02a417f74ed8",
+      "external_ids": [
+        "7b43eb41-9ef2-58a7-9ac5-e564d2de2aa1",
+        "f9e1421d-812a-56c2-aef1-17c6552afee8"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "35416"
+    },
+    {
+      "description_ptbr": "Um ambiente de construção em perspectiva isométrica oferece diferentes blocos para criar estruturas livremente. A atividade se concentra em montar e remover partes dessas construções dentro de uma área delimitada, sem personagens ou desafios de sobrevivência descritos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "2e6d737caf904349e824edaa4b5fad97856412f3642cfe6a4851170d5db776f0",
+      "external_ids": [
+        "cc1fbcdc-3b9e-5548-8aae-bd8089ecd8f9"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "54162"
+    },
+    {
+      "description_ptbr": "Uma inversão do quebra-cabeça Tetris em que novas linhas surgem continuamente pela parte inferior do tabuleiro. Em vez de encaixar peças que caem, o jogador recorta formas indicadas por uma sequência de figuras.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "fc01e8f435c46716a224c1ed8e6dc678cca8c680bae06767db60ed01926c9437",
+      "external_ids": [
+        "3555a990-2e6d-55fc-b2aa-7d256c0015ce",
+        "9b281544-34bd-516e-a0ef-1246104ba5b4"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "43669"
+    },
+    {
+      "description_ptbr": "Uma adaptação de xadrez com adversários automáticos de diferentes capacidades. A partida se organiza em torno das movimentações, capturas e situações de xeque próprias do jogo de tabuleiro, permitindo enfrentar comportamentos de oposição variados.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "1835e99060dd6ddb7c31bb736ee2edeab43dc78621c50739ad988ed044bfa40d",
+      "external_ids": [
+        "a9d3582f-71f4-500b-aa5a-020891448fe4"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "38813"
+    },
+    {
+      "description_ptbr": "Uma garota com aparência de cervo aguarda, numa floresta, os frutos oferecidos por uma árvore mágica. O jogador se desloca para apanhar as frutas boas e evitar as que caem estragadas.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "1d301d012c1a442c9e18b5c0739016638ac961a743e4053169ee649f5b4b3b85",
+      "external_ids": [
+        "648b4195-3f47-50a4-8cbe-6e7e4931e1c9"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "32632"
+    },
+    {
+      "description_ptbr": "Um minijogo de pesca em que capturar peixes envolve realizar sequências de movimentos direcionais. O desafio pode variar em dificuldade e quantidade de peixes, mantendo a atividade de pescar como centro da experiência.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "613697724cd4f7c06fa90f9121f23d013b2d5e1190f6bfa2ea4f911f2744c5df",
+      "external_ids": [
+        "26e76e4a-61bb-59ac-9de6-e02653cbbf30"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "144738"
+    },
+    {
+      "description_ptbr": "Dentro de um organismo, o jogador combate vírus e bactérias por meio de um processo de digestão. É preciso administrar energia, buscar alimento e evitar alérgenos enquanto impede que os invasores prejudiquem a saúde do hospedeiro.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "878cb94068d187c53c314e7678ac62cca000cf90161ed3aa113b7fdb2b426590",
+      "external_ids": [
+        "439abd4b-927e-505b-b57b-720d4ef29a53",
+        "68931766-737e-50dc-8533-91754d1de5e9"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "32210"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro contra alienígenas invasores em uma área de movimentação livre. O jogador se desloca pelo espaço de combate e usa uma arma capaz de deixar os inimigos temporariamente imobilizados.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "42a2e4335bed7e0532ae39923ae7f53cf0f83925d2508c2690a0c1eed2a12863",
+      "external_ids": [
+        "2d67726d-5b9e-549b-828e-bcebfff733cc"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "49066"
+    },
+    {
+      "description_ptbr": "Uma mansão abandonada guarda três partes de uma urna que o jogador precisa encontrar antes de escapar pela entrada. Criaturas percorrem os cômodos da casa e ameaçam interromper a busca pelos objetos.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "3542b7485e78bbab819fb3a9d700a592aa7ea9dd7ab5c0c588a2bbaf8d93d670",
+      "external_ids": [
+        "4a62d949-5f6c-56ed-809f-25933ea9571d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "155003"
+    },
+    {
+      "description_ptbr": "Um gato chamado Woolly tenta voltar para casa, e o jogador o ajuda recolhendo novelos de lã pelo caminho. Esses objetos mantêm o personagem disposto a seguir em frente e permitem avançar para outras fases.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "b79dc4548dac9622c48a769669b08539012f9c60cda804cd641af63af628f8e5",
+      "external_ids": [
+        "3364c2b5-7170-5e30-bb0b-895aa9c0df12"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "37508"
+    },
+    {
+      "description_ptbr": "Um pequeno jogo em que um palhaço se desloca de um lado para o outro para apanhar bolas antes que elas atinjam o chão. A atividade se concentra em acompanhar a queda e posicionar o personagem para recebê-las.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "6ec9789a897261611faeabc407c0bcc672a6ffe35f435f82f780fe7670643110",
+      "external_ids": [
+        "5d5d4230-b854-58d4-9f32-aeba443deb95",
+        "c5828996-e7cb-5f70-89af-80317b7a4f4e"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "150773"
+    },
+    {
+      "description_ptbr": "Uma disputa de arena para até quatro jogadores, com personagens que correm, saltam e procuram armas pelo cenário. Cada participante tenta atingir os adversários e evitar ser atingido durante um confronto de duração limitada.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "1b95b4625a56a7f9c6c3832dff8bee36de57f3bd0f029b055c098eba35e775cf",
+      "external_ids": [
+        "05afffc4-3fda-58c9-a069-f85674ad275e",
+        "203b8bc3-f773-5041-b821-244490729dd1"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "41154"
+    },
+    {
+      "description_ptbr": "Um jogo de ação em que o jogador precisa evitar inimigos enquanto recolhe moedas pelo cenário. Melhorias encontradas durante a partida oferecem ajuda para lidar com os adversários e prolongar a permanência na área de jogo.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "4e71188bd622206d6f317614db9c587a826d5dc62084606e4375a2a7b09a71a4",
+      "external_ids": [
+        "bf64271e-82eb-5b73-9772-1196f8c985dc"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "149116"
+    },
+    {
+      "description_ptbr": "Lucas percorre um conjunto de ilhas em busca de ferramentas e objetos especiais. Esses recursos permitem que ele avance na aventura e encontre uma forma de chegar à ilha onde fica um castelo.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "ae5913ab97f0a092a5598138ffed4312e8f0e241a7ab7467e7e8b022ae7385eb",
+      "external_ids": [
+        "e0c2d1b3-5dff-59ef-af12-22372cc100c6",
+        "4b72c666-e2d0-5aec-9e7d-ef2948a59d73"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "3916"
+    },
+    {
+      "description_ptbr": "Um jogo de plataformas em que o jogador procura quatro brócolis espalhados pelo cenário. Depois de recolhê-los, precisa retornar à bandeira situada no início do percurso para completar a tarefa.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "ea6a646da7bc32a100f112b23d1ff357b904100e539a98ba19f636b9a84563a2",
+      "external_ids": [
+        "ea41b4d4-da11-5e3b-b4f8-18e64256e126",
+        "c963f00e-ba3f-5ad8-90cc-3fd29a1af319"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "49125"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro com apresentação retrô.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "d651fe3856e7a19fbeacd5d2881c9f80686fd173488070dc1be7e6eedf795a1f",
+      "external_ids": [
+        "5e44ecc1-1624-5a67-b144-758efdef70a1",
+        "0f29abe7-eb2e-5b64-a68c-5826827f5bf8"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "As fontes identificam apenas um jogo de tiro em desenvolvimento; a imagem mostra a apresentação, não uma partida.",
+      "short_description_rationale": "Texto restrito ao gênero de tiro; a imagem é de apresentação.",
+      "tid": "28966"
+    },
+    {
+      "description_ptbr": "Uma variação do jogo da cobrinha em que o jogador conduz uma serpente pelo espaço de jogo e tenta mantê-la viva. A descrição apresenta a experiência como uma versão modificada desse formato clássico.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "d25825ae946a1186cfd3e69ed34e6e0a126266718133fa28f48177c3a70edfce",
+      "external_ids": [
+        "38593ff2-f3dc-56d9-be97-ae6260f0e1ae"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "33353"
+    },
+    {
+      "description_ptbr": "Um jogo de ação em que o personagem percorre o cenário e atira contra caveiras. A atividade principal consiste em se movimentar pela área de confronto e enfrentar esses adversários.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "5b6ffdc138d0ecd4b34be6f2158d06b80809d354905d439147a16efaf5e7288d",
+      "external_ids": [
+        "276cc14d-2d8f-5718-83f2-f19ed0fa7bab"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "33365"
+    },
+    {
+      "description_ptbr": "Um personagem capaz de se transformar numa bola de praia tenta afastar os banhistas que ocupam sua faixa de areia. A ação se passa numa ilha e gira em torno dessas transformações e dos encontros com os visitantes.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "395441e518c4bf6b0dca2d15e1e1b3a74f643c6f7ddde7d0445e1117804a1da9",
+      "external_ids": [
+        "5eedc713-f8f4-5808-8449-4bc95189eee4"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "1890"
+    },
+    {
+      "description_ptbr": "Um jogo de plataformas que explora diferentes usos da capacidade de planar. O jogador atravessa desafios de movimentação utilizando essa habilidade aérea, em uma aventura curta com obstáculos que exigem tentativas e ajustes no percurso.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "55d801e47384d2b508a20942ba90caa29afa1917f76771bed59c9ca1eb03e4b2",
+      "external_ids": [
+        "04d4a35c-8a91-5001-bfdc-2525289bdfd9",
+        "8531194b-0c94-564d-bd99-daa382129472"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "52441"
+    },
+    {
+      "description_ptbr": "Um minijogo de pesca com apresentação em arte pixelada, centrado na atividade de pescar.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "56027283f703f78a7a7553edd227335f85cec4fd15523f012c6366be76efdb59",
+      "external_ids": [
+        "6393ebd3-188b-5ebe-a6c7-4549ce844ca8"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "A pesca é identificada, mas a progressão e a automação são apenas propostas futuras.",
+      "tid": "150377"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça inspirado na eliminação de Gauss-Jordan, com desafios relacionados a matrizes. O jogador procura resolver cada problema realizando transformações dentro de um limite de energia disponível para a fase.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "a62fc71ac4c34338dcbef102c97fe850ac120a59e2447e5951734ed7daafdb5d",
+      "external_ids": [
+        "551df6d2-40eb-597a-bb28-399a5a3dcaa5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "37349"
+    },
+    {
+      "description_ptbr": "Um personagem desperta após a própria morte, com uma moeda e uma indicação de que deve procurar Caronte. A aventura envolve encontros com inimigos e decisões que podem levar a três desfechos diferentes.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "57e8e017bb7f52cf22c4ce5ca285e07d4645d17bf4984262d042cd6f63fe0577",
+      "external_ids": [
+        "2691e7fe-7e50-5fe8-a054-682efdb5fea0"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "40684"
+    },
+    {
+      "description_ptbr": "Um jogo de sobrevivência em que o personagem atravessa uma nevasca para encontrar comida. A exploração precisa ser conciliada com o retorno à barraca, pois permanecer exposto ao frio por muito tempo coloca a sobrevivência em risco.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "11cc0d72518b9b92b99a071d6dafce20fe7c50acd57205e35c5930862f3b351c",
+      "external_ids": [
+        "c7a03c8d-d786-52df-918f-d624aa17b651"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "28910"
+    },
+    {
+      "description_ptbr": "Um jogo em que o jogador percorre um labirinto de pão mofado que cresce durante a partida. É necessário alcançar os peixes e conseguir alimento antes que o tempo disponível termine.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "b2525e0f566f93fefdbe0565a957e370b117cb27375104c3d612b15d706029cc",
+      "external_ids": [
+        "31ac3cdf-6155-5204-8211-ab04b3d2b8ef"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "152279"
+    },
+    {
+      "description_ptbr": "Uma pequena figura humana caminha sobre um fundo escuro, numa demonstração simples de movimentação.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "d21c81c83035c8966d4a76474bbe9a01208490c5cfb9ed3ce7f7968fbf028ffc",
+      "external_ids": [
+        "de1f893a-a0aa-5324-9d28-a9d1632e5f60"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "O texto trata de desenvolvimento e de objetivos ainda planejados; a imagem confirma somente um pequeno personagem em fundo escuro.",
+      "short_description_rationale": "A evidência estabelece uma demonstração de caminhada; a coleta é somente planejada.",
+      "tid": "153902"
+    },
+    {
+      "description_ptbr": "Um jogo de ação com temática de comida e alienígenas, no qual o jogador procura identificar impostores. A busca utiliza um equipamento de detecção, e os alvos encontrados são enfrentados com um canhão de feixe.",
+      "evidence_fields": [
+        "description_core",
+        "tags"
+      ],
+      "evidence_sha256": "313dcdb15bc4b7be73151dfc8748feb8f3bb54e522eefd880ecc486e72ae6c1b",
+      "external_ids": [
+        "adaca277-ec82-58d2-a51d-88574bcd220b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "38156"
+    },
+    {
+      "description_ptbr": "Uma exploração de masmorras em que os combates combinam dados e cartas com efeitos especiais. Ao superar inimigos cada vez mais fortes, o jogador recolhe novos recursos e reorganiza suas possibilidades de ação para continuar avançando.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "ac983fa381ff6a4261ef12ca2932a415603f7fb3171ec757dd68cd785c3155dd",
+      "external_ids": [
+        "d17cd487-e175-5e98-9704-9900bad2941d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "142389"
+    },
+    {
+      "description_ptbr": "Uma pequena cena interativa apresenta um aquário com criaturas que mudam de comportamento em resposta às interações. A experiência se concentra na observação desse ambiente e das reações dos seus habitantes.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "a6c2c6e957952b63fc5eff0c3ecbb549532bd52798e2e995f3fcf2b070457b54",
+      "external_ids": [
+        "e2a962ad-8362-5074-a52f-d2385efaa09b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "147632"
+    },
+    {
+      "description_ptbr": "Um tratador organiza passeios de pônei para as crianças que visitam uma fazenda durante as férias. O jogador precisa memorizar informações sobre os animais para distinguir os pôneis perigosos e evitar que prejudiquem os visitantes.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "db2b2252705ce48d13d297ad883968c398e2d33cb2b3a7de87b66c5ea0e0d4ce",
+      "external_ids": [
+        "0f5a0c72-8030-5219-a05a-d9146aa8e971",
+        "d871ef32-b01a-5054-9a61-2a579cc6451c",
+        "95d8498a-72cc-5451-8ddd-08d746de0fc2",
+        "219ebfc6-4358-5629-87be-cc02da479079",
+        "9b307296-ee6a-5362-a028-64f4cbe54d2d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "32614"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça protagonizado por tartarugas que precisam chegar às suas casas. O jogador procura uma solução para conduzir todos os animais aos destinos correspondentes e completar o desafio apresentado.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "8c4b8878e5305089f3b014fe62a5e5c084accf4664833a03a2e49c8b0625784a",
+      "external_ids": [
+        "d5091c24-2cfa-5f50-859a-7643fb81ab21"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "41718"
+    },
+    {
+      "description_ptbr": "Um capitão é atacado por peixes e se defende transformando-os em sushi. O jogador desloca o personagem lateralmente e enfrenta os adversários que se aproximam pelos dois lados do cenário.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "5ef0e969eba4b8dbc63b48622a53e1a173e2e7308e247131eb8a10b33421294f",
+      "external_ids": [
+        "9b6dd485-bcd7-5dc5-a9ba-5de8bd0315e8",
+        "31d23336-bc40-517b-9de2-5623030f4ef2"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "30541"
+    },
+    {
+      "description_ptbr": "Uma coleção de problemas de xadrez para uma pessoa, com posições que variam na quantidade de peças. O jogador examina cada tabuleiro e procura resolver o desafio de movimentação e captura apresentado.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "499da0d6834f0bd01b7fa1f3edc94b145597f948aa71269d063d4bca56bc8d62",
+      "external_ids": [
+        "f8dd5e8c-1287-5bf8-822f-61fdb8052a47",
+        "51e0023e-ea20-53fc-bc44-11e67ca181df"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "147863"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro de ação rápida em que duas naves são conduzidas simultaneamente. Elas se deslocam em direções opostas, de modo que o jogador precisa considerar as duas posições ao movimentá-las pelo espaço de combate.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "a23e50d24659f7bf5d3959e8e31c4853956dc093c062ac240b800b993c14de5d",
+      "external_ids": [
+        "e60dcade-199a-5fdb-a080-e98d5ff098b0"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "37664"
+    },
+    {
+      "description_ptbr": "Um samurai mergulha para recuperar as partes de sua armadura perdidas debaixo d'água. O jogador recolhe botas, traje e capacete enquanto evita criaturas marinhas, buscando depois uma forma de sair do mar.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "d62e203e8a43fd058661f57d477d7063875e5002a47323e27ad254fecbe97518",
+      "external_ids": [
+        "d3d5c8c6-68da-5fd4-9fa7-ed430a78f3f9"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "52450"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça em que um número se movimenta por um tabuleiro de sudoku e assume o valor das peças que encontra. O jogador procura retirar os números do tabuleiro sem criar os conflitos previstos pelas regras do sudoku.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "aafe6211d1dcce7e3635693afe259357d0406973f7d425f4bc58dc4ee10ee7ee",
+      "external_ids": [
+        "bdba80da-37a7-5bd5-a675-b3154f68edd3"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "53382"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça inspirado em sudoku, com tabuleiros diários e outros gerados aleatoriamente. A atividade principal consiste em distribuir símbolos e resolver a organização do tabuleiro apresentado a cada desafio.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "9f6c9e7d435dc61ccac9ade6e063371182f23bbe7bc990c884ce59c6eb7b2bff",
+      "external_ids": [
+        "8904cdd7-2aa0-59d0-b56d-87a423393553"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "143487"
+    },
+    {
+      "description_ptbr": "Um jogo de ação com plataformas em que o jogador enfrenta alienígenas usando disparos. Saltos e quedas fazem parte da movimentação pelo cenário enquanto os inimigos precisam ser combatidos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "060864c1741937fb693137e3803b8b60fe63fee08ef74be4ac0abacf600b11df",
+      "external_ids": [
+        "77c344ef-62d1-5f71-ac86-efa53286a879"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "140458"
+    },
+    {
+      "description_ptbr": "Um pequeno jogo com temática de informática em que o jogador recolhe disquetes e dispositivos de armazenamento. Impressoras e peças de montar aparecem como perigos a evitar durante a busca pelos objetos espalhados no cenário.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "4c9a9b3b26b9c0c91462b466bee25bf052b0237dc0e23d6fc53b8b0c0804287d",
+      "external_ids": [
+        "02ebc08c-36d4-51b6-9401-6a5dccdad7b2"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "144803"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça de movimentação sobre gelo, no qual o personagem desliza até alcançar o destino. As fases incluem buracos, interruptores e superfícies especiais que modificam os caminhos disponíveis para atravessar o cenário.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "b2e4ab58597d8e2c0dcc7fee72127cad8e5256beb3a8fb42ccc78f7f696aae62",
+      "external_ids": [
+        "086a127d-d03a-5612-9cbc-b20b39d6df3a",
+        "2c612083-b789-507b-b511-5c884473776b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "149439"
+    },
+    {
+      "description_ptbr": "Uma pequena aventura de temática de Halloween em que o jogador percorre o cenário procurando chaves e corações. A busca leva ao encontro de uma criatura, enquanto os objetos pelo caminho interferem na movimentação do personagem.",
+      "evidence_fields": [
+        "description",
+        "tags"
+      ],
+      "evidence_sha256": "8db79ab713a71ba3e871a9549ec50a203391057155455ac70d89cca31ae6700e",
+      "external_ids": [
+        "b055df48-e707-5d60-bc08-e492b7c327aa"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "152159"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça com temática de gângsteres em que o jogador ajuda um personagem a atravessar uma ponte. O objetivo apresentado é encontrar uma maneira de completar a travessia e alcançar um lugar seguro.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "7607551f41670957c8820c645836437a09979778e75fc3b7aa6670f2a2f240fc",
+      "external_ids": [
+        "35109de1-e944-5786-b6fe-daac4e618669"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "44300"
+    },
+    {
+      "description_ptbr": "Um explorador espacial se aproxima de um planeta distante quando é atacado por criaturas alienígenas. O jogador enfrenta esses inimigos e encontra recursos de proteção e armamento para tentar concluir a viagem até o planeta.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "db15bd7b161c89ced67eefd3de652fe7f2ddb66d18e10a5a2df132f5ee73c12c",
+      "external_ids": [
+        "3e19ae27-da16-5c99-a1ad-b312a206c596"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "51712"
+    },
+    {
+      "description_ptbr": "Num labirinto, uma figura circular pode atravessar paredes e reposicionar esqueletos para abrir caminho a um ladrão. O jogador ajuda esse personagem a encontrar uma chave e alcançar a porta que leva a outro labirinto.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "86160fdfe5a893520640507eea59244bc1b0cd231f0615045b3a3efcdc8d1493",
+      "external_ids": [
+        "3751ea57-1650-5293-b09b-eabc99aeca58"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "33577"
+    },
+    {
+      "description_ptbr": "Uma tartaruga protagoniza uma sequência de doze quebra-cabeças de movimentação. Os desafios incluem mecanismos no cenário e seguem uma proposta associada aos jogos de reorganização de objetos em espaços delimitados.",
+      "evidence_fields": [
+        "description",
+        "tags"
+      ],
+      "evidence_sha256": "16c7ef0749c231e608d0e31fe7bc91d462920915fa3d78bea3a393c935578e0e",
+      "external_ids": [
+        "4921662e-3d8c-55db-ad40-5397c2d7b708"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "151008"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça de encaixe inspirado em Tetris.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "c2dba9b98bdb6fd144dd52da040b0f4fa883a5a04c84c79477fd895d7146a7fc",
+      "external_ids": [
+        "3be1b733-3f99-50ef-8778-987f61fac8d4"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "A fonte identifica apenas uma adaptação de Tetris em desenvolvimento.",
+      "tid": "2996"
+    },
+    {
+      "description_ptbr": "Uma experiência de flutuação em que bolhas podem girar, apresentada com formas e cores contrastantes.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "5ecf8f6f96f76758ba2eab9e6eda7f91b89bef275e1ad50d84c764b904724404",
+      "external_ids": [
+        "ad9dc3b0-9c38-5e87-a698-e22cebd9b0f7"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "As instruções mencionam somente flutuar e girar bolhas; a imagem é de apresentação e não esclarece objetivos.",
+      "short_description_rationale": "As fontes registram flutuação e rotação de bolhas, sem regras adicionais.",
+      "tid": "3436"
+    },
+    {
+      "description_ptbr": "Um jogo de plataformas construído em torno de uma única plataforma. A movimentação do personagem precisa explorar essa restrição, que define a proposta central do percurso e os desafios de deslocamento.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "f5ab7583ddc1b88119d74678f1b0be2f4812eed115ce3fac504fd3cccee6836c",
+      "external_ids": [
+        "cfc3fdb5-b6d4-5b55-b9c9-5da171fcae00"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "34962"
+    },
+    {
+      "description_ptbr": "Uma garota está presa em um ciclo temporal e tenta encontrar uma forma de escapar. A aventura apresenta esse aprisionamento como situação central de uma experiência de curta duração.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "b6c41cd4c6dcfaaaac855d5b92cb465990c7f1cb51d5810ec08816fca321cb9b",
+      "external_ids": [
+        "1455e56c-5860-52d9-8581-63bc231b5fd5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "149288"
+    },
+    {
+      "description_ptbr": "Uma aventura de coleção de criaturas em que o jogador forma um grupo de quimeras e enfrenta outras equipes. Após os combates, pode incorporar novos integrantes e procurar recursos para recuperar os sobreviventes e ampliar o grupo.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "2e56159872baeaee4c583afd154f16d20990a86429b40d0d7b6bbd4f0625b8b5",
+      "external_ids": [
+        "0fedd8c3-6cd0-5a9f-a97f-6097edca8a98"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "27877"
+    },
+    {
+      "description_ptbr": "Uma invasão de palhaços é enfrentada com tortas de creme. Ao serem atingidos, os inimigos disparam de forma desordenada e podem cair sobre o jogador, que precisa continuar o ataque enquanto desvia desses perigos.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "61828fdfb792bfa87793aa5060cba95934fbc373157408996c83acbb0bfc3274",
+      "external_ids": [
+        "0064eb96-658d-540a-91c4-5d003f2c1125"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "33940"
+    },
+    {
+      "description_ptbr": "Um jogo de desvio e disparos em que blocos se aproximam do personagem. Alguns são obstáculos, enquanto outros oferecem recuperação ou munição, exigindo distinguir os objetos antes de atirar contra eles.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "f399e5f6b0c8a0975718e9e91096afe1d47f54e0467857aa86a7ef29c3412d58",
+      "external_ids": [
+        "4ea605be-776c-5ec2-98a4-0af041f0d6df"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "32522"
+    },
+    {
+      "description_ptbr": "Um jogo de voo em que o jogador se desloca para recolher latas de combustível que caem pelo cenário. A área de voo também apresenta pássaros, compondo os elementos encontrados durante a partida.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "85cb2510e5015f37b121e7a569d8a1cafcb2ff65eb50a4b4523d25b88499086b",
+      "external_ids": [
+        "cf4d4b42-95db-539a-acd8-7868baf2f382",
+        "59f486f6-3ebb-5f0e-8784-8fb9a464fb09"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "155025"
+    },
+    {
+      "description_ptbr": "Uma criatura de gosma percorre salas para resgatar Slimette das mãos de um grupo de esqueletos. Os inimigos podem ser presos em bolhas e envolvidos em explosões encadeadas, inclusive durante confrontos com chefes.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "bae8cd2f8b98ab6d0d99c1b83d1d402280132e0e188a669cc0572a0d5f8386f4",
+      "external_ids": [
+        "296f529d-af2a-50b0-ab36-27663b7f89a8"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "29851"
+    },
+    {
+      "description_ptbr": "Uma nave flutuante atravessa paisagens isométricas geradas continuamente, passando por áreas de água e montanhas. O jogador enfrenta naves inimigas, administra munição e ajusta a movimentação às mudanças do terreno.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "c7bd47bb9883c0dea576b05a93fa74b98b04911eced32f3e3b8df44a496d49b8",
+      "external_ids": [
+        "d3a241fd-cbdd-5de3-b363-1187aa76e370"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "151549"
+    },
+    {
+      "description_ptbr": "Um jogo de ação com saltos e combates contra zumbis e arqueiros. O jogador percorre o cenário em busca de itens colecionáveis e de recursos que recuperam sua vitalidade durante os confrontos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "e45dfa5acd33ea2d55c1054544ea22a23b0834c64aac50d4c4cedac2994fd25f",
+      "external_ids": [
+        "986c6f3f-8a72-5156-9eb5-b19a128d802f"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "27656"
+    },
+    {
+      "description_ptbr": "O jogador se encontra dentro de uma estrutura da qual precisa escapar para sobreviver. A exploração funciona como uma caixa de enigmas, em que experimentar e compreender os mecanismos do lugar é parte da solução.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "6cbc211b27145b0acbea557e15782da8fc81b3f65b55b9765b3397919d0737e1",
+      "external_ids": [
+        "ddc73ee0-8c32-53b9-8206-24ad4a035105"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "38311"
+    },
+    {
+      "description_ptbr": "Uma exploração de masmorras com salas conectadas, inimigos e equipamentos para encontrar. O jogador atravessa passagens, enfrenta criaturas como esqueletos e gosmas e utiliza armas e escudos para continuar pelo labirinto.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "576ec5b87cdbb6fcc2486217c3b364067c1037f3100f40ee2227189ec6cdea85",
+      "external_ids": [
+        "98b1fbe3-a73c-57b4-aaee-e0163dee59e4"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "3072"
+    },
+    {
+      "description_ptbr": "Um cachorro acompanha um guerreiro numa busca por crianças sequestradas durante uma nevasca. O jogador conduz o animal pelos perigos do caminho, contando com a ajuda do companheiro armado e com locais de descanso ao longo da jornada.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "58b54d6064de6cab1daf3d293b77828777be8eea7dafe238f857b287ed9380f4",
+      "external_ids": [
+        "7d33ea8b-ca70-5a40-915d-e95a184faaff"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "30195"
+    },
+    {
+      "description_ptbr": "Uma nave avança para dentro de um vórtice em espiral para enfrentar criaturas cósmicas. O jogador se desloca ao redor dessa abertura e altera sua distância do centro enquanto procura destruir os adversários encontrados.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "7e5ffbccf2604da3cb3aa440dd55056a7c065ebd91ab83cdb43b4569f1bee838",
+      "external_ids": [
+        "e7d44611-0a0d-54cc-8228-1d4953e0a0ea"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "31510"
+    },
+    {
+      "description_ptbr": "Uma simulação de lagoa reúne sapos, peixes e insetos num pequeno ecossistema que muda ao longo do tempo. O jogador pode acompanhar essas relações e interferir nas ações de um sapo enquanto observa as transformações das populações.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "9dc9e127884bf6d851dd133e4273dedec786165cc814cdb7aa33aa365a9db7a3",
+      "external_ids": [
+        "d0a19281-6e61-53c3-81d4-56144005146b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "45112"
+    },
+    {
+      "description_ptbr": "Uma aventura espacial permite explorar planetas, luas, estações e asteroides do Sistema Solar. O jogador pilota uma nave em viagens entre esses lugares, realizando pousos e acoplamentos sob a influência da gravidade e das órbitas.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "540463661c1a7c7636799979e6314309df36eeded0528c267a7c8fe707116c28",
+      "external_ids": [
+        "c5276387-3847-5c02-8a82-1a1582c3abf6"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "47295"
+    },
+    {
+      "description_ptbr": "Um personagem percorre uma paisagem de inverno para consertar postes telefônicos. A travessia combina caminhada e saltos por plataformas, enquanto as condições do tempo pioram progressivamente ao longo da jornada.",
+      "evidence_fields": [
+        "description_core",
+        "tags"
+      ],
+      "evidence_sha256": "d0cfa37f16ed1de8adde3903c844b0be2e0b5d083e7d2ed835694a579e5879f2",
+      "external_ids": [
+        "73488204-9a20-58e3-af8f-e8c1c9ac90ff"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "139809"
+    },
+    {
+      "description_ptbr": "Uma estação espacial sofre ataques de criaturas semelhantes a morcegos, e o jogador opera uma torre para proteger seus setores. Os adversários apresentam formas diferentes de aproximação, disparo e colisão contra a defesa.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "955d91db630216dbc47526bd48b2439fb15e8265e457c85c86a881037b1eccf4",
+      "external_ids": [
+        "c2de4a5c-6b00-5574-a002-61810dab2100"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "151936"
+    },
+    {
+      "description_ptbr": "Um desafio de movimentação usa círculos que se alternam em movimentos de rotação. O jogador procura conduzir esse conjunto até um círculo amarelo, encontrando um caminho que evite o contato com os obstáculos.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "f9e1c04cf04903462661c3ae33509e026c301ba63a57842b4ad7cbab55f42a13",
+      "external_ids": [
+        "c7f9410a-61e5-5afc-b876-d598e3bc6877"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "153553"
+    },
+    {
+      "description_ptbr": "Um jogo de tabuleiro coloca um gato contra um grupo de ratos em uma disputa com dados. Os ratos procuram recolher queijos pelo tabuleiro, enquanto o gato tenta capturá-los antes que completem a coleta.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "d8bfda6834c76331597f0087bab9c3a45bf029366236cec875299165db1e4219",
+      "external_ids": [
+        "0a883cc3-ef72-5590-acf8-34493ee37755"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "47074"
+    },
+    {
+      "description_ptbr": "Um jogo de combate espacial dividido em setores, com diferentes armas e grupos de naves inimigas. O jogador precisa destruir as grandes naves que comandam cada área e escolher como enfrentar os adversários ao redor.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "4d194f7d07eef8f2cb3de7d9a801d4d0fd9c1c0e4229082b1b08f0d7ce886c26",
+      "external_ids": [
+        "7a2a3677-b131-5388-9344-3094c0715774"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "147832"
+    },
+    {
+      "description_ptbr": "Um jogo de plataformas em que o jogador atravessa salas para recolher balizas antes que o tempo termine. Conforme avança, os alvos ficam mais distantes ou difíceis de alcançar, e alguns caminhos oferecem tempo adicional.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "88464ec82a6e94094eeb54d4464b362fce7e69b938ce0c06d85ab12e616ffe4d",
+      "external_ids": [
+        "5cd79cf1-3713-5ca6-a7f1-7d1a7708f8bd"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "155317"
+    },
+    {
+      "description_ptbr": "Uma aventura de combate espacial em que a missão é eliminar as naves Klingon antes do prazo. O jogador viaja entre setores, administra energia e escudos e procura bases espaciais para reabastecer a nave.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "193f145f38655128c2aee661129b440b54cef1dcd00e1df910bd4fbe4a59c737",
+      "external_ids": [
+        "8e68b158-ac31-5639-9005-22a537034abe"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "40324"
+    },
+    {
+      "description_ptbr": "O pinguim Plonk precisa enfrentar uma adversária após arruinar sua festa de chá. O combate acontece sobre uma placa de gelo, com deslizamentos, ataques com um peixe e bolas de neve encontradas durante a luta.",
+      "evidence_fields": [
+        "description",
+        "tags"
+      ],
+      "evidence_sha256": "1c75895309533f9a516873271a7ea008b8f683f06eb3f737b12dc45f5b1a0124",
+      "external_ids": [
+        "7530c9fe-508e-580c-94c1-f5e89d261be4"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "151202"
+    },
+    {
+      "description_ptbr": "Cobb percorre cenários de plataformas em busca de frutas para não ficar sem alimento. A aventura atravessa ambientes que mudam a cada partida e oferece recursos que permitem arremessar martelos contra os perigos do caminho.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "39e88cc5febe2896e8234878a3b414f0fc9d2414d6caf3531bfd675acf64cde9",
+      "external_ids": [
+        "86fe5215-74b1-5b2c-a942-2e40ca01b6ab"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "143301"
+    },
+    {
+      "description_ptbr": "O último piloto espacial enfrenta ondas de inimigos usando canhões, foguetes e escudos. O jogador distribui a energia da nave entre esses recursos e recolhe melhorias para sustentar o combate ao longo do percurso.",
+      "evidence_fields": [
+        "description_core",
+        "tags"
+      ],
+      "evidence_sha256": "4a677af823b3bf90491a623f3d98bf00afe326fd7c0a1ad14e3833df4de5ec1d",
+      "external_ids": [
+        "4b73ed24-565e-5259-9c36-ad7f3c5b0411"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "29732"
+    },
+    {
+      "description_ptbr": "Uma exploração de masmorras combina saltos por plataformas e combates contra monstros que ficam mais difíceis ao longo da jornada. O jogador recolhe moedas, encontra melhorias e atravessa zonas com aparências diferentes.",
+      "evidence_fields": [
+        "description_core",
+        "tags"
+      ],
+      "evidence_sha256": "a1e52000b5631d6e89dd524a8750f6571430f73918d1999aa20e7db3555ef007",
+      "external_ids": [
+        "bc084ea6-ef44-5e03-af87-03093e207db5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "46206"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça de blocos coloridos em que peças se agrupam para formar linhas ou figuras em losango. O jogador organiza os conjuntos que caem no tabuleiro e elimina combinações para avançar entre as fases.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "1aed59e74c90c3222301ff00e9a5784959a656797d6314e606ad24fb0f7a9cb6",
+      "external_ids": [
+        "591f07a5-db3e-5078-9cf8-54d58251316c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "39935"
+    },
+    {
+      "description_ptbr": "Um porto espacial recebe naves amigas enquanto é atacado por naves inimigas. O jogador precisa proteger a base, distinguindo os visitantes que devem atracar dos adversários que tentam romper a defesa.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "38f5ff4495b9750cecdc5ef941602f95fbba24ff5e762ae3e484574d207872e4",
+      "external_ids": [
+        "6b18462e-37df-5122-9461-d16080cda2d6"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "152169"
+    },
+    {
+      "description_ptbr": "Uma aventura de ação com super-heróis em que o jogador protege civis de agressores. O personagem enfrenta os inimigos com golpes, saltos e disparos de energia, numa adaptação de um jogo de combate dos Vingadores.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "b3ef1fa54e0b366fc67fb0e377ec7e7a281deccfa5539f24a0382eb2b1e3cc1f",
+      "external_ids": [
+        "686c1c79-66bc-55b5-972d-0b9db4bf108d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "156426"
+    },
+    {
+      "description_ptbr": "Uma casa assombrada esconde três partes de um tesouro que precisam ser reunidas antes da fuga. O jogador procura objetos com iluminação limitada, enquanto monstros perseguem o personagem e podem esconder novamente aquilo que ele encontrou.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "36088c878292a768f55726e77daa6fee7f5a1dd72ccdf1c760b5afa8f328c74a",
+      "external_ids": [
+        "d2d97eea-2ef6-5c48-a080-e3628c33b554"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "41016"
+    },
+    {
+      "description_ptbr": "Um jogo de ação com saltos, golpes, defesa e encontros com personagens amistosos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "d9e366641d0a4e4da5cf11bcfdf5750e377e8b10a4d8ef09baf9970c6627662e",
+      "external_ids": [
+        "78b75d25-ffb0-5d3e-822b-ad3e0b333051"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "O texto disponível é majoritariamente técnico e de comandos; não identifica a ambientação ou a missão.",
+      "short_description_rationale": "O texto é predominantemente de comandos, sem missão ou ambientação identificada.",
+      "tid": "29503"
+    },
+    {
+      "description_ptbr": "Um desafio de fantasia combina roletas e escolhas de elementos para enfrentar um dragão. O jogador reúne moedas, espadas e outros recursos, modifica as opções das roletas e procura eliminar as figuras do dragão.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "56da35f652e6ab48f3bdb69edbec2dcc64e619bf0e92dac04a8830cdb400f76d",
+      "external_ids": [
+        "157254de-ab57-5be9-8f68-29217584bfcb"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "28654"
+    },
+    {
+      "description_ptbr": "Um menino chamado Jack é transformado em brinquedo por um feiticeiro e fica preso numa torre. O jogador o ajuda a percorrer os andares, adquirir novas habilidades de movimentação e procurar uma forma de desfazer a maldição.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "215ebcfc785632aaa1c95f667e97f7ef054bcf1c8068cc64eab717821dea9ff2",
+      "external_ids": [
+        "16672606-b0d8-5397-ae83-9fcdd191c06b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "39614"
+    },
+    {
+      "description_ptbr": "Um jogo de desvio de projéteis com cinquenta fases pequenas distribuídas por diferentes ambientes. O jogador enfrenta sequências de ataques, procura sobreviver aos perigos de cada área e avança até um confronto final com um chefe.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "3a7c153b9a5f8228048e515d51bd1b271d845b7b218bcfe5a8814ad632896580",
+      "external_ids": [
+        "b4f116cc-1f32-5420-9674-fdac33694d19"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "53014"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça de blocos com temática de queijo, inspirado em jogos de combinar peças. O jogador organiza o tabuleiro e reúne recursos que permitem remover grupos maiores, enfrentando desafios com diferentes graus de dificuldade.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "2e50ce35eeba37aa97fe9ada50508f84c1ba23af880e208c0cf1b6ca0003353f",
+      "external_ids": [
+        "997e02ee-d669-5bfe-a8f4-f0c217e6b965"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "152580"
+    },
+    {
+      "description_ptbr": "Após cair para dentro da terra, um personagem precisa atravessar suas profundezas até alcançar o núcleo. Feijões mágicos permitem criar formas de deslocamento, como trepadeiras e saltos, para superar os desafios de plataformas.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "d75cd5e6e996da6f06ea2f63c0f6db8a34f21a8b603c5620bacccd2431378a8b",
+      "external_ids": [
+        "aa7d5763-b7e4-5b7b-8bf2-db3abd5cef66"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "53299"
+    },
+    {
+      "description_ptbr": "Uma aventura de exploração e plataformas com pontos de retorno espalhados pelo cenário. O jogador obtém habilidades de deslocamento e emprega bombas para destruir sinalizadores inativos, avançando pelas áreas que consegue alcançar.",
+      "evidence_fields": [
+        "description_core",
+        "tags"
+      ],
+      "evidence_sha256": "786b818a7948ff05c423351739ef7cbe17b2e6e2ce4faa6131aa0c36d6e9d3f9",
+      "external_ids": [
+        "67ec9d52-cf54-5151-966d-c32f4614f8a3"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "30293"
+    },
+    {
+      "description_ptbr": "Uma aventura de ação e plataformas coloca o jogador contra sonâmbulos, aparições que emergem de televisores e outras criaturas. A travessia passa por quatro fases tomadas por monstros até chegar ao confronto com a criatura central.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "d3867ba14ad52352677ecdf305f7ef34d5680e4102eb9b11e59321703c9c30d5",
+      "external_ids": [
+        "cd48b22d-3b41-5d21-bf9d-8db231fb540d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "150010"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro em que o jogador tenta sobreviver por dois minutos entre inimigos e destroços. Durante a ação, é possível atingir os fragmentos espalhados e recolher moedas enquanto lida com os ataques.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "f200e025a513976cc147fa21aed5a36eeb69ba8a0167bedffe3afc65dc1742db",
+      "external_ids": [
+        "6856ec57-c458-52a3-bac8-2b6c3906404b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "42093"
+    },
+    {
+      "description_ptbr": "Nashi, uma garota com aparência de pera, corre e salta por fases com tempo limitado. Depois de completar dois percursos, ela precisa enfrentar Panroo para resgatar seu irmão mais novo.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "56d787bb6031ff98335b94432bbb1813f0a5d2e732479cc26ed336048299e6a1",
+      "external_ids": [
+        "21d882e5-6c6f-5ea9-8289-8470f8944af5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "151889"
+    },
+    {
+      "description_ptbr": "Uma exploração de labirintos representa uma tentativa de escapar da própria mente. O jogador enfrenta criaturas e recolhe lembranças em caminhos que se reorganizam continuamente, procurando uma saída antes que as passagens voltem a mudar.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "e1e595b93f87f41cfd7040a250f00e98d31a142064bce64203fb1fd40eb5666b",
+      "external_ids": [
+        "f67f3cc3-f18b-5bad-b186-0eb318f3c6a2"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "30868"
+    },
+    {
+      "description_ptbr": "Um jogo de saltos em que o personagem recolhe abacaxis e usa o topo das nuvens para alcançar lugares mais altos. Peixes são perigos a evitar, e uma gema permite obter força para enfrentá-los.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "77269ef9999e6687ba29ccc7595694eed6e518f6309af9a476f5a01ecd7abfe2",
+      "external_ids": [
+        "69361bbd-4851-5641-a8d2-e1179bbbf541"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "154558"
+    },
+    {
+      "description_ptbr": "Um carrinho atravessa os andares de uma torre em busca da superfície. O percurso combina trilhos, camas elásticas e obstáculos, e o jogador usa manobras para passar de um trecho a outro.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "919071b64c748203fdcb3417a63b2907b40caacd9cd491b86852163886f91fbf",
+      "external_ids": [
+        "1b08a26f-56a4-53da-9a29-43598b84df61"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "43347"
+    },
+    {
+      "description_ptbr": "Um cálice encantado foi roubado e escondido por um feiticeiro em algum lugar do reino. O jogador explora esse território, enfrenta a ameaça de dragões e procura devolver o objeto ao castelo dourado.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "c62c73b5caf73ec4664a36e39eb669b563a609fc1a6708b3b42582966fdd397f",
+      "external_ids": [
+        "1d7dc522-af04-55ee-a6a9-5213296ebb08"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "27901"
+    },
+    {
+      "description_ptbr": "Uma salamandra tenta alcançar uma torta no céu, mas as que vêm depois repetem exatamente seus movimentos. O jogador conduz a primeira delas por desafios de plataformas, considerando os efeitos dessa sequência sobre o grupo.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "5be368f17e0bb958f8c3f3cf3c5e46f92334d6992ff90af4dc60abcf6eff8ae8",
+      "external_ids": [
+        "cea45fe2-8a65-526c-9c4f-f7c818362ecb"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "38989"
+    },
+    {
+      "description_ptbr": "Um jogo de ação em que os disparos são limitados às direções laterais. O jogador enfrenta ondas de inimigos que chegam pelas bordas do cenário e procura sobreviver até poder derrotar os chefes.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "7a2d61a6e0b5c44874799b254485439406bbfb2512ab85beee5ce6dd07cf7e7b",
+      "external_ids": [
+        "d47f6e66-fb40-5c0d-925b-1fbb3cb7fbdf"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "155562"
+    },
+    {
+      "description_ptbr": "Um demônio tenta escapar de seu mundo usando um elevador que sobe conforme outros demônios são derrotados. O jogador dispara contra diferentes tipos de adversários e utiliza o resultado desses combates para continuar a ascensão.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "97a7243999f6250335ecda2454b535f158dd25eb6b24465ce1255c415748955a",
+      "external_ids": [
+        "1ec0f0cf-405b-5386-a6d6-4d64efe6abb5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "47449"
+    },
+    {
+      "description_ptbr": "Um jogo de ação e quebra-cabeça com blocos e ovos. O jogador tenta sobreviver saltando e lançando ovos para romper os blocos, evitando tanto ser esmagado quanto deixar os obstáculos se acumularem.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "56b315a008ddd2111eac83ed95834b6472071a65af5a56a3764fef46a28c2a92",
+      "external_ids": [
+        "f912ad83-8e31-5866-b994-46699447de1e"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "39055"
+    },
+    {
+      "description_ptbr": "Uma versão de quebrar blocos cuja aparência remete às interfaces de computadores dos anos oitenta. O jogador enfrenta uma sequência contínua de desafios desse formato, apresentada como uma partida sem fim definido.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "b805db1e14ea20bef07855a40e07403415f5073c05f3c8873590b55d251533ba",
+      "external_ids": [
+        "71058d31-3730-5ac5-847b-ea6717c9a5a7"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "29119"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça de temática macabra em que uma pequena assassina procura recolher vísceras pelo cenário. Durante a busca, o jogador precisa evitar os detetives que representam a ameaça à personagem.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "d154cd5e72cdc012c284ac12b0e5daf3ae8af9b3bbd23806e8f7dba6e7aa5de6",
+      "external_ids": [
+        "a6cc3742-7d98-5b94-83e4-ef0adb7ebacb"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "2993"
+    },
+    {
+      "description_ptbr": "Duas peras dividem funções numa disputa contra criaturas inimigas: uma dispara e a outra repara a companheira. O jogador precisa coordenar suas posições, proteger as duas e recolher recursos que recuperam sua resistência.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "6174aa5d6794308504b03ba88d6dd7210ec4681ba09985a5df5e04ce1e8a196f",
+      "external_ids": [
+        "2c640761-cab3-53b2-bb94-364bdf67dd21"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "36728"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro com ondas de alienígenas, robôs e naves inimigas. O jogador avança pelos ataques, recolhe bombas e recursos de recuperação e enfrenta confrontos com chefes ao longo da partida.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "6f45fd03dd945f118a0cbacec164a73999a38eb78ecd371a7c1d2002b5b81e92",
+      "external_ids": [
+        "a9bde4a2-96cf-51f0-88d4-6939595b2970"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "154050"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro visto de cima em que zumbis chegam por diferentes entradas do cenário. Disparar consome o tempo disponível, enquanto derrotar os inimigos recupera parte dele, ligando o combate à sobrevivência.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "2ab02fecd3cd1622e50ed0dfbd3295843c5594d73012beafbdbdf74689049c31",
+      "external_ids": [
+        "1aabc79c-9e4d-5b76-b179-26726dfaa850"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "3403"
+    },
+    {
+      "description_ptbr": "Um personagem chamado Paciente Zero enfrenta enfermeiras explosivas numa arena vista de cima. A ação se concentra em se movimentar pelo espaço de combate e resistir aos ataques dessas adversárias.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "b07f045592813f72cae5c338a2031e302439c156fa60e898c801b9c26f24074a",
+      "external_ids": [
+        "ac6b8900-e894-5660-a8f4-2a708163c683"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "30499"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro em que o jogador enfrenta inimigos e procura manter a ação pelo maior tempo possível. A partida oferece melhorias e a possibilidade de alternar entre duas armas durante os confrontos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "c8ce37e18231a07db2be84fa07ef9b480f52a3ec125026bd212f68abb5715e41",
+      "external_ids": [
+        "2b547eae-f02d-515d-81d2-d752c4c4a44a"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "141993"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça de empilhar blocos em que o objetivo é formar linhas no tabuleiro. As modalidades propõem tanto continuar organizando peças enquanto houver espaço quanto completar uma quantidade definida de linhas.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "88bbe0deacccd494e5d3b15d781486ed77a287b6d6b12462e71ee6e839004846",
+      "external_ids": [
+        "8d88b834-24bd-5a5e-b387-b487ce119327"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "3258"
+    },
+    {
+      "description_ptbr": "Um fazendeiro da Idade das Trevas precisa plantar e colher trigo para sobreviver. O jogador acompanha essa rotina agrícola, buscando garantir recursos suficientes para que o personagem consiga chegar ao dia seguinte.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "7595d983da7a1237124fbd9b7a3379d028903c3b214980663965491115ed487d",
+      "external_ids": [
+        "ecda0c5b-3b9b-551b-af61-3267c4bea1bc"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "32229"
+    },
+    {
+      "description_ptbr": "Uma variação da cobrinha acrescenta recursos especiais à movimentação da serpente. O jogador pode encontrar melhorias que permitem atravessar paredes, disparar feixes ou encurtar a cauda, alterando suas possibilidades de sobrevivência.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "8dd04408a7bdfc0115fc8c4363c99ce92e4c73913e0eee68c9686b08492b0378",
+      "external_ids": [
+        "ce30af91-3ff6-5e39-a5b6-dbed55db1aa2"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "44363"
+    },
+    {
+      "description_ptbr": "Um cavalo deseja conhecer a vida além do estábulo e luta por sua liberdade. O jogo apresenta uma disputa contínua que se modifica durante a partida, acompanhando a tentativa do animal de deixar esse ambiente.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "9def4e640f8ae8a38bff659965fc2cbb68c620c2635f38f77a42a9e27d5c81c5",
+      "external_ids": [
+        "e96bf2af-da1d-532c-97de-1114101a280b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "44876"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro em que o jogador procura sobreviver enquanto a dificuldade aumenta. A progressão inclui o surgimento de disparos inimigos, ampliando os perigos que precisam ser enfrentados durante a partida.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "153bbf41420f31257547004abe3f91eee560126eeb233ef4f4a3855eabb1494c",
+      "external_ids": [
+        "0c0d2a6b-c3e0-5e3d-90c1-62b56d07cabe"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "147615"
+    },
+    {
+      "description_ptbr": "Uma simulação combina dirigir um carro e trocar mensagens sobre os relacionamentos com Buddy e Sarah. O jogador precisa lidar ao mesmo tempo com a movimentação do veículo e com as conversas que acontecem durante o trajeto.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "db1f69d588c665ba8edcde3cdce19467e2bd97cc3a1c90cba123e7c4028f819b",
+      "external_ids": [
+        "2989c71f-5856-51d2-b725-47068866eb28"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "52925"
+    },
+    {
+      "description_ptbr": "Uma nave amarela parte para defender a Terra de invasores alienígenas. O jogador enfrenta esses inimigos num jogo de tiro inspirado nos clássicos de invasão espacial, conduzindo a nave durante os confrontos.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "9771a46e188842b183143743e9565cb0850e91df0412c60ecaeb2c4cca2bfbc1",
+      "external_ids": [
+        "f8d26812-853d-54a4-8558-b417ac2742bf"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "149090"
+    },
+    {
+      "description_ptbr": "Uma aventura curta de plataformas apresenta quatro fases com inimigos que se deslocam pelo cenário. O jogador atravessa os obstáculos saltando e pode alternar armas para lidar com os adversários encontrados.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "35372b5bf0aded7ce21f598dead825872c8c3cbeaf5afc28330f1400fdcdeb09",
+      "external_ids": [
+        "441d290a-1d7e-5e68-9b39-340686c188bd"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "148540"
+    },
+    {
+      "description_ptbr": "A princesa Celestia percorre o interior de seus próprios sonhos numa aventura de plataformas. O jogador explora esse percurso usando saltos, giros e a capacidade de se agarrar a elementos do cenário.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "9eafb07728196d996a3512c1a01ed7ae7dac651551a9b9c128741c091bd7492d",
+      "external_ids": [
+        "9fa384ea-0074-5a3a-9565-f60071fcf2ca"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "42099"
+    },
+    {
+      "description_ptbr": "Um cavaleiro atravessa desafios de plataformas e procura libertar pequenas larvas. Sua arma permite rebater o personagem nos obstáculos, combinando ataques e movimentação para abrir caminho pelas fases.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "d566897b40a3c7edf502c20a24fa8316d085882a9f1a85725758cff01a1ac2db",
+      "external_ids": [
+        "9a5977f0-44d4-59ab-a7e3-f30f9b5b184d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "55480"
+    },
+    {
+      "description_ptbr": "Uma adaptação de Contra combina deslocamento, saltos e disparos contra adversários. A ação pode ser compartilhada por dois jogadores, que percorrem os desafios usando essas capacidades para tentar sobreviver aos confrontos.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "2fa228ff1591cc890173b3f68888688fb497035bcf081546770309cdcf7debf9",
+      "external_ids": [
+        "b76048b4-e3b3-5fa7-956d-f0a5444a2c0c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "139996"
+    },
+    {
+      "description_ptbr": "A peste se espalha por uma vila através de ratos que mordem os moradores. O jogador troca de hospedeiro para manter a infecção ativa e precisa lidar com os ataques dos habitantes e com um médico que tenta curá-los.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "a5f3cf63a05d5aac12e10a6ff9a2bce90345f40d5e08f8954838a737789f9ef4",
+      "external_ids": [
+        "dedd0bdf-fca8-5369-8e9e-cee5565af66d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "35677"
+    },
+    {
+      "description_ptbr": "Um jogo de ação inverte a proposta dos confrontos de tiro: a atividade principal é curar em vez de ferir. O jogador procura proteger e ajudar manifestantes, mantendo essas pessoas a salvo durante a partida.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "065f8fff0550c831c8f612d72b5598047e87da2f4010fac5d2825cbf1ce78efd",
+      "external_ids": [
+        "1fb5e020-c3bc-5512-89e6-f3f7331c05be"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "143104"
+    },
+    {
+      "description_ptbr": "Um desafio de orientação coloca o jogador dentro de um labirinto tridimensional. A tarefa é observar o espaço percorrido e identificar, num mapa, o lugar correspondente à posição em que começou.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "d63556c12437090d92895c61d37bd6ddc6e5d9e60e1b13295e62f059da6b0baf",
+      "external_ids": [
+        "d6df8672-b4bd-500d-b7aa-030e6120b85d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "43213"
+    },
+    {
+      "description_ptbr": "Um desafio de sobrevivência gira em torno de desviar de projéteis que se aproximam. O jogador dispõe de recursos para desacelerar os ataques, eliminar os disparos próximos e responder contra eles.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "8a9b0cdec0c8984248e9ee521ddee49288af2e8f7d646335213e095ce74d2aa2",
+      "external_ids": [
+        "ead0e792-cc73-5bc4-8bf6-ea259e6288d9"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "152919"
+    },
+    {
+      "description_ptbr": "Uma aventura de pesca convida o jogador a explorar quatro oceanos, capturar peixes e recolher o lixo encontrado. Os resíduos podem ser transformados em objetos úteis enquanto continua a busca por um peixe dourado especial.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "4e6a51ade1013492b47f250ef36d27d36c5d788e951035b91f6ffe5f5618a68a",
+      "external_ids": [
+        "5aa6c5b6-4fbf-53b9-b831-aef901264903"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "53907"
+    },
+    {
+      "description_ptbr": "Uma exploração de masmorras combina combates e quebra-cabeças de administração de recursos. O jogador precisa derrotar inimigos suficientes para abrir a saída de cada área, considerando os limites disponíveis antes de avançar para a próxima.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "5a0cff2f498aab2b115eff9b1e04b04781cd8b86059fc85887869cf5d35c403b",
+      "external_ids": [
+        "799c0bc8-db22-5c3b-9bc4-69c32b412eef"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "39865"
+    },
+    {
+      "description_ptbr": "Dois irmãos encanadores percorrem um cenário de plataformas em busca de galinhas presas nos canos. A tarefa envolve localizar os animais, romper tubulações e instalar novos trechos para resolver os problemas encontrados pelo caminho.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "01d0055762fdf7e348697bc1b064081678e246b76677de791debd0ed9c34a9c1",
+      "external_ids": [
+        "fe8a4717-439f-5c7c-80ab-fadd0c3def0c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "41061"
+    },
+    {
+      "description_ptbr": "Um simulador de reflorestamento transforma o plantio de árvores em desafios de distribuição pelo terreno. O jogador considera espaçamento e densidade, remove obstáculos e administra ferramentas e energia para completar o trabalho em diferentes regiões.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "51dad4552f74652fa9b5063812749e9bbb3e09c6e0fbe4349ebc5afefa8bf217",
+      "external_ids": [
+        "98f21a51-f33d-5284-80a5-94893d20f0ef"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "52257"
+    },
+    {
+      "description_ptbr": "Blu precisa salvar sua família das mãos de Mordred e escapar de um vulcão. A aventura combina plataformas e quebra-cabeças, com portais, passagens secretas e poderes para modificar pedras e abrir caminhos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "3fc15a94723d4b4cfdd0ffbca8e5e6bb4fea82bb331de56e71f565eae6d468aa",
+      "external_ids": [
+        "171e9006-6bcd-594b-a947-b4ca0a02499d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "146034"
+    },
+    {
+      "description_ptbr": "Uma cidade é ameaçada por uma chuva de asteroides em chamas e por ataques alienígenas. O jogador enfrenta as duas frentes de destruição, procurando conter o fogo e impedir que os invasores arrasem o lugar.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "6a9c6ab8ee2568d8d45763ed165f06a1499d5ea7618b9ca2bc8535fa661cf01c",
+      "external_ids": [
+        "68f3fa01-bba0-5959-918d-1595120147ea"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "53680"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro contra ondas de invasores em que deslocamento e disparos estão ligados à mudança de direção. O jogador alterna esquivas e ataques carregados para sobreviver às ondas e enfrentar um chefe.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "a5d77232afbcf050221fa9cf0d6353db4260085e521766f6e4e36159ff027b09",
+      "external_ids": [
+        "417aed54-861b-509a-9332-4a0b274717b6"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "153604"
+    },
+    {
+      "description_ptbr": "Uma nave orbita uma região que precisa ser protegida contra esporos invasores. Alguns inimigos podem ser destruídos por disparos, enquanto outros exigem colisões, e deixar um deles ultrapassar a defesa provoca uma explosão.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "b36b1cf2d417612803d55ed77b4fefeeb6e2ba07beebff2814630c9e3dd538a6",
+      "external_ids": [
+        "c1bb83b6-4f79-58d5-ac85-695e62806c75"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "148848"
+    },
+    {
+      "description_ptbr": "Um personagem se encontra num campo atrás de um grande edifício, onde a chegada da noite traz novas hordas de zumbis. O jogador enfrenta esses grupos sucessivos e procura sobreviver até os próximos ciclos.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "ef5d8c8f7e8b3fa45887435f751bbd53e2c04602315be6b5588b796d74fccf46",
+      "external_ids": [
+        "a7407cae-b97f-564b-a3ee-7484fc0c23a5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "147591"
+    },
+    {
+      "description_ptbr": "Uma pessoa tenta sobreviver dentro de uma cabana onde é atormentada por dois espíritos. A partida apresenta acontecimentos variáveis e sinais que podem enganar o jogador, exigindo distinguir as ameaças para permanecer vivo.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "244a4fca1325d9e902776411600b633e99c395b5067fe67f24d1b2d09b5dafc5",
+      "external_ids": [
+        "3cae2517-9dfa-577e-9ce9-9a8244bdda7c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "153803"
+    },
+    {
+      "description_ptbr": "Um entregador percorre estradas de uma região rural a caminho da cidade, recolhendo pacotes durante a viagem. O trajeto passa por elementos da paisagem e por outros veículos, incluindo caminhões e trechos de ponte.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "be1978cddae2dfe406ad7ad842d41c9c08d298b3bdd7a6f11326dcacd295dae2",
+      "external_ids": [
+        "7c2a14d4-a53f-58f2-8ce2-ee2768027130"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "151556"
+    },
+    {
+      "description_ptbr": "Um espírito ligado a raios e trovões tenta impedir que humanos capturem seus semelhantes. O jogador evita ser apanhado, recolhe doces para recuperar energia e usa seus poderes para fazer os perseguidores desistirem.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "763be436c571ad4a7d35daa4e46d5c23551de7967c6c0d5e749b5cfabb95c5b4",
+      "external_ids": [
+        "5f6d6371-4bb8-5982-ac7f-b8d21a473bea"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "4111"
+    },
+    {
+      "description_ptbr": "Uma bola precisa alcançar a parte inferior de um percurso dividido em regiões coloridas. O jogador aproveita as áreas azuis para preparar seus lançamentos e procura evitar as zonas vermelhas durante a descida.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "a58deb1f0f01b2479ad2ab6e429733aed94482658077c25f72aa492015950801",
+      "external_ids": [
+        "060ce35b-dc17-54b1-babd-05e45bff72a3"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "29537"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro visto de cima apresenta uma ambientação de horror. O jogador se movimenta pelo cenário e combina disparos, granadas e esquivas para enfrentar as ameaças encontradas durante a ação.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "634c7c00b209e819b2e8ee454eab4384944edaafe79f2abfb4102b67231403e9",
+      "external_ids": [
+        "d1d00075-c2c6-5727-a687-65e8a8c57e9c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "30927"
+    },
+    {
+      "description_ptbr": "Após despertar numa ilha desconhecida, o jogador explora o lugar e fabrica objetos para construir um lar. A sobrevivência envolve recolher recursos e criar pontes que permitem alcançar outras ilhas geradas durante a exploração.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "67fec750ce05239b7771749b210218251c8da535e9b6d3c0b0b825e09fe105aa",
+      "external_ids": [
+        "68c3e7d0-b386-5bdf-abca-b91b02161896"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "53727"
+    },
+    {
+      "description_ptbr": "Um jogo de plataformas se passa numa torre sem fim, onde a lava persegue o personagem. O jogador precisa continuar descendo e encontrar passagens entre os obstáculos para prolongar sua sobrevivência.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "52d29c615208e7b3faed1c8a541191a10e26150f22ccf1d7cfe048706f30804d",
+      "external_ids": [
+        "2cead1c2-b189-5c37-a8e1-ffdf4ca4df12"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "33375"
+    },
+    {
+      "description_ptbr": "Um grupo perde a chave da nave durante uma exploração espacial e fica do lado de fora. O jogador procura resolver um enigma para permitir o retorno da equipe antes que o oxigênio termine.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "3a158c7a7f42461b78e2d16218b6b89312101c7da3d40319ab209c971cf3e250",
+      "external_ids": [
+        "fc16632c-bf5a-5cd0-a8c6-f84d1709584c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "41974"
+    },
+    {
+      "description_ptbr": "Uma aventura de exploração permite encontrar e preparar poções capazes de transformar o personagem em diferentes elementos. O jogador utiliza essas mudanças para interagir com o ambiente e explorar possibilidades que alteram as regras da natureza.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "eb66df4b8ed495a9da1615bdd8b4db9c8c59e84591bed7046cc2e896b9e985c9",
+      "external_ids": [
+        "0219207c-a252-59c0-a197-4e0400c77f14"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "46899"
+    },
+    {
+      "description_ptbr": "Uma chuva de ácido começa a destruir árvores, construções e seres vivos. Um pequeno homem-toupeira escava o solo para descobrir a origem do fenômeno e salvar seus amigos, numa aventura de quebra-cabeças com materiais que se movem e caem.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "2222acc250af5257d676cb9db65a7b3752c6c35f6f81d2d57876be1e78ea74f4",
+      "external_ids": [
+        "03cdb068-0383-537a-b581-10fa0ca5df54"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "145408"
+    },
+    {
+      "description_ptbr": "Um jogo de combate contra discos voadores organiza os desafios em setores. O jogador precisa eliminar os invasores e recolher melhorias luminosas, tomando cuidado com os objetos de ajuda que se tornam perigosos quando são atingidos.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "f361967b481164491316595a7ea18a52f47043a9be3779a8e32412ebcd3a00dd",
+      "external_ids": [
+        "6e2868b7-31c0-535c-bd86-0f8028ed8662"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "49857"
+    },
+    {
+      "description_ptbr": "Um personagem em forma de círculo atravessa cinco fases quicando e disparando contra perigos. O percurso inclui minas explosivas, máquinas voadoras e outros obstáculos que exigem combinar movimentação e ataques.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "fda65e38ad21ea59ee5ff88ae02fd49f12981661e519ab280e920639a80c9a72",
+      "external_ids": [
+        "a033ba24-cec3-5515-b9dc-2adf055eba92"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "151848"
+    },
+    {
+      "description_ptbr": "Aela conduz um grupo de formigas para tentar alcançar um destino. Os próprios animais representam perigo, e o jogador precisa coordenar quando eles correm ou saltam enquanto encontra uma passagem segura para a personagem.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "0a41224c0e59d7ef5af5067e9de0289e9c55c0ec0751fe2ff9ad10e7d0117173",
+      "external_ids": [
+        "348cfe22-9629-512e-8b7b-6263707926fc"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "48009"
+    },
+    {
+      "description_ptbr": "Um desafio de sobrevivência se concentra em alterar o tamanho do personagem numa única área de jogo. Recolher objetos faz crescer, disparar reduz o tamanho e atingir o limite permite explodir para eliminar os perigos ao redor.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "dc09323a03e08e318333d5d7acb7924c10fd79b1cd1172d42b2d8c914cbca645",
+      "external_ids": [
+        "8e8cd3dd-1707-5777-bcf5-abc663855cc8"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "143765"
+    },
+    {
+      "description_ptbr": "Uma adaptação de invasão espacial permite enfrentar grupos de monstros com até quatro participantes. Os jogadores se deslocam e disparam contra os adversários, que avançam e atacam suas posições durante a partida.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "7bb777b5bd34ecc02010fc1c660851ea2e1c775d555e1dae182f58ee4ce2c3ad",
+      "external_ids": [
+        "e6d17e9f-9a53-5545-96a7-0a43c37c2457"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "51721"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça de palavras usa peças com letras que podem começar a queimar. O jogador procura formar palavras de três letras e remover as peças ameaçadas antes que o fogo avance até encerrar a partida.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "ee2924a44fface0875a710d63105a6f47e9566cd6c27d181d3adc872b2cbe77e",
+      "external_ids": [
+        "d5ffdfb1-38e5-5bb3-9017-cb5c884f2244"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "155609"
+    },
+    {
+      "description_ptbr": "Uma aventura com um sapo que explora salas onde há inimigos, espinhos e lava.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "69db5cbe6b62e4373e2e92a33deec9016513a731b1bfdcda542e21134e0c70d1",
+      "external_ids": [
+        "5b7fa5c2-7367-590c-a0d6-8be9842f8fc4"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "O texto mistura recursos existentes e planejados; o objetivo da aventura não fica definido.",
+      "short_description_rationale": "As características existentes e planejadas se misturam; foi mantida apenas a premissa conservadora.",
+      "tid": "45927"
+    },
+    {
+      "description_ptbr": "Um jogo de cartas de identificação de conjuntos, em que o jogador procura combinações válidas sobre o tabuleiro. Ao reconhecer esses grupos, retira as cartas correspondentes e continua examinando as possibilidades restantes.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "354d71d3d539be6a6fcd6bad93d58ba0cdd3f0085e03bfa8ebd763cffa76ef91",
+      "external_ids": [
+        "e19d625e-227f-5d1a-881f-41282f5dc5e3"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "150358"
+    },
+    {
+      "description_ptbr": "Um desafio de sobrevivência coloca o jogador diante de uma quantidade crescente de projéteis. A atividade principal é observar as trajetórias e encontrar espaço para desviar dos ataques pelo maior tempo possível.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "7acea58cc2fa7859b41c00f335dbb6b5634286804edd033386df9f07ba8b3f63",
+      "external_ids": [
+        "05046624-74cd-5ada-a56b-6948d248de3b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "148932"
+    },
+    {
+      "description_ptbr": "Insetos são colocados na caixa de areia de um menino para formar criaturas maiores. O jogador organiza os pequenos animais em padrões específicos, tentando criar novas combinações antes que o espaço disponível fique completamente ocupado.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "06a8f6085958cf48f26e0d7be3105bf2abc10656c741293c4be2ae2192faeceb",
+      "external_ids": [
+        "62b4f08c-f20e-5093-820d-e3a0b802e824"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "42734"
+    },
+    {
+      "description_ptbr": "Uma pequena recriação de uma vila rural reúne moradores, áreas de cultivo e atividades como pesca e mineração. O jogador explora os lugares do povoado e acompanha uma rotina organizada pela passagem dos dias.",
+      "evidence_fields": [
+        "description",
+        "tags"
+      ],
+      "evidence_sha256": "3b6f85100640cd203725cca2cf43e21761737fe7cc1318eab2a3e781b53ac23c",
+      "external_ids": [
+        "a17bd57b-4da4-5ba0-8059-203ef880779a"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "52480"
+    },
+    {
+      "description_ptbr": "Um pequeno personagem rosado percorre fases de quebra-cabeça com moedas e caixas que podem esmagá-lo. O jogador procura avançar pelo cenário, considerando os objetos e perigos encontrados ao longo do caminho.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "691c24b15aeb0e49d345bc1ed0e4056014d3de661698cfbf498befdd9bcc2149",
+      "external_ids": [
+        "9dedb14a-24ca-55b1-adab-01a115cb7d07"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "38270"
+    },
+    {
+      "description_ptbr": "Uma exploração de mineração leva o jogador à procura de um grande diamante nas profundezas. O personagem escava, recolhe minérios e melhora seus equipamentos, tomando cuidado com a escuridão, os desmoronamentos e a possibilidade de ficar preso.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "f8133752a5939f616775ea67a47bbdedb2e29c783e6bdd67a8b2441a27df2689",
+      "external_ids": [
+        "182b13ef-5373-5417-9c79-38f663e8c13c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "147728"
+    },
+    {
+      "description_ptbr": "Depois de explorar cavernas com um amigo, o personagem precisa recuperar uma chave para voltar em segurança para casa. O anoitecer traz a ameaça de uma criatura que percorre a região, em uma aventura de exploração tridimensional.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "4bf10e759306ec5d5c100b46bd0b0b89bed3bfc67a10bdd0a9fc6fc241b331a5",
+      "external_ids": [
+        "d99a4b42-4d5d-53e0-9da1-689bc2ac1df6"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "54799"
+    },
+    {
+      "description_ptbr": "Um jovem tripulante procura tesouros nos vinte camarotes de um navio. O jogador encontra chaves para abrir portas e precisa distinguir os objetos valiosos das armadilhas explosivas escondidas entre eles.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "f582700d8e90384051465ffd43e4b2545cca0c6a1495b6ae51c4237b2bb4be0e",
+      "external_ids": [
+        "5a49cb6f-8d77-55b6-a50c-966f9ed4a64b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "29095"
+    },
+    {
+      "description_ptbr": "Uma aventura de exploração e plataformas se passa no reino de Eftal, devastado por conflitos e pela expansão de uma floresta tóxica. O contexto apresenta uma civilização destruída e a presença de plantas e insetos.",
+      "evidence_fields": [
+        "description",
+        "tags",
+        "visual"
+      ],
+      "evidence_sha256": "bcec4dbf34165f2683edb387504bdfbe518503e4184473ba0f6e625685ff93f4",
+      "external_ids": [
+        "a24e25b7-2cd3-5b7b-8030-5f0104237309"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "As fontes oferecem sobretudo a história do reino e uma imagem de apresentação; não especificam a missão do personagem.",
+      "short_description_rationale": "",
+      "tid": "41775"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro para vários participantes, com um ambiente de exploração aberto.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "f912a9c8a158010b71d4dea096ab0af966d6a74f00ec67437ca55eb157eab1d6",
+      "external_ids": [
+        "7679de1c-c931-5564-a3be-c2fdf43d90d1"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "A fonte identifica somente tiro multijogador em mundo aberto.",
+      "tid": "32086"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça exige combinar peças de cabeça com partes de um tabuleiro. O jogador movimenta os componentes, observa quais lados podem se conectar e conduz a figura resultante até a área indicada como destino.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "396878198e5051aa309f898aea9feaf34e60a1fae4855a2ffa1bd87f85ad7706",
+      "external_ids": [
+        "36aff3e0-c10e-5864-8a3a-2c2365db9d7b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "50824"
+    },
+    {
+      "description_ptbr": "Um jogo de exploração combina coleta de gemas e movimentação de rochas. Esses objetos podem cair em diferentes direções, e o jogador precisa considerar seus deslocamentos enquanto procura caminhos pelo cenário.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "c79f9b1f8a47786c9dcf15c30628517ceac5e63b1d112a221342b4e8b62bd2c4",
+      "external_ids": [
+        "ac5be491-a527-5eeb-a2e8-15c29de6528a"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "2574"
+    },
+    {
+      "description_ptbr": "Um pequeno grupo de soldados precisa capturar a bandeira inimiga e levá-la de volta. O jogador orienta os integrantes da equipe por desafios de percurso e obstáculos, planejando ações para evitar perdas durante a missão.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "0677be06389b66cb9d1eae5fcf002aa558255cea27cbf7228923c729aebd6994",
+      "external_ids": [
+        "08f98cf1-0e51-5cd7-93df-994aecb8d48d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "37925"
+    },
+    {
+      "description_ptbr": "Uma coletânea reúne vários minijogos de propostas diferentes em um único cartucho.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "982f4f6fdf3161afea7dc42207f2e3159eabc5b5e33bfd106a6e2a72622ab865",
+      "external_ids": [
+        "51ec93a6-bb56-51c7-a6eb-a0572e2a8efc"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "O cartucho reúne minijogos; as evidências não identificam qual atividade corresponde ao cenário.",
+      "short_description_rationale": "Coletânea de minijogos sem identificação da atividade específica.",
+      "tid": "27582"
+    },
+    {
+      "description_ptbr": "Rusty precisa encontrar água para se manter em funcionamento enquanto enfrenta ataques contínuos. O cenário de faroeste reúne bandidos, vacas e dinamites voadoras, e o jogador busca resfriar o personagem para prolongar sua sobrevivência.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "b053cbb40d2fdbdc1fc756fc8cecc31c7eaa4597bc85eb66a20aa41499eb676e",
+      "external_ids": [
+        "0dcd0a91-6ee5-525f-ab6d-345b04610c6f"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "55192"
+    },
+    {
+      "description_ptbr": "Uma adaptação de Pong apresenta uma disputa baseada em rebater uma bola com plataformas. A experiência pode ser individual, procurando resistir pelo maior tempo possível, ou compartilhada numa partida contra outra pessoa.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "fc21ef1e77036295e591127954b1b7a8c1d6f07f0ff097d1eafc0f8451d750f8",
+      "external_ids": [
+        "d99b0aca-7b9e-57e0-9c62-8a235009298c"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "33273"
+    },
+    {
+      "description_ptbr": "Um clube de luta organiza confrontos por turnos, alternando ataques e momentos de desvio. O jogador atravessa padrões de projéteis e recolhe recursos que permitem preparar habilidades especiais para os encontros seguintes.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "c6c5117d46b05a32c0c3d5fde3b7b4c001c17ce1c2b0710fd38f0ab60093974f",
+      "external_ids": [
+        "a36b9c8c-8fac-5b37-b31f-599b98f57fe1"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "149690"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro com movimentação e mira independentes. O jogador enfrenta inimigos que podem ser repelidos pelos ataques e encontra melhorias temporárias ao longo da partida.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "3e160d3ad5b24e8c7570133399302867451aa85140fc86f93ff5bcccc8c292e9",
+      "external_ids": [
+        "d92cff33-3337-5f7c-9401-53e43f43e2b1"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "149875"
+    },
+    {
+      "description_ptbr": "Um jogo de golfe acrescenta a possibilidade de alterar a trajetória da bola depois da tacada. O jogador utiliza impulsos e frenagens para ajustar o percurso, combinando a escolha inicial do lançamento com intervenções durante o movimento.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "1115ddbbd928e379b782d4d892e81c7120f5113aa176bdfe9be7239ca70fbc91",
+      "external_ids": [
+        "8747dafe-aba4-5d36-9814-cbe32f1052e7"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "32002"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça protagonizado por um sapo, apresentado como uma sequência de desafios de movimentação.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "09b3d0af6d07f0aadc2ec38275b4d01e3d43b277b6974ffee30cd56d8a7919c3",
+      "external_ids": [
+        "7f22abc4-a13b-5d12-a524-1f6e8978903d"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "As fontes confirmam um quebra-cabeça com sapo, mas não descrevem regras ou objetivo; a imagem é de apresentação.",
+      "short_description_rationale": "Há identificação de um quebra-cabeça com sapo, sem explicação das regras.",
+      "tid": "2796"
+    },
+    {
+      "description_ptbr": "Um jogo de lançamentos de bola propõe atingir alvos distribuídos na área de jogo. Antes das tentativas, pequenos desafios permitem obter mais bolas, e o jogador procura ajustar os arremessos para alcançar os alvos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "931c68ab6fb25f481463c2d630797361ac38fac448b7d49570d1abd425ef66ac",
+      "external_ids": [
+        "6404dd6e-37ec-5046-bed9-3819b9ece570"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "151416"
+    },
+    {
+      "description_ptbr": "Um iceberg está derretendo, e o jogador precisa recolher créditos de carbono para recuperá-lo. Durante a tarefa, um adversário chamado Bad Don representa uma ameaça aos esforços de preservar o gelo.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "5700c64a482e235bda226e1b988260302653982e7daa485d52e0c9f2c858c5f6",
+      "external_ids": [
+        "00dab515-11c2-561c-9b37-c3fe7196cf3e"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "31930"
+    },
+    {
+      "description_ptbr": "Uma pequena aventura explora a passagem entre portas e diferentes vistas de um mesmo espaço tridimensional. O jogador acompanha um personagem de camisa verde enquanto descobre como essas partes se conectam.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "1efc2b7ff63f51ef1169682d76240f3459ba4e973db343f3b9b8e928d2e176b4",
+      "external_ids": [
+        "1a5b0b8c-12fe-5b83-ab30-f3a1edffd2f2"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "28569"
+    },
+    {
+      "description_ptbr": "Um sapo salta entre folhas de plantas aquáticas, procurando continuar o percurso sem afundar. Vento e chuva interferem nas trajetórias, e as folhas começam a ceder depois de algum tempo sob o personagem.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "fbe34165cf7cca4122e554c579c0b250a799d082c3336341020074e66f3a6127",
+      "external_ids": [
+        "f35e6fba-a5b0-52b5-aa73-e1e2e44a2b2a"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "2544"
+    },
+    {
+      "description_ptbr": "Uma abóbora de Halloween com braços precisa ser alimentada enquanto viaja sobre uma montaria. O jogador recolhe objetos pelo caminho e os lança para dentro da boca da criatura, que apresenta preferências sobre o que aceita comer.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "93f4b1dd2f9a309dfb731f547434c1e54859fec11d708e54c98d394619becf66",
+      "external_ids": [
+        "deac1bc9-c2d1-51fa-b1cd-9165e63e222f"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "49950"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro inspirado em confrontos com grande quantidade de projéteis na tela. O jogador atravessa cinco fases com chefes e adversários intermediários, buscando caminhos entre os ataques para continuar avançando.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "761b20a6ef90972a86ff095a32ded85e187df609bc13ea6844d64c36527f52fe",
+      "external_ids": [
+        "f79f9391-c243-5e87-b78b-a69f49932060"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "34768"
+    },
+    {
+      "description_ptbr": "Um desafio de resgate apresenta uma pessoa que está se afogando. O jogador precisa organizar uma sequência de objetos na ordem correta para construir uma forma de ajudá-la a sair dessa situação.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "e88f10d5ad9fc89cfac2718cee1a9aed0c586e8523da7ba71936edc8cf456ad8",
+      "external_ids": [
+        "cf1c6e51-40b1-5a5c-9ae0-2506de1606d9"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "53878"
+    },
+    {
+      "description_ptbr": "Uma invasão de robôs alienígenas ameaça o comando galáctico. O jogador enfrenta ondas sucessivas dessas máquinas espaciais e procura impedir que os grupos hostis completem o ataque à estrutura que deve proteger.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "18ffa795b595c0188b6e3943ab7ba7927a9b2b819cd2580a4496f883eb7413b0",
+      "external_ids": [
+        "f134898c-efa7-510d-b62c-851a182e6e01"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "2356"
+    },
+    {
+      "description_ptbr": "Um jogo de defesa permite montar torres combinando objetos que modificam seus ataques. O jogador experimenta configurações de projéteis e efeitos para enfrentar criaturas espaciais, aproveitando padrões de disparo que nem sempre seguem diretamente os inimigos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "1b9045eb33974d5eda992ab0f3948efacc369e1c131d7f1a6aa48fade6e6fba4",
+      "external_ids": [
+        "6e93bb97-69eb-57b7-830f-92fb1caf4d00"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "40608"
+    },
+    {
+      "description_ptbr": "Um jogo de plataformas em que a manteiga permite voar. O jogador usa essa capacidade de deslocamento aéreo para atravessar os desafios apresentados ao longo do cenário.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "79b31c358b3694ac292927282b454e1e401874dcb12ef4e6e2dc165492b93652",
+      "external_ids": [
+        "7081b255-7350-5f3b-a43e-cc8aa1ccb880"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "29931"
+    },
+    {
+      "description_ptbr": "Uma aventura de combate percorre nove estágios do inferno. O jogador enfrenta criaturas e chefes ao longo dessas áreas, procurando superar cada confronto para continuar a passagem pelo mundo demoníaco.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "9d6374d2e9fe9e200c75c825e54ad0043f6f4198591773de479cf36757e84fd9",
+      "external_ids": [
+        "8cfd253d-f262-56e4-a62a-9636fc3fa769"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "32540"
+    },
+    {
+      "description_ptbr": "Uma interface gráfica experimental em miniatura apresenta janelas e ícones entre os quais é possível navegar.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "15e37350d722a797a537717d8de46da024f45dd52289fa86bbd88faf59b03ff5",
+      "external_ids": [
+        "ebfc4a9a-9dbd-5967-88aa-ec7b1f3549cf"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "O material descreve uma interface gráfica experimental, sem objetivo de jogo estabelecido; a imagem não mostra uma partida.",
+      "short_description_rationale": "Demonstração de interface, sem missão de jogo nas fontes.",
+      "tid": "43948"
+    },
+    {
+      "description_ptbr": "Uma adaptação de combate espacial em que uma nave enfrenta inimigos e grandes chefes ao longo de quatro fases. Uma esfera de força pode acompanhar a nave, oferecer proteção e participar dos ataques.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "edebb67101873fb0d44e2f35da941442e2398fb3401792629c724782f67995b3",
+      "external_ids": [
+        "496ebddd-bddb-5b08-a41b-e119f32e6f88"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "44842"
+    },
+    {
+      "description_ptbr": "Um personagem percorre fases usando saltos e impulsos rápidos de deslocamento. O trajeto inclui armadilhas e uma área coberta de neve, reunindo diferentes desafios para a movimentação pelo cenário.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "eb748037d3266a6489b18b5a000f6f2162126eaeebae2740979f8b86ba8f9c1b",
+      "external_ids": [
+        "93d43829-3953-5439-af05-019e113d215a"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "2569"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça geométrico em que o jogador recorta os cantos de quadrados que contêm triângulos. A atividade principal é escolher os cortes a fazer nessas figuras e observar a configuração resultante.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "1e4414a74813ffcff37abccee8b930b60b4e9f2a16ae4ed0f5948ae33f6f4d4d",
+      "external_ids": [
+        "0ef8a794-477c-53c5-8590-cc7ed15ff2e5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "34489"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro coloca o jogador contra antigos seres celestiais para defender o universo. A ação envolve desviar de rajadas de energia em confrontos sucessivos, com missões de diferentes dificuldades e sequências geradas durante a partida.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "cc361581807c345c9fc24493ef1fb7e96e701a58c4f158b64a2595f7bbe7cae0",
+      "external_ids": [
+        "b4f8d45f-7c74-5970-b573-44ceaaae1e96"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "48890"
+    },
+    {
+      "description_ptbr": "Uma aventura de plataformas em dezessete fases permite transportar e arremessar um pequeno companheiro. O jogador combina essas ações com saltos e passagens pelo cenário para superar os desafios de movimentação.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "ebc1cc55e59783b1b6174da3edbdfa8ad95428eeb92a22f98e8f0521b330a2ed",
+      "external_ids": [
+        "ab74a665-cee1-5d52-885d-685c0c31d697"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "154051"
+    },
+    {
+      "description_ptbr": "Um peixinho chamado Finny tenta sobreviver num mundo subaquático sem fim. Ele precisa comer para crescer e evitar a fome, enquanto se protege dos animais maiores que também podem transformá-lo em alimento.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "65f2d0ad83e6828b8215d4285ff8c3024d7dd8dd20cb34041c0e0596f20a3fc1",
+      "external_ids": [
+        "7ce96a73-6db7-5105-8747-1a665e0b3ef3"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "154560"
+    },
+    {
+      "description_ptbr": "Uma exploração em pirâmides exige contornar áreas fechadas para revelar objetos escondidos. O jogador procura uma chave e uma múmia real em cada fase, encontrando também tesouros e outras múmias durante a busca.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "19ed01b6390c9420bf55b2af971bb80612b859eb14290640373ae8996936ac73",
+      "external_ids": [
+        "d6a3f391-4c87-5a30-a50e-b313aab1fff3"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "31907"
+    },
+    {
+      "description_ptbr": "Uma aventura de plataformas com Rayman, em que o jogador percorre o cenário correndo e saltando.",
+      "evidence_fields": [
+        "description",
+        "tags"
+      ],
+      "evidence_sha256": "71ec7101dc1fac0cac6aaacd3bf51535013ba040df5fe6792cc4dbdeec0d644d",
+      "external_ids": [
+        "119a17ea-bbe8-5126-95d6-f6270826d20b"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "As fontes estabelecem a adaptação e as ações básicas, sem detalhar uma missão.",
+      "tid": "152191"
+    },
+    {
+      "description_ptbr": "Uma disputa entre canoas combina deslocamento sobre a água e o uso de lanças contra embarcações rivais. Os participantes procuram atingir os adversários e manter sua própria canoa na competição.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "d7f47dd0bd37280dab3fcd0c66393d491bcb2518f5d19d91a1da25c3e388467d",
+      "external_ids": [
+        "fa7be39d-51e1-542c-ab43-1591c6d8fa5d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "27558"
+    },
+    {
+      "description_ptbr": "Um jogo de tiro reúne naves inimigas, melhorias de armamento e confrontos com chefes. O jogador atravessa ondas de ataques, explora variações do combate e pode procurar segredos presentes durante a partida.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "f5cdcb3e8dd886447784a2166e6d8c5ced4490f1f5396feb9e1be97ce0448f6b",
+      "external_ids": [
+        "0eadc4bf-7069-5ffe-86b9-18666ea10510"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "145328"
+    },
+    {
+      "description_ptbr": "Um fantasma percorre continuamente um cenário de Halloween, recolhendo doces e atravessando elementos do caminho. A movimentação e a capacidade de passar por obstáculos definem a proposta dessa pequena aventura.",
+      "evidence_fields": [
+        "description_core",
+        "tags"
+      ],
+      "evidence_sha256": "55c407ea400078c4540c1233e0e93bce795c666c571b39379fb64f7515aa4499",
+      "external_ids": [
+        "d2766bf2-582c-5c58-843f-feb27837ab72"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "30133"
+    },
+    {
+      "description_ptbr": "Um gato dentro de uma caixa precisa desviar de bolhas venenosas em duas realidades alternativas. O jogador acompanha essas possibilidades de perigo enquanto a situação do personagem permanece entre estar vivo e morto.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "e92512fd9606f8d5f4a1d1d25bc879cf479cfe6581f31a133cb88e95eb4cd6a9",
+      "external_ids": [
+        "c7be90fc-6c59-5c15-914c-ff290d0c3498"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "31061"
+    },
+    {
+      "description_ptbr": "Uma aventura de exploração em que Star Anise procura seu melhor amigo. O jogador atravessa desafios de plataformas e resolve quebra-cabeças para continuar essa busca pelo cenário.",
+      "evidence_fields": [
+        "description_core",
+        "tags"
+      ],
+      "evidence_sha256": "d030d05d4f76ed25b7e049a6f5a5cfa8f2e9068c5e6a75b191466fbfd63a7404",
+      "external_ids": [
+        "baf0ee71-f617-553a-b547-6bab1eddd4b5"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "37868"
+    },
+    {
+      "description_ptbr": "Uma bruxa viaja por vilas vendendo conjuntos de feitiços e maldições para conseguir uma roupa nova. Seu companheiro tenta destruir as mercadorias, e o jogador precisa salvar os produtos que poderão ser vendidos.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "2ada000aab36a88d39605460906ccc0a4a7f546e39e8f1a32fcd3b552a7e0fe9",
+      "external_ids": [
+        "455c41d1-0e95-5854-bc05-c50a0b92cbe4"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "155010"
+    },
+    {
+      "description_ptbr": "Uma adaptação de Pac-Man apresenta labirintos gerados durante a partida e dois fantasmas com comportamentos diferentes. O jogador percorre as passagens para recolher todos os itens, aproveitando recursos temporários que permitem enfrentar os perseguidores.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "a0350213d901323c64bbcabbab8b33a38dbc384b83e8cfb1a8a202880ce3967c",
+      "external_ids": [
+        "1b8a1cea-9b05-5691-aeec-d144899c7e2d"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "28617"
+    },
+    {
+      "description_ptbr": "Um personagem chamado Stink Bot realiza pequenas atividades para avançar entre vinte níveis. A proposta combina minijogos e progressão rápida, incluindo a possibilidade de capturar um peixe dourado.",
+      "evidence_fields": [
+        "description",
+        "tags"
+      ],
+      "evidence_sha256": "1fee5a82f3e968ffa0c8dc3413812c6a8e3cd842bef3b78869f815a8889ca223",
+      "external_ids": [
+        "784145ad-4fd3-5456-ba68-56705b228af8"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "150115"
+    },
+    {
+      "description_ptbr": "Um jogo de plataformas em que o jogador deve se aproximar de um macaco sem encostar nele. A proposta é descobrir como realizar a aproximação respeitando essa restrição durante os desafios do percurso.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "075f07a697c3b5cb296722987202c4e8f7dfd3c216299ad4190e16274715287e",
+      "external_ids": [
+        "b221fa54-8e7a-5f84-95ac-571875d53b48"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "33007"
+    },
+    {
+      "description_ptbr": "Um barco recolhe objetos que caem e procura evitar os perigos no caminho. Baús oferecem benefícios ou maldições, enquanto um kraken se torna cada vez mais ativo e pode perseguir a embarcação.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "55411ba2f67a91a46fa3db82102cfad71779c5d0c616b4997fc6ae70d59aa37e",
+      "external_ids": [
+        "2eaf6ceb-9337-5831-8271-a85b44515013"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "145367"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça de lançamento de bolhas exige limpar a área de jogo para avançar de fase. Algumas bolhas especiais com estrelas acrescentam o desafio de serem atingidas por uma combinação próxima, em vez de apenas cair.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "bf6a7ad4b1ec5862c1f036a62f7bba615429f3aaa2053638402c56242de6bad3",
+      "external_ids": [
+        "91de303e-d55c-5d59-903d-189d5d729eb8"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "140406"
+    },
+    {
+      "description_ptbr": "Dizzy parte para resgatar Daisy, sequestrada pelo feiticeiro Zaks, e ajudar outros habitantes de seu mundo. A aventura combina saltos, diálogos e uso de objetos para resolver os obstáculos encontrados pelo caminho.",
+      "evidence_fields": [
+        "description"
+      ],
+      "evidence_sha256": "dbb4e31b601cc63facd586a6c386b0655073272edf054b8e7d74c296960164c6",
+      "external_ids": [
+        "804736a1-eee7-5e55-9359-6d6c25c211df"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "29388"
+    },
+    {
+      "description_ptbr": "Uma exploração de salas por turnos exige recolher ouro e derrotar todos os inimigos para revelar a próxima passagem. O jogador avalia cada movimento e procura evitar que os adversários o cerquem durante os confrontos.",
+      "evidence_fields": [
+        "description_core",
+        "tags"
+      ],
+      "evidence_sha256": "3706dafe24e5153386b854ea9b7b9fe89a92df87eec2f8e6528c73de8d291aeb",
+      "external_ids": [
+        "97e4e37a-d4ea-5f64-b438-82dccff1d7ca"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "40637"
+    },
+    {
+      "description_ptbr": "Um quebra-cabeça apresenta uma grade de pequenos elementos, alguns conectados por linhas coloridas.",
+      "evidence_fields": [
+        "description",
+        "visual"
+      ],
+      "evidence_sha256": "eb7bfde1922d9f1e50c753dab448cbaa605e1476069ef556e3df6bfd49868b17",
+      "external_ids": [
+        "10366abf-443f-521f-b25e-ab63375fc655"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "Há apenas uma apresentação genérica de sete fases e uma grade visível; as regras do quebra-cabeça não são descritas.",
+      "short_description_rationale": "A imagem e o texto não esclarecem as regras da grade.",
+      "tid": "37068"
+    },
+    {
+      "description_ptbr": "Uma aventura de plataformas e quebra-cabeças permite conectar ao personagem os poderes de amigos próximos. O jogador procura utilizar essas habilidades compartilhadas para superar os desafios de movimentação e encontrar formas de avançar pelo cenário.",
+      "evidence_fields": [
+        "description_core"
+      ],
+      "evidence_sha256": "ee5837e768b7dfb3824cf3c517368081e290e945d9e91c357d8cc360ec4c7e60",
+      "external_ids": [
+        "c57b816f-6e28-54b3-9759-41aecf172051"
+      ],
+      "manual_review_recommended": false,
+      "review_reason": "",
+      "short_description_rationale": "",
+      "tid": "43370"
+    },
+    {
+      "description_ptbr": "Uma imagem em arte pixelada mostra uma figura azul e branca cercada por uma forma rosa, sobre fundo escuro.",
+      "evidence_fields": [
+        "visual"
+      ],
+      "evidence_sha256": "e825e2de778373959d6731828b7ac33e762cf300721a42d5a1ecac8bcccaa102",
+      "external_ids": [
+        "490dbe54-5ef1-56b3-a34c-b300c0a8d73f"
+      ],
+      "manual_review_recommended": true,
+      "review_reason": "Não há descrição textual; somente a imagem permite uma descrição visual conservadora, sem objetivo de jogo.",
+      "short_description_rationale": "Não há descrição textual; somente a imagem permite descrever o aspecto visual.",
+      "tid": "33885"
+    }
+  ],
+  "method": "Redação semântica assistida por Codex sobre evidências contextuais congeladas e inspeção visual nos casos indicados; sem tradução literal automática. Não se registra revisão humana independente.",
+  "protocol": "context-description-ptbr-v1",
+  "reuse_policy": "Contextos idênticos do mesmo cartucho reutilizam a mesma redação sem criar diferenças não sustentadas nas fontes. Cada external_id permanece explícito e auditável."
+}

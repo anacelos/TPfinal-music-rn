@@ -1,0 +1,29 @@
+{
+  "snapshot": "snapshot-20261125-2016",
+  "files_sha256": {
+    "participants.csv": "1e791ccb5d2f9fd2f5697b0f2744022da10174b2425181ffa593e557c57c9572",
+    "ratings.csv": "fcea68d70d8706f7cd6428564ace1828d54214d0cd5f351db664a240855c96b8",
+    "reservations.csv": "c2f22355c338b8089318b0e0aef25c5dd829a1408d0a91a73369bdb890c93e7b",
+    "scenarios.csv": "395a47f97a741492f7426dc468e0468430639682a519bf64e2ea9842bfe72591",
+    "study_texts_and_questionnaire.json": "1b4b09ea2542fb7bd4b513eb8099c0dfaee553cc4152bb0ec15b240f5f70faf2",
+    "scenario_key.json": "e2f085528b97ff5f8f66e65ccd21fdaf8a1b7cdcc25e9addd2b4754dd6199fb8",
+    "analyze_subjective_results.py": "985ed61d908a76120ee6d045d0f1b726ad70cb5792ed488f4fe7ebbf336046e1"
+  },
+  "registered": 83,
+  "profile_completed": 82,
+  "finished": 68,
+  "reservation_states": {
+    "completed": 139,
+    "active": 11,
+    "lost": 10
+  },
+  "analysis_adapter": {
+    "rating_A": "A",
+    "rating_B": "B",
+    "rating_C": "C",
+    "rating_D": "D",
+    "age_range": "age_group"
+  },
+  "snapshot_decision": "Full snapshot 20:16 adopted as final, confirmed by study contributor.",
+  "pilot_reset": "Confirmed by study contributor; not independently identifiable in exported records."
+}

@@ -1,0 +1,1192 @@
+From d2870c2f815f6216d8eff4207dbe45cfd1b571e6 Mon Sep 17 00:00:00 2001
+From: Yuri Dantas <yyurisiqueira@gmail.com>
+Date: Fri, 20 Nov 2026 12:26:31 -0300
+Subject: [PATCH] Add scenario-based subjective evaluation backend
+
+---
+ .gitignore                |   3 +-
+ app/config.py             |   4 +-
+ app/routes/__init__.py    |   4 +-
+ app/routes/scenarios.py   |  40 +++
+ app/scenario_models.py    | 151 ++++++++++
+ app/services/scenarios.py | 254 +++++++++++++++++
+ tests/README.md           |  75 +++++
+ tests/test_scenarios.py   | 570 ++++++++++++++++++++++++++++++++++++++
+ 8 files changed, 1098 insertions(+), 3 deletions(-)
+ create mode 100644 app/routes/scenarios.py
+ create mode 100644 app/scenario_models.py
+ create mode 100644 app/services/scenarios.py
+ create mode 100644 tests/README.md
+ create mode 100644 tests/test_scenarios.py
+
+diff --git a/.gitignore b/.gitignore
+index 4b47cc1..d849121 100644
+--- a/.gitignore
++++ b/.gitignore
+@@ -1,3 +1,4 @@
+ instance
+ migrations
+-database
+\ No newline at end of file
++database
++.venv/
+diff --git a/app/config.py b/app/config.py
+index 8309baf..8dd6f1d 100644
+--- a/app/config.py
++++ b/app/config.py
+@@ -6,6 +6,8 @@ project_root = os.path.dirname(basedir)
+ 
+ class Config:
+     SQLALCHEMY_TRACK_MODIFICATIONS = False
++    SCENARIOS_PER_PARTICIPANT = int(os.getenv('SCENARIOS_PER_PARTICIPANT', '4'))
++    RESERVATION_MINUTES = int(os.getenv('RESERVATION_MINUTES', '30'))
+     S3_BUCKET = os.getenv('S3_BUCKET', 'pairs-files')
+     S3_KEY = os.getenv('S3_KEY', 'tracks.json')
+     S3_REGION = os.getenv('S3_REGION', 'us-east-1')
+@@ -18,4 +20,4 @@ class DevelopmentConfig(Config):
+     SQLALCHEMY_DATABASE_URI = 'sqlite:///' + os.path.join(project_root, 'database', 'local_dev.db')
+ 
+ class ProductionConfig(Config):
+-    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:adcruim123!@survey-database-hml.cqze80s4i0mc.us-east-1.rds.amazonaws.com/survey_responses_hml'
+\ No newline at end of file
++    SQLALCHEMY_DATABASE_URI = 'postgresql+psycopg2://postgres:adcruim123!@survey-database-hml.cqze80s4i0mc.us-east-1.rds.amazonaws.com/survey_responses_hml'
+diff --git a/app/routes/__init__.py b/app/routes/__init__.py
+index ccc6507..3d2e515 100644
+--- a/app/routes/__init__.py
++++ b/app/routes/__init__.py
+@@ -1,8 +1,10 @@
+ from .pairs import pairs_bp
+ from .users import users_bp
+ from .responses import responses_bp
++from .scenarios import scenarios_bp
+ 
+ def register_routes(app):
+     app.register_blueprint(pairs_bp)
+     app.register_blueprint(users_bp)
+-    app.register_blueprint(responses_bp)
+\ No newline at end of file
++    app.register_blueprint(responses_bp)
++    app.register_blueprint(scenarios_bp)
+diff --git a/app/routes/scenarios.py b/app/routes/scenarios.py
+new file mode 100644
+index 0000000..a49c375
+--- /dev/null
++++ b/app/routes/scenarios.py
+@@ -0,0 +1,40 @@
++"""Public, blind API for the new study only."""
++
++from flask import Blueprint, current_app, jsonify, request
++from sqlalchemy.exc import SQLAlchemyError
++
++from app.services.scenarios import (
++    ScenarioError, participant_progress, reserve_scenarios, submit_scenario_response,
++)
++
++
++scenarios_bp = Blueprint("scenarios", __name__)
++
++
++@scenarios_bp.errorhandler(ScenarioError)
++def scenario_error(error):
++    return jsonify({"error": str(error)}), error.status_code
++
++
++@scenarios_bp.errorhandler(SQLAlchemyError)
++def database_error(error):
++    current_app.logger.exception("Scenario operation failed")
++    # SQLAlchemy messages can include private storage paths and presentation data.
++    return jsonify({"error": "Scenario operation failed; please retry"}), 503
++
++
++@scenarios_bp.post("/scenarios/reserve")
++def reserve():
++    return jsonify(reserve_scenarios(request.headers.get("uuid")))
++
++
++@scenarios_bp.get("/scenarios/mine")
++def mine():
++    return jsonify(participant_progress(request.headers.get("uuid")))
++
++
++@scenarios_bp.post("/scenario-responses/submit")
++def submit():
++    return jsonify(submit_scenario_response(
++        request.headers.get("uuid"), request.get_json(silent=True),
++    ))
+diff --git a/app/scenario_models.py b/app/scenario_models.py
+new file mode 100644
+index 0000000..0596506
+--- /dev/null
++++ b/app/scenario_models.py
+@@ -0,0 +1,151 @@
++"""Models for the scenario study; independent of the legacy pair study."""
++
++import enum
++import secrets
++import uuid
++from datetime import datetime, timezone
++
++from sqlalchemy import CheckConstraint, UniqueConstraint
++from sqlalchemy.orm import validates
++from sqlalchemy.types import DateTime, TypeDecorator
++
++from app.repository import db
++
++
++def utc_now():
++    return datetime.now(timezone.utc)
++
++
++def new_id():
++    return str(uuid.uuid4())
++
++
++def new_token():
++    return secrets.token_urlsafe(32)
++
++
++class UTCDateTime(TypeDecorator):
++    """Preserve aware UTC datetimes, including on SQLite round trips."""
++
++    impl = DateTime(timezone=True)
++    cache_ok = True
++
++    def process_bind_param(self, value, dialect):
++        if value is None:
++            return None
++        if value.tzinfo is None or value.utcoffset() is None:
++            raise ValueError("Timestamps must be timezone-aware")
++        return value.astimezone(timezone.utc)
++
++    def process_result_value(self, value, dialect):
++        if value is None:
++            return None
++        if value.tzinfo is None:
++            return value.replace(tzinfo=timezone.utc)
++        return value.astimezone(timezone.utc)
++
++
++class ScenarioStatus(str, enum.Enum):
++    AVAILABLE = "AVAILABLE"
++    RESERVED = "RESERVED"
++    COMPLETED = "COMPLETED"
++
++
++class AudioOrigin(str, enum.Enum):
++    real = "real"
++    markov = "markov"
++    neural = "neural"
++    attention = "attention"
++
++
++def enum_column(enum_class, name):
++    return db.Enum(
++        enum_class, name=name, native_enum=False, create_constraint=True,
++        validate_strings=True, values_callable=lambda items: [item.value for item in items],
++    )
++
++
++class Scenario(db.Model):
++    __tablename__ = "scenario"
++
++    id = db.Column(db.String(36), primary_key=True, default=new_id)
++    external_id = db.Column(db.String(255), unique=True)
++    context_image = db.Column(db.Text)
++    game_description = db.Column(db.Text, nullable=False)
++    scene_description = db.Column(db.Text, nullable=False)
++    status = db.Column(
++        enum_column(ScenarioStatus, "scenario_status"), nullable=False,
++        default=ScenarioStatus.AVAILABLE, index=True,
++    )
++    reserved_by = db.Column(db.String(36), db.ForeignKey("user.uuid"), index=True)
++    reserved_at = db.Column(UTCDateTime())
++    reserved_until = db.Column(UTCDateTime(), index=True)
++    reservation_id = db.Column(db.String(64), unique=True)
++    audio_order = db.Column(db.JSON)
++    completed_at = db.Column(UTCDateTime())
++    created_at = db.Column(UTCDateTime(), nullable=False, default=utc_now)
++
++    audios = db.relationship("ScenarioAudio", back_populates="scenario")
++
++    @validates("status")
++    def validate_status(self, key, value):
++        return ScenarioStatus(value)
++
++
++class ScenarioAudio(db.Model):
++    __tablename__ = "scenario_audio"
++    __table_args__ = (
++        UniqueConstraint("scenario_id", "origin", name="uq_scenario_audio_origin"),
++    )
++
++    id = db.Column(db.String(36), primary_key=True, default=new_id)
++    public_id = db.Column(db.String(64), nullable=False, unique=True, default=new_token)
++    scenario_id = db.Column(db.String(36), db.ForeignKey("scenario.id"), nullable=False, index=True)
++    origin = db.Column(enum_column(AudioOrigin, "scenario_audio_origin"), nullable=False)
++    storage_key = db.Column(db.Text, nullable=False)
++
++    scenario = db.relationship("Scenario", back_populates="audios")
++
++    @validates("origin")
++    def validate_origin(self, key, value):
++        return AudioOrigin(value)
++
++
++class ScenarioResponse(db.Model):
++    __tablename__ = "scenario_response"
++    __table_args__ = (
++        UniqueConstraint("scenario_id", name="uq_scenario_response_scenario"),
++        *(CheckConstraint(
++            "score_{0} BETWEEN 1 AND 5 AND score_{0} = CAST(score_{0} AS INTEGER)".format(label),
++            name="ck_scenario_response_score_" + label,
++        ) for label in "abcd"),
++        CheckConstraint(
++            "time_spent_ms >= 0 AND time_spent_ms = CAST(time_spent_ms AS BIGINT)",
++            name="ck_scenario_response_time_spent",
++        ),
++    )
++
++    id = db.Column(db.String(36), primary_key=True, default=new_id)
++    scenario_id = db.Column(db.String(36), db.ForeignKey("scenario.id"), nullable=False)
++    participant_uuid = db.Column(db.String(36), db.ForeignKey("user.uuid"), nullable=False, index=True)
++    reservation_id = db.Column(db.String(64), nullable=False)
++    score_a = db.Column(db.Integer, nullable=False)
++    score_b = db.Column(db.Integer, nullable=False)
++    score_c = db.Column(db.Integer, nullable=False)
++    score_d = db.Column(db.Integer, nullable=False)
++    presented_order = db.Column(db.JSON, nullable=False)
++    reserved_at = db.Column(UTCDateTime(), nullable=False)
++    submitted_at = db.Column(UTCDateTime(), nullable=False, default=utc_now)
++    time_spent_ms = db.Column(db.BigInteger, nullable=False)
++
++    @validates("score_a", "score_b", "score_c", "score_d")
++    def validate_score(self, key, value):
++        if type(value) is not int or not 1 <= value <= 5:
++            raise ValueError("Scores must be integers between 1 and 5")
++        return value
++
++    @validates("time_spent_ms")
++    def validate_time_spent(self, key, value):
++        if type(value) is not int or not 0 <= value <= 9223372036854775807:
++            raise ValueError("time_spent_ms must be a nonnegative 64-bit integer")
++        return value
+diff --git a/app/services/scenarios.py b/app/services/scenarios.py
+new file mode 100644
+index 0000000..4c2d8a3
+--- /dev/null
++++ b/app/services/scenarios.py
+@@ -0,0 +1,254 @@
++"""Transactional scenario allocation, completion and public serialization.
++
++Each operation owns a short-lived SQLAlchemy session. SQLite writers acquire
++BEGIN IMMEDIATE before reading; PostgreSQL writers lock the participant and
++scenario rows. No legacy study counters or responses are used.
++"""
++
++import secrets
++from contextlib import contextmanager
++from datetime import timedelta
++from uuid import UUID
++
++from flask import current_app
++from sqlalchemy import func, select, update
++from sqlalchemy.orm import Session
++
++from app.models import User
++from app.repository import db
++from app.scenario_models import (
++    AudioOrigin, Scenario, ScenarioAudio, ScenarioResponse, ScenarioStatus,
++    new_token, utc_now,
++)
++
++
++LABELS = ("A", "B", "C", "D")
++RANDOM = secrets.SystemRandom()
++
++
++class ScenarioError(Exception):
++    def __init__(self, message, status_code=400):
++        super().__init__(message)
++        self.status_code = status_code
++
++
++def _positive_integer(value, name):
++    if type(value) is not int or value < 1:
++        raise ScenarioError(name + " must be a positive integer")
++    return value
++
++
++def configured_target():
++    return _positive_integer(current_app.config.get("SCENARIOS_PER_PARTICIPANT", 4), "target")
++
++
++def _participant_id(value):
++    if not isinstance(value, str):
++        raise ScenarioError("UUID is missing or invalid")
++    try:
++        UUID(value)
++    except ValueError:
++        raise ScenarioError("UUID is missing or invalid") from None
++    return value
++
++
++@contextmanager
++def _transaction(write=True):
++    with Session(db.engine, expire_on_commit=False) as session:
++        with session.begin():
++            if write and db.engine.dialect.name == "sqlite":
++                session.connection().exec_driver_sql("BEGIN IMMEDIATE")
++            yield session
++
++
++def _participant(session, participant_uuid, lock=True):
++    statement = select(User).where(User.uuid == participant_uuid)
++    if lock:
++        statement = statement.with_for_update()
++    if session.execute(statement).scalar_one_or_none() is None:
++        raise ScenarioError("Participant not found", 404)
++
++
++def _release_expired(session, now):
++    result = session.execute(
++        update(Scenario).where(
++            Scenario.status == ScenarioStatus.RESERVED,
++            Scenario.reserved_until <= now,
++        ).values(
++            status=ScenarioStatus.AVAILABLE, reserved_by=None, reserved_at=None,
++            reserved_until=None, reservation_id=None, audio_order=None,
++        ), execution_options={"synchronize_session": False},
++    )
++    return result.rowcount
++
++
++def release_expired_reservations():
++    """Release expired leases only, without touching completed scenarios."""
++    with _transaction() as session:
++        return _release_expired(session, utc_now())
++
++
++def _eligible_scenarios():
++    valid_audio_scenarios = (
++        select(ScenarioAudio.scenario_id)
++        .group_by(ScenarioAudio.scenario_id)
++        .having(func.count(ScenarioAudio.id) == len(LABELS))
++        .having(func.count(func.distinct(ScenarioAudio.origin)) == len(AudioOrigin))
++    )
++    return select(Scenario).where(
++        Scenario.status == ScenarioStatus.AVAILABLE,
++        Scenario.completed_at.is_(None),
++        Scenario.id.in_(valid_audio_scenarios),
++        ~select(ScenarioResponse.id).where(
++            ScenarioResponse.scenario_id == Scenario.id,
++        ).exists(),
++    )
++
++
++def _valid_reservations(session, participant_uuid, now):
++    return session.execute(
++        select(Scenario).where(
++            Scenario.status == ScenarioStatus.RESERVED,
++            Scenario.reserved_by == participant_uuid,
++            Scenario.reserved_until > now,
++        ).order_by(Scenario.reserved_at, Scenario.id),
++    ).scalars().all()
++
++
++def _completed_count(session, participant_uuid):
++    return session.scalar(select(func.count()).select_from(ScenarioResponse).where(
++        ScenarioResponse.participant_uuid == participant_uuid,
++    ))
++
++
++def _public_reservation(session, scenario):
++    # Deliberate allowlist: never serialize models, internal IDs, paths or origins.
++    audios = {audio.id: audio for audio in session.execute(
++        select(ScenarioAudio).where(ScenarioAudio.scenario_id == scenario.id),
++    ).scalars()}
++    return {
++        "scenario_id": scenario.id,
++        "reservation_id": scenario.reservation_id,
++        "reserved_until": scenario.reserved_until.isoformat(),
++        "context_image": scenario.context_image,
++        "game_description": scenario.game_description,
++        "scene_description": scenario.scene_description,
++        "audios": [
++            {"label": label, "public_id": audios[scenario.audio_order[label]].public_id}
++            for label in LABELS
++        ],
++    }
++
++
++def _progress(session, participant_uuid, target, now):
++    completed = _completed_count(session, participant_uuid)
++    return {
++        "completed_count": completed,
++        "target": target,
++        "whether_complete": completed >= target,
++        "reservations": [
++            _public_reservation(session, item)
++            for item in _valid_reservations(session, participant_uuid, now)
++        ],
++    }
++
++
++def reserve_scenarios(participant_uuid, target=None):
++    participant_uuid = _participant_id(participant_uuid)
++    target = configured_target() if target is None else _positive_integer(target, "target")
++    minutes = _positive_integer(current_app.config.get("RESERVATION_MINUTES", 30), "RESERVATION_MINUTES")
++    with _transaction() as session:
++        _participant(session, participant_uuid)
++        now = utc_now()
++        _release_expired(session, now)
++        current = _valid_reservations(session, participant_uuid, now)
++        missing = max(0, target - _completed_count(session, participant_uuid) - len(current))
++        if missing:
++            candidates = session.execute(
++                _eligible_scenarios().order_by(Scenario.created_at, Scenario.id)
++                .limit(missing).with_for_update(skip_locked=True),
++            ).scalars().all()
++            for scenario in candidates:
++                audios = session.execute(select(ScenarioAudio).where(
++                    ScenarioAudio.scenario_id == scenario.id,
++                ).order_by(ScenarioAudio.id)).scalars().all()
++                shuffled = RANDOM.sample([audio.id for audio in audios], len(LABELS))
++                scenario.status = ScenarioStatus.RESERVED
++                scenario.reserved_by = participant_uuid
++                scenario.reserved_at = now
++                scenario.reserved_until = now + timedelta(minutes=minutes)
++                scenario.reservation_id = new_token()
++                scenario.audio_order = dict(zip(LABELS, shuffled))
++            session.flush()
++        return _progress(session, participant_uuid, target, now)
++
++
++def participant_progress(participant_uuid):
++    participant_uuid = _participant_id(participant_uuid)
++    with _transaction(write=False) as session:
++        _participant(session, participant_uuid, lock=False)
++        return _progress(session, participant_uuid, configured_target(), utc_now())
++
++
++def _validate_submission(payload):
++    fields = {"scenario_id", "reservation_id", "scores", "time_spent_ms"}
++    if not isinstance(payload, dict) or set(payload) != fields:
++        raise ScenarioError("Expected only scenario_id, reservation_id, scores and time_spent_ms")
++    if any(not isinstance(payload[key], str) or not payload[key] for key in ("scenario_id", "reservation_id")):
++        raise ScenarioError("scenario_id and reservation_id must be nonempty strings")
++    if not payload["reservation_id"].isascii() or len(payload["reservation_id"]) > 64:
++        raise ScenarioError("reservation_id is invalid")
++    scores = payload["scores"]
++    if not isinstance(scores, dict) or set(scores) != set(LABELS):
++        raise ScenarioError("Exactly the labels A, B, C and D are required")
++    if any(type(value) is not int or not 1 <= value <= 5 for value in scores.values()):
++        raise ScenarioError("Scores must be integers between 1 and 5")
++    elapsed = payload["time_spent_ms"]
++    if type(elapsed) is not int or not 0 <= elapsed <= 9223372036854775807:
++        raise ScenarioError("time_spent_ms must be a nonnegative 64-bit integer")
++
++
++def submit_scenario_response(participant_uuid, payload):
++    participant_uuid = _participant_id(participant_uuid)
++    _validate_submission(payload)
++    with _transaction() as session:
++        _participant(session, participant_uuid)
++        scenario = session.execute(select(Scenario).where(
++            Scenario.id == payload["scenario_id"],
++        ).with_for_update()).scalar_one_or_none()
++        if scenario is None:
++            raise ScenarioError("Scenario not found", 404)
++        existing = session.execute(select(ScenarioResponse).where(
++            ScenarioResponse.scenario_id == scenario.id,
++        )).scalar_one_or_none()
++        if existing is not None:
++            if (existing.participant_uuid != participant_uuid or
++                    not secrets.compare_digest(existing.reservation_id, payload["reservation_id"])):
++                raise ScenarioError("Submission does not belong to this reservation", 403)
++            if any(getattr(existing, "score_" + label.lower()) != payload["scores"][label]
++                   for label in LABELS):
++                raise ScenarioError("Completed responses cannot be changed", 409)
++            return {"scenario_id": scenario.id, "status": "COMPLETED", "already_completed": True}
++        if scenario.status != ScenarioStatus.RESERVED:
++            raise ScenarioError("Scenario is not reserved", 409)
++        if (scenario.reserved_by != participant_uuid or
++                not secrets.compare_digest(scenario.reservation_id or "", payload["reservation_id"])):
++            raise ScenarioError("Submission does not belong to this reservation", 403)
++        now = utc_now()
++        if scenario.reserved_until is None or scenario.reserved_until <= now:
++            raise ScenarioError("Reservation has expired", 409)
++        if not isinstance(scenario.audio_order, dict) or set(scenario.audio_order) != set(LABELS):
++            raise ScenarioError("Reservation presentation is invalid", 409)
++        response = ScenarioResponse(
++            scenario_id=scenario.id, participant_uuid=participant_uuid,
++            reservation_id=scenario.reservation_id,
++            presented_order=dict(scenario.audio_order), reserved_at=scenario.reserved_at,
++            submitted_at=now, time_spent_ms=payload["time_spent_ms"],
++            **{"score_" + label.lower(): payload["scores"][label] for label in LABELS},
++        )
++        session.add(response)
++        scenario.status = ScenarioStatus.COMPLETED
++        scenario.completed_at = now
++        # Keep the lease and presentation as an audit trail. Expiry only touches RESERVED.
++        session.flush()
++        return {"scenario_id": scenario.id, "status": "COMPLETED", "already_completed": False}
+diff --git a/tests/README.md b/tests/README.md
+new file mode 100644
+index 0000000..d66eeed
+--- /dev/null
++++ b/tests/README.md
+@@ -0,0 +1,75 @@
++# Scenario backend tests
++
++Run only the new suite from the repository root:
++
++```bash
++PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -B -m unittest discover -s tests -p 'test_scenarios.py' -v
++```
++
++The suite uses standard-library `unittest`, Flask's test client, and a fresh SQLite
++file under `TemporaryDirectory` for every test. It constructs its own Flask app,
++enables SQLite foreign keys, and registers only the new blueprint. It never imports
++`app.server` or `app.config`, reads their database configuration, or runs migrations.
++`db.create_all()` runs exclusively against those disposable test databases.
++
++## New API
++
++All three endpoints use the existing `uuid` header and require an existing User:
++
++- `POST /scenarios/reserve`
++- `GET /scenarios/mine`
++- `POST /scenario-responses/submit`
++
++Configure `SCENARIOS_PER_PARTICIPANT` (default 4) and `RESERVATION_MINUTES` (default
++30) through the backend environment or Flask config. The reserve endpoint does not
++accept a participant-selected target. Progress returns `completed_count`, `target`,
++`whether_complete`, and `reservations`; an empty stock does not imply completion.
++
++Each reservation exposes context and four `{label, public_id}` audio objects. No
++playable media URL exists yet. `public_id` is an opaque identifier, not a media
++authorization mechanism; a future media endpoint must validate the current lease.
++Internal `audio_order` is JSON mapping A/B/C/D to ScenarioAudio primary keys.
++The server copies it to the immutable response's `presented_order` on submission.
++Every new lease gets a fresh random token and an independently shuffled order;
++random permutations may coincide by chance. Resuming a valid lease never shuffles
++or extends its deadline.
++
++Submission accepts exactly:
++
++```json
++{
++  "scenario_id": "<id>",
++  "reservation_id": "<opaque-token>",
++  "scores": {"A": 1, "B": 2, "C": 4, "D": 5},
++  "time_spent_ms": 12000
++}
++```
++
++A retry with the same participant, lease and scores returns success with
++`already_completed: true`, even with a different valid elapsed time. The original
++elapsed time and all stored response fields are preserved. Different scores return
++409; a different participant/token returns 403. Booleans, floating-point scores, missing/extra
++labels, and client-provided presentation/origin fields are rejected. The UUID
++header retains the legacy pseudonymous identity mechanism; this is not a new
++identity authentication system.
++
++Expired RESERVED rows are reset inside the reservation transaction. The standalone
++`release_expired_reservations()` service performs the same cleanup. Neither touches
++COMPLETED rows. Submission rejects expired leases even before cleanup. Completed
++rows preserve lease metadata for audit and are protected by a unique response per
++scenario.
++
++## Transaction scope and remaining deployment work
++
++Each service operation owns a separate SQLAlchemy session and commits once.
++SQLite write operations use `BEGIN IMMEDIATE` before reading, serializing writers;
++lock contention can time out and is returned as a generic 503 for retry. Tests
++cover simultaneous allocations for different participants and for one UUID.
++PostgreSQL uses a participant row lock plus scenario row locks and `SKIP LOCKED`
++for allocation. Real PostgreSQL concurrency and deployment migrations remain out
++of scope and still need validation. SQLite throughput is limited by its single
++writer model. UTC timestamps survive SQLite round trips as aware datetimes.
++
++No production schema has been created by this work. Do not use the legacy startup
++as a harmless schema inspection: it still calls `db.create_all()`, and the legacy
++Docker entrypoint still generates/applies migrations. Both behaviors are unchanged.
+diff --git a/tests/test_scenarios.py b/tests/test_scenarios.py
+new file mode 100644
+index 0000000..ef17d9d
+--- /dev/null
++++ b/tests/test_scenarios.py
+@@ -0,0 +1,570 @@
++"""Isolated scenario tests. Never import app.server or app.config.
++
++Run: python -B -m unittest discover -s tests -p 'test_scenarios.py' -v
++Only the temporary SQLite database created below is initialized.
++"""
++
++import copy
++import json
++import tempfile
++import threading
++import unittest
++import uuid
++from concurrent.futures import ThreadPoolExecutor
++from datetime import timedelta
++from pathlib import Path
++from unittest.mock import patch
++
++from flask import Flask
++from sqlalchemy import event, text, update
++from sqlalchemy.exc import IntegrityError
++
++from app.models import Pair, Response, Song, User
++from app.repository import db
++from app.routes.scenarios import scenarios_bp
++from app.scenario_models import (
++    AudioOrigin, Scenario, ScenarioAudio, ScenarioResponse, ScenarioStatus, utc_now,
++)
++from app.services.scenarios import release_expired_reservations, reserve_scenarios
++
++
++class ScenarioTests(unittest.TestCase):
++    def setUp(self):
++        self.temp = tempfile.TemporaryDirectory(prefix="scenario-tests-")
++        database = Path(self.temp.name) / "test.sqlite"
++        self.app = Flask(__name__, instance_path=self.temp.name)
++        self.app.config.update(
++            TESTING=True, SQLALCHEMY_DATABASE_URI="sqlite:///" + str(database),
++            SQLALCHEMY_TRACK_MODIFICATIONS=False,
++            SQLALCHEMY_ENGINE_OPTIONS={"connect_args": {"timeout": 10}},
++            SCENARIOS_PER_PARTICIPANT=4, RESERVATION_MINUTES=30,
++        )
++        db.init_app(self.app)
++        self.app.register_blueprint(scenarios_bp)
++        self.context = self.app.app_context()
++        self.context.push()
++
++        @event.listens_for(db.engine, "connect")
++        def enforce_foreign_keys(connection, record):
++            connection.execute("PRAGMA foreign_keys=ON")
++
++        db.create_all()
++        self.first = str(uuid.uuid4())
++        self.second = str(uuid.uuid4())
++        db.session.add_all([User(uuid=self.first), User(uuid=self.second)])
++        db.session.commit()
++        self.client = self.app.test_client()
++
++    def tearDown(self):
++        db.session.remove()
++        db.engine.dispose()
++        self.context.pop()
++        self.temp.cleanup()
++
++    def seed(self, count=1, origins=None):
++        origins = list(AudioOrigin) if origins is None else origins
++        ids = []
++        for _ in range(count):
++            scenario = Scenario(
++                context_image="/contexts/opaque-image.png",
++                game_description="A game in a distant city.",
++                scene_description="A quiet square at dusk.",
++            )
++            for origin in origins:
++                scenario.audios.append(ScenarioAudio(
++                    origin=origin, storage_key="private/" + origin.value + "/clip.mp3",
++                ))
++            db.session.add(scenario)
++            db.session.flush()
++            ids.append(scenario.id)
++        db.session.commit()
++        return ids
++
++    def scenario(self, scenario_id):
++        db.session.expire_all()
++        return db.session.get(Scenario, scenario_id)
++
++    def reserve(self, participant=None):
++        return self.client.post("/scenarios/reserve", headers={"uuid": participant or self.first})
++
++    def mine(self, participant=None):
++        return self.client.get("/scenarios/mine", headers={"uuid": participant or self.first})
++
++    def payload(self, reservation):
++        return {
++            "scenario_id": reservation["scenario_id"],
++            "reservation_id": reservation["reservation_id"],
++            "scores": {"A": 1, "B": 2, "C": 4, "D": 5},
++            "time_spent_ms": 12000,
++        }
++
++    def submit(self, payload, participant=None):
++        return self.client.post(
++            "/scenario-responses/submit", json=payload,
++            headers={"uuid": participant or self.first},
++        )
++
++    def expired(self, reservation):
++        scenario = self.scenario(reservation["scenario_id"])
++        scenario.reserved_until = utc_now() - timedelta(seconds=1)
++        db.session.commit()
++
++    def response_row(self):
++        db.session.expire_all()
++        return ScenarioResponse.query.one()
++
++    def test_four_valid_origins_and_utc_defaults(self):
++        ids = self.seed(2)
++        db.session.expire_all()
++        scenarios = [self.scenario(item) for item in ids]
++        self.assertEqual({audio.origin for audio in scenarios[0].audios}, set(AudioOrigin))
++        self.assertTrue(all(item.created_at.utcoffset() == timedelta(0) for item in scenarios))
++        self.assertNotEqual(scenarios[0].created_at, scenarios[1].created_at)
++        self.assertNotEqual(scenarios[0].audios[0].public_id, scenarios[1].audios[0].public_id)
++
++    def test_invalid_origin_and_status_rejected(self):
++        with self.assertRaises(ValueError):
++            ScenarioAudio(origin="unknown", storage_key="clip")
++        with self.assertRaises(ValueError):
++            Scenario(status="unknown")
++
++    def test_database_rejects_invalid_origin_and_status(self):
++        scenario_id = self.seed()[0]
++        for statement, params in (
++            ("UPDATE scenario_audio SET origin = 'unknown' WHERE scenario_id = :id", {"id": scenario_id}),
++            ("UPDATE scenario SET status = 'unknown' WHERE id = :id", {"id": scenario_id}),
++        ):
++            with self.subTest(statement=statement):
++                with self.assertRaises(IntegrityError):
++                    db.session.execute(text(statement), params)
++                    db.session.commit()
++                db.session.rollback()
++
++    def test_duplicate_origin_rejected(self):
++        scenario_id = self.seed()[0]
++        db.session.add(ScenarioAudio(scenario_id=scenario_id, origin="real", storage_key="other"))
++        with self.assertRaises(IntegrityError):
++            db.session.commit()
++        db.session.rollback()
++
++    def test_public_and_external_ids_unique(self):
++        ids = self.seed(2)
++        first = self.scenario(ids[0])
++        second = self.scenario(ids[1])
++        second.audios[0].public_id = first.audios[0].public_id
++        with self.assertRaises(IntegrityError):
++            db.session.commit()
++        db.session.rollback()
++        first = self.scenario(ids[0])
++        second = self.scenario(ids[1])
++        first.external_id = "source-1"
++        second.external_id = "source-1"
++        with self.assertRaises(IntegrityError):
++            db.session.commit()
++        db.session.rollback()
++
++    def test_model_scores_strictly_validated(self):
++        for value in (0, 6, True, 2.5, "3", None):
++            with self.subTest(value=value), self.assertRaises(ValueError):
++                ScenarioResponse(score_a=value)
++
++    def test_database_score_constraints(self):
++        self.seed()
++        self.submit(self.payload(self.reserve().get_json()["reservations"][0]))
++        for value in (0, 6, 1.5):
++            with self.subTest(value=value), self.assertRaises(IntegrityError):
++                db.session.execute(update(ScenarioResponse).values(score_a=value))
++                db.session.commit()
++            db.session.rollback()
++
++    def test_only_one_response_per_scenario_constraint(self):
++        self.seed()
++        self.submit(self.payload(self.reserve().get_json()["reservations"][0]))
++        original = self.response_row()
++        fields = (
++            "scenario_id", "participant_uuid", "reservation_id", "score_a", "score_b",
++            "score_c", "score_d", "presented_order", "reserved_at", "submitted_at", "time_spent_ms",
++        )
++        db.session.add(ScenarioResponse(**{key: getattr(original, key) for key in fields}))
++        with self.assertRaises(IntegrityError):
++            db.session.commit()
++        db.session.rollback()
++
++    def test_reserve_up_to_default_target(self):
++        self.seed(6)
++        result = self.reserve()
++        self.assertEqual(result.status_code, 200)
++        data = result.get_json()
++        self.assertEqual(len(data["reservations"]), 4)
++        self.assertEqual(len({item["scenario_id"] for item in data["reservations"]}), 4)
++        self.assertEqual(data["target"], 4)
++        for reservation in data["reservations"]:
++            scenario = self.scenario(reservation["scenario_id"])
++            self.assertEqual(scenario.status, ScenarioStatus.RESERVED)
++            self.assertEqual(scenario.reserved_by, self.first)
++            self.assertEqual(scenario.reserved_until - scenario.reserved_at, timedelta(minutes=30))
++            self.assertEqual(set(scenario.audio_order), {"A", "B", "C", "D"})
++            self.assertEqual(set(scenario.audio_order.values()), {audio.id for audio in scenario.audios})
++
++    def test_configurable_target_and_timeout(self):
++        self.app.config.update(SCENARIOS_PER_PARTICIPANT=3, RESERVATION_MINUTES=7)
++        self.seed(5)
++        data = self.reserve().get_json()
++        self.assertEqual(data["target"], 3)
++        self.assertEqual(len(data["reservations"]), 3)
++        scenario = self.scenario(data["reservations"][0]["scenario_id"])
++        self.assertEqual(scenario.reserved_until - scenario.reserved_at, timedelta(minutes=7))
++
++    def test_service_target_override(self):
++        self.seed(5)
++        self.assertEqual(len(reserve_scenarios(self.first, target=2)["reservations"]), 2)
++
++    def test_incomplete_scenarios_not_reserved(self):
++        invalid = self.seed(origins=list(AudioOrigin)[:3])[0]
++        valid = self.seed()[0]
++        data = self.reserve().get_json()
++        self.assertEqual([item["scenario_id"] for item in data["reservations"]], [valid])
++        self.assertEqual(self.scenario(invalid).status, ScenarioStatus.AVAILABLE)
++
++    def test_resumption_preserves_token_deadline_and_order(self):
++        self.seed(4)
++        first = self.reserve().get_json()
++        second = self.reserve().get_json()
++        self.assertEqual(first, second)
++        self.assertEqual(first, self.mine().get_json())
++
++    def test_second_participant_cannot_reserve_reserved_scenarios(self):
++        self.seed(5)
++        first = self.reserve().get_json()["reservations"]
++        second = self.reserve(self.second).get_json()["reservations"]
++        self.assertEqual(len(second), 1)
++        self.assertTrue({item["scenario_id"] for item in first}.isdisjoint(
++            {item["scenario_id"] for item in second},
++        ))
++
++    def test_expiry_clears_all_lease_fields(self):
++        self.seed()
++        reservation = self.reserve().get_json()["reservations"][0]
++        self.expired(reservation)
++        self.assertEqual(release_expired_reservations(), 1)
++        scenario = self.scenario(reservation["scenario_id"])
++        self.assertEqual(scenario.status, ScenarioStatus.AVAILABLE)
++        for key in ("reserved_by", "reserved_at", "reserved_until", "reservation_id", "audio_order"):
++            self.assertIsNone(getattr(scenario, key))
++        self.assertEqual(release_expired_reservations(), 0)
++
++    def test_lazy_expiry_reassigns_with_new_token_and_fresh_shuffle(self):
++        self.seed()
++        with patch("app.services.scenarios.RANDOM.sample", side_effect=lambda items, k: list(items)):
++            old = self.reserve().get_json()["reservations"][0]
++        old_order = copy.deepcopy(self.scenario(old["scenario_id"]).audio_order)
++        self.expired(old)
++        with patch("app.services.scenarios.RANDOM.sample", side_effect=lambda items, k: list(reversed(items))):
++            new = self.reserve(self.second).get_json()["reservations"][0]
++        self.assertEqual(old["scenario_id"], new["scenario_id"])
++        self.assertNotEqual(old["reservation_id"], new["reservation_id"])
++        self.assertNotEqual(old_order, self.scenario(new["scenario_id"]).audio_order)
++        self.assertEqual(self.submit(self.payload(old)).status_code, 403)
++
++    def test_same_participant_reclaims_expired_with_new_token(self):
++        self.seed()
++        old = self.reserve().get_json()["reservations"][0]
++        self.expired(old)
++        new = self.reserve().get_json()["reservations"][0]
++        self.assertNotEqual(old["reservation_id"], new["reservation_id"])
++        self.assertEqual(self.submit(self.payload(old)).status_code, 403)
++
++    def test_completed_never_reenters_pool_or_expires(self):
++        self.seed()
++        reservation = self.reserve().get_json()["reservations"][0]
++        self.submit(self.payload(reservation))
++        self.expired(reservation)
++        self.assertEqual(release_expired_reservations(), 0)
++        self.assertEqual(self.scenario(reservation["scenario_id"]).status, ScenarioStatus.COMPLETED)
++        self.assertEqual(self.reserve(self.second).get_json()["reservations"], [])
++
++    def test_two_completed_only_two_more_assigned(self):
++        self.seed(6)
++        reservations = self.reserve().get_json()["reservations"]
++        for reservation in reservations[:2]:
++            self.assertEqual(self.submit(self.payload(reservation)).status_code, 200)
++        result = self.reserve().get_json()
++        self.assertEqual(result["completed_count"], 2)
++        self.assertEqual(len(result["reservations"]), 2)
++        self.assertEqual(result["reservations"], reservations[2:])
++
++    def test_completed_count_limits_new_assignments_after_expiry(self):
++        self.seed(6)
++        reservations = self.reserve().get_json()["reservations"]
++        for reservation in reservations[:2]:
++            self.submit(self.payload(reservation))
++        for reservation in reservations[2:]:
++            self.expired(reservation)
++        result = self.reserve().get_json()
++        self.assertEqual(result["completed_count"], 2)
++        self.assertEqual(len(result["reservations"]), 2)
++
++    def test_stock_smaller_than_target_and_empty_is_not_complete(self):
++        self.seed(2)
++        self.assertEqual(len(self.reserve().get_json()["reservations"]), 2)
++        second = self.reserve(self.second).get_json()
++        self.assertEqual(second["reservations"], [])
++        self.assertFalse(second["whether_complete"])
++        self.assertFalse(self.mine(self.second).get_json()["whether_complete"])
++
++    def test_valid_submission_uses_server_order_and_preserves_audit(self):
++        self.seed()
++        reservation = self.reserve().get_json()["reservations"][0]
++        original_order = copy.deepcopy(self.scenario(reservation["scenario_id"]).audio_order)
++        payload = self.payload(reservation)
++        result = self.submit(payload)
++        self.assertEqual(result.status_code, 200)
++        self.assertFalse(result.get_json()["already_completed"])
++        response = self.response_row()
++        scenario = self.scenario(reservation["scenario_id"])
++        self.assertEqual(response.presented_order, original_order)
++        self.assertEqual(scenario.audio_order, original_order)
++        self.assertEqual(response.participant_uuid, self.first)
++        self.assertEqual(response.reservation_id, reservation["reservation_id"])
++        self.assertEqual(response.reserved_at, scenario.reserved_at)
++        self.assertEqual(response.submitted_at, scenario.completed_at)
++        self.assertEqual(response.submitted_at.utcoffset(), timedelta(0))
++        self.assertEqual(response.time_spent_ms, 12000)
++        for label, value in payload["scores"].items():
++            self.assertEqual(getattr(response, "score_" + label.lower()), value)
++        self.assertEqual(scenario.status, ScenarioStatus.COMPLETED)
++
++    def test_missing_extra_or_invalid_labels_rejected(self):
++        self.seed()
++        payload = self.payload(self.reserve().get_json()["reservations"][0])
++        cases = (
++            {"A": 1, "B": 2, "C": 3},
++            {"A": 1, "B": 2, "C": 3, "D": 4, "E": 5},
++            {"A": 1, "B": 2, "C": 3, "real": 4},
++        )
++        for scores in cases:
++            with self.subTest(scores=scores):
++                payload["scores"] = scores
++                self.assertEqual(self.submit(payload).status_code, 400)
++        self.assertEqual(ScenarioResponse.query.count(), 0)
++
++    def test_invalid_score_types_and_ranges_rejected(self):
++        self.seed()
++        payload = self.payload(self.reserve().get_json()["reservations"][0])
++        for value in (0, 6, -1, True, False, 2.0, "3", None, [], {}):
++            with self.subTest(value=value):
++                payload["scores"]["A"] = value
++                self.assertEqual(self.submit(payload).status_code, 400)
++        self.assertEqual(ScenarioResponse.query.count(), 0)
++
++    def test_client_origin_or_order_not_accepted(self):
++        self.seed()
++        original = self.payload(self.reserve().get_json()["reservations"][0])
++        for field in ("origin", "audio_order", "presented_order", "storage_key"):
++            payload = dict(original, **{field: "injected"})
++            with self.subTest(field=field):
++                self.assertEqual(self.submit(payload).status_code, 400)
++        self.assertEqual(ScenarioResponse.query.count(), 0)
++
++    def test_invalid_time_rejected(self):
++        self.seed()
++        payload = self.payload(self.reserve().get_json()["reservations"][0])
++        for value in (-1, True, 1.5, "100", None, 2 ** 63):
++            payload["time_spent_ms"] = value
++            with self.subTest(value=value):
++                self.assertEqual(self.submit(payload).status_code, 400)
++
++    def test_wrong_token_or_participant_rejected(self):
++        self.seed()
++        payload = self.payload(self.reserve().get_json()["reservations"][0])
++        self.assertEqual(self.submit(payload, self.second).status_code, 403)
++        payload["reservation_id"] = "wrong"
++        self.assertEqual(self.submit(payload).status_code, 403)
++        self.assertEqual(ScenarioResponse.query.count(), 0)
++
++    def test_invalid_token_encoding_rejected(self):
++        self.seed()
++        payload = self.payload(self.reserve().get_json()["reservations"][0])
++        for token in ("\u00e1", "x" * 65):
++            with self.subTest(token=token):
++                self.assertEqual(self.submit(dict(payload, reservation_id=token)).status_code, 400)
++
++    def test_expired_submission_rejected_without_cleanup(self):
++        self.seed()
++        reservation = self.reserve().get_json()["reservations"][0]
++        self.expired(reservation)
++        self.assertEqual(self.submit(self.payload(reservation)).status_code, 409)
++        self.assertEqual(ScenarioResponse.query.count(), 0)
++        self.assertEqual(self.scenario(reservation["scenario_id"]).status, ScenarioStatus.RESERVED)
++
++    def test_expiry_boundary_is_inclusive(self):
++        self.seed()
++        reservation = self.reserve().get_json()["reservations"][0]
++        deadline = self.scenario(reservation["scenario_id"]).reserved_until
++        with patch("app.services.scenarios.utc_now", return_value=deadline):
++            self.assertEqual(self.submit(self.payload(reservation)).status_code, 409)
++            self.assertEqual(release_expired_reservations(), 1)
++
++    def test_idempotent_retry_and_changed_response_rejected(self):
++        self.seed()
++        payload = self.payload(self.reserve().get_json()["reservations"][0])
++        self.assertEqual(self.submit(payload).status_code, 200)
++        first = self.response_row()
++        self.assertEqual(first.time_spent_ms, 12000)
++        original = {column.name: copy.deepcopy(getattr(first, column.name))
++                    for column in ScenarioResponse.__table__.columns}
++        retried = self.submit(payload)
++        self.assertEqual(retried.status_code, 200)
++        self.assertTrue(retried.get_json()["already_completed"])
++        retried_with_new_time = self.submit(dict(payload, time_spent_ms=13000))
++        self.assertEqual(retried_with_new_time.status_code, 200)
++        self.assertTrue(retried_with_new_time.get_json()["already_completed"])
++        self.assertEqual(ScenarioResponse.query.count(), 1)
++        changed = dict(payload, scores={"A": 5, "B": 5, "C": 5, "D": 5})
++        self.assertEqual(self.submit(changed).status_code, 409)
++        stored = self.response_row()
++        self.assertEqual(stored.time_spent_ms, 12000)
++        self.assertEqual({column.name: getattr(stored, column.name)
++                          for column in ScenarioResponse.__table__.columns}, original)
++
++    def test_completed_retry_by_other_participant_or_token_rejected(self):
++        self.seed()
++        payload = self.payload(self.reserve().get_json()["reservations"][0])
++        self.submit(payload)
++        self.assertEqual(self.submit(payload, self.second).status_code, 403)
++        self.assertEqual(self.submit(dict(payload, reservation_id="wrong")).status_code, 403)
++        self.assertEqual(ScenarioResponse.query.count(), 1)
++
++    def test_retry_after_original_deadline_still_idempotent(self):
++        self.seed()
++        reservation = self.reserve().get_json()["reservations"][0]
++        payload = self.payload(reservation)
++        self.submit(payload)
++        self.expired(reservation)
++        self.assertTrue(self.submit(payload).get_json()["already_completed"])
++
++    def test_completed_progress_does_not_reserve_again(self):
++        self.seed(6)
++        for reservation in self.reserve().get_json()["reservations"]:
++            self.submit(self.payload(reservation))
++        mine = self.mine().get_json()
++        self.assertEqual(mine["completed_count"], 4)
++        self.assertTrue(mine["whether_complete"])
++        self.assertEqual(mine["reservations"], [])
++        self.assertEqual(self.reserve().get_json(), mine)
++
++    def test_mine_filters_expired_without_claiming_completion(self):
++        self.seed()
++        reservation = self.reserve().get_json()["reservations"][0]
++        self.expired(reservation)
++        mine = self.mine().get_json()
++        self.assertEqual(mine["reservations"], [])
++        self.assertFalse(mine["whether_complete"])
++
++    def test_public_api_is_blind(self):
++        self.seed()
++        for response in (self.reserve(), self.mine()):
++            data = response.get_json()
++            serialized = json.dumps(data)
++            for forbidden in ("real", "markov", "neural", "attention", "storage_key", "private/", "audio_order"):
++                self.assertNotIn(forbidden, serialized)
++            audios = data["reservations"][0]["audios"]
++            self.assertEqual([audio["label"] for audio in audios], list("ABCD"))
++            self.assertEqual(len({audio["public_id"] for audio in audios}), 4)
++            for audio in audios:
++                self.assertEqual(set(audio), {"label", "public_id"})
++                self.assertGreaterEqual(len(audio["public_id"]), 32)
++
++    def test_missing_invalid_and_unknown_participant(self):
++        for url, method in (("/scenarios/reserve", "post"), ("/scenarios/mine", "get"),
++                            ("/scenario-responses/submit", "post")):
++            for value, status in ((None, 400), ("invalid", 400), (str(uuid.uuid4()), 404)):
++                headers = {} if value is None else {"uuid": value}
++                args = {"headers": headers}
++                if url.endswith("submit"):
++                    args["json"] = {"scenario_id": "missing", "reservation_id": "token",
++                                    "scores": dict.fromkeys("ABCD", 3), "time_spent_ms": 0}
++                with self.subTest(url=url, value=value):
++                    self.assertEqual(getattr(self.client, method)(url, **args).status_code, status)
++
++    def test_malformed_submission_and_unknown_scenario(self):
++        for value in (None, [], {}, "string"):
++            with self.subTest(value=value):
++                self.assertEqual(self.submit(value).status_code, 400)
++        payload = {"scenario_id": "missing", "reservation_id": "token",
++                   "scores": dict.fromkeys("ABCD", 3), "time_spent_ms": 0}
++        self.assertEqual(self.submit(payload).status_code, 404)
++
++    def test_unreserved_scenario_cannot_be_submitted(self):
++        scenario_id = self.seed()[0]
++        payload = {"scenario_id": scenario_id, "reservation_id": "token",
++                   "scores": dict.fromkeys("ABCD", 3), "time_spent_ms": 0}
++        self.assertEqual(self.submit(payload).status_code, 409)
++
++    def test_transaction_rolls_back_entire_batch_on_failure(self):
++        self.seed(4)
++        with patch("app.services.scenarios.new_token", side_effect=["test-token", RuntimeError("interrupted")]):
++            with self.assertRaises(RuntimeError):
++                reserve_scenarios(self.first)
++        db.session.expire_all()
++        self.assertEqual(Scenario.query.filter_by(status=ScenarioStatus.AVAILABLE).count(), 4)
++        self.assertEqual(Scenario.query.filter_by(status=ScenarioStatus.RESERVED).count(), 0)
++
++    def test_submission_rolls_back_on_persistence_failure(self):
++        self.seed()
++        reservation = self.reserve().get_json()["reservations"][0]
++
++        def reject_insert(mapper, connection, target):
++            raise RuntimeError("interrupted")
++
++        event.listen(ScenarioResponse, "before_insert", reject_insert)
++        try:
++            with self.assertRaises(RuntimeError):
++                self.submit(self.payload(reservation))
++        finally:
++            event.remove(ScenarioResponse, "before_insert", reject_insert)
++        self.assertEqual(self.scenario(reservation["scenario_id"]).status, ScenarioStatus.RESERVED)
++        self.assertEqual(ScenarioResponse.query.count(), 0)
++
++    def test_sqlite_simultaneous_allocations_are_exclusive(self):
++        self.seed(4)
++        db.session.remove()
++        barrier = threading.Barrier(2)
++
++        def allocate(participant):
++            with self.app.app_context():
++                barrier.wait(timeout=10)
++                return reserve_scenarios(participant)
++
++        with ThreadPoolExecutor(max_workers=2) as executor:
++            results = list(executor.map(allocate, [self.first, self.second]))
++        ids = [item["scenario_id"] for result in results for item in result["reservations"]]
++        self.assertEqual(len(ids), 4)
++        self.assertEqual(len(set(ids)), 4)
++
++    def test_sqlite_simultaneous_same_participant_preserves_quota(self):
++        self.seed(8)
++        db.session.remove()
++        barrier = threading.Barrier(2)
++
++        def allocate(_):
++            with self.app.app_context():
++                barrier.wait(timeout=10)
++                return reserve_scenarios(self.first)
++
++        with ThreadPoolExecutor(max_workers=2) as executor:
++            results = list(executor.map(allocate, range(2)))
++        self.assertEqual(results[0], results[1])
++        self.assertEqual(len(results[0]["reservations"]), 4)
++        self.assertEqual(Scenario.query.filter_by(status=ScenarioStatus.RESERVED).count(), 4)
++
++    def test_legacy_tables_remain_unused(self):
++        self.seed()
++        self.submit(self.payload(self.reserve().get_json()["reservations"][0]))
++        self.assertEqual(Song.query.count(), 0)
++        self.assertEqual(Pair.query.count(), 0)
++        self.assertEqual(Response.query.count(), 0)
++
++
++if __name__ == "__main__":
++    unittest.main()
+-- 
+2.43.0
+
