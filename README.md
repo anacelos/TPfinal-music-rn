@@ -118,7 +118,13 @@ _(a preencher)_
 
 ### Carlos Henrique Brito Malta Leão
 
-_(a preencher)_
+- Análise exploratória do dataset do PICO-8 e figuras do corpus.
+- Pré-processamento das músicas: filtros por notas audíveis, instrumentos personalizados e
+  velocidades incompatíveis, e remoção de duplicatas pelo conteúdo musical.
+- Divisão em treino, validação e teste por grupos de jogos que compartilham SFX, para que nenhuma
+  música ou SFX apareça em mais de um subconjunto.
+- Integração do pré-processamento com a tokenização, que passou a ler os splits gerados.
+- Redação das seções "Dataset e pré-processamento" e "Trabalhos relacionados" do artigo.
 
 ### Giovanni Martinelli
 
