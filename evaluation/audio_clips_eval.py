@@ -62,6 +62,7 @@ def main(argv=None):
                     help="clipes por reamostra do FAD (padrão min(100, n); 0 = conjuntos inteiros, como --full)")
     ap.add_argument("--no-sfx-filters", action="store_true", help="sintetiza as músicas reais sem os filtros de SFX")
     ap.add_argument("--render-only", action="store_true", help="só renderiza os clipes, sem calcular as métricas")
+    ap.add_argument("--no-val", action="store_true", help="não inclui o conjunto real_val (o piso)")
     args = ap.parse_args(argv)
     if args.quick:
         args.n_real, args.n = 24, 12
@@ -75,6 +76,8 @@ def main(argv=None):
 
     sets = {}
     for name, path, n in (("real_test", args.test, args.n_real), ("real_val", args.val, args.n)):
+        if name == "real_val" and args.no_val:
+            continue
         songs = render.read_jsonl(path)
         sets[name] = rng.sample(songs, min(n or len(songs), len(songs)))  # os arquivos de split vêm ordenados por jogo
     for s in args.system:

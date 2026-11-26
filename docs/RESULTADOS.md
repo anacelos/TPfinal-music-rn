@@ -87,7 +87,7 @@ As músicas são sintetizadas (`src/synth.py`) e comparadas por modelos de áudi
 | Geração de 1.854 músicas por sistema (`src/sample.py`) | feito | 22979 a 22982 | Drive `predicoes-teste/` |
 | Métricas simbólicas (PE, SC, GC, OA, KS) | feito | 22984, 22985 | `docs/resultados/`, Drive `resultados/simbolico/` |
 | Métricas de áudio (FAD, KLD, CLAP score), 200 clipes por sistema | feito | 22986 | `docs/resultados/`, Drive `resultados/audio/` |
-| FAD no teste inteiro (1.854 clipes por conjunto) | feito | 23835 | `docs/resultados/audio_metrics_full.csv`, Drive `resultados/audio/` |
+| FAD no teste inteiro (1.854 clipes por conjunto) | feito | 23835 (k10, markov, val), 23836 (t1) | `docs/resultados/audio_metrics_full.csv`, Drive `resultados/audio/` |
 | Curvas de treino (`src/plot_history.py`) | feito | local | Drive `checkpoints/<modo>/history.json` |
 | Escolha do top-k pela validação | não feito | | |
 | Teste de escuta | no ar, coletando respostas | | [ETAPAS.md, etapa 11](ETAPAS.md#11-teste-de-escuta), <https://pico8-bh.giow.dev> |
@@ -146,21 +146,26 @@ Referência: 400 músicas de `real_test`. 200 clipes de 10 s por sistema.
 
 Tabela completa: `docs/resultados/audio_metrics.csv`.
 
-**Teste inteiro, sem bootstrap** (job 23835, `--full`): todas as 1.854 músicas do teste contra
-todas as 1.854 de cada sistema (o nlm-k10 tem 1.852: duas músicas geradas não têm nota nos
+**Teste inteiro, sem bootstrap** (jobs 23835 e 23836, `--full`): todas as 1.854 músicas do teste
+contra todas as 1.854 de cada sistema (os nlm têm 1.852: duas músicas geradas não têm nota nos
 primeiros 10 s), e as 1.861 da validação como piso. Um FAD por conjunto, sem desvio.
 
 | Sistema | FAD | FAD ÷ piso | KLD | CLAP score |
 |---|---|---|---|---|
 | `real_val` (piso) | 0,0086 | 1,0 | 0,004 | 0,238 |
-| `lstm-grid_block-k10` | **0,0406** | 4,7 | **0,032** | 0,274 |
+| `lstm-grid_block-t1` | **0,0369** | 4,3 | **0,026** | 0,289 |
+| `lstm-grid_block-k10` | 0,0406 | 4,7 | 0,032 | 0,274 |
 | `lstm-nlm-k10` | 0,0643 | 7,5 | 0,060 | 0,277 |
+| `lstm-nlm-t1` | 0,0852 | 9,9 | 0,087 | 0,285 |
 | `markov` | 0,2522 | 29,3 | 0,199 | 0,332 |
 
-Tabela completa: `docs/resultados/audio_metrics_full.csv`. A ordem é a mesma da tabela com
-200 clipes. Todos os valores caem porque o FAD cresce quando o conjunto é pequeno, e o piso cai
-mais que os sistemas: com 100 clipes por reamostra o `grid_block-k10` parecia a 1,2× do piso, com o
-teste inteiro está a 4,7×. O ruído de amostragem escondia parte da distância ao real.
+Tabela completa: `docs/resultados/audio_metrics_full.csv`. Todos os valores caem porque o FAD
+cresce quando o conjunto é pequeno, e o piso cai mais que os sistemas: com 100 clipes por
+reamostra o `grid_block-k10` parecia a 1,2× do piso, com o teste inteiro está a 4,7×. O ruído de
+amostragem escondia parte da distância ao real. A ordem entre tokenizadores e contra o Markov é a
+mesma da tabela com 200 clipes. Dentro do grid_block ela inverte: o t1 fica à frente do k10 no FAD e
+no KLD (na tabela com 200 clipes a diferença entre os dois estava dentro do desvio). No nlm o k10
+continua à frente do t1.
 
 ### Avaliação subjetiva
 
@@ -217,7 +222,8 @@ análise de sensibilidade e auditoria:
   groove porque copia a estrutura de uma música de treino, e é o pior em altura e escala.
 - O Markov tem o maior CLAP score e o pior FAD: soar como "chiptune" para o CLAP não é o mesmo
   que soar como o dataset.
-- No teste inteiro, o `grid_block-k10` fica a 4,7× do piso, o `nlm-k10` a 7,5× e o Markov a 29×.
+- No teste inteiro, os grid_block ficam a 4,3× (t1) e 4,7× (k10) do piso, os nlm a 7,5× (k10) e
+  9,9× (t1), e o Markov a 29×. O top-k 10 ajuda o nlm e não ajuda o grid_block no áudio.
 
 ## 4. Como reproduzir
 
@@ -249,7 +255,8 @@ python evaluation/distribution_compare.py --real results/real_test.csv \
 python evaluation/audio_clips_eval.py --test data/splits/test.jsonl --val data/splits/val.jsonl \
     --system lstm-grid_block-k10=results/lstm-grid_block-k10.jsonl \
     --system markov=results/markov.jsonl --out-dir results/audio
-# o mesmo com todas as músicas de cada conjunto e FAD sem bootstrap (tabela "teste inteiro")
+# o mesmo com todas as músicas de cada conjunto e FAD sem bootstrap (tabela "teste inteiro");
+# --no-val deixa o real_val de fora quando o piso já foi calculado
 python evaluation/audio_clips_eval.py --full --test data/splits/test.jsonl --val data/splits/val.jsonl \
     --system lstm-grid_block-k10=results/lstm-grid_block-k10.jsonl \
     --system markov=results/markov.jsonl --out-dir results/audio_full
