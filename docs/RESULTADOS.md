@@ -142,7 +142,51 @@ Referência: 400 músicas de `real_test`. 200 clipes de 10 s por sistema.
 | `markov` | 0,323 ± 0,012 | 3,35 | 0,213 | 0,336 |
 
 Tabela completa: `docs/resultados/audio_metrics.csv`.
+### Avaliação subjetiva
 
+Coleta final: 25/11/2026, snapshot das 20h16.
+
+Dos 83 participantes registrados, 71 avaliaram pelo menos um cenário e 68
+concluíram os dois cenários previstos. Dos 139 cenários concluídos,
+138 passaram na checagem de atenção (99,3%), totalizando 414 avaliações
+musicais válidas.
+
+| Condição | Média | Mediana | DP | Notas 4 ou 5 |
+|---|---:|---:|---:|---:|
+| Real | 3,391 | 4 | 1,275 | 56,5% |
+| Neural (`grid_block-k10`) | 3,167 | 3 | 1,293 | 46,4% |
+| Markov | 2,442 | 2 | 1,301 | 29,0% |
+
+Comparações pelo teste exato bilateral de sinais, sobre as diferenças
+médias por participante, com correção de Holm (alfa = 0,05).
+
+| Comparação | p ajustado |
+|---|---:|
+| Real × Markov | 0,00001445 |
+| Neural × Markov | 0,00013476 |
+| Real × Neural | 0,69888343 |
+
+Real e Neural superaram significativamente o Markov na adequação
+contextual percebida. Entre os 71 participantes, 50 favoreceram o
+Neural frente ao Markov, 17 favoreceram o Markov e quatro empataram.
+
+A inclusão do cenário reprovado na atenção não alterou as conclusões.
+
+Na análise exploratória por familiaridade com jogos retrô:
+
+| Familiaridade | Participantes | Real | Neural | Markov |
+|---|---:|---:|---:|---:|
+| Nenhuma | 15 | 2,90 | 2,87 | 2,37 |
+| Pouca | 30 | 3,47 | 3,15 | 2,80 |
+| Razoável | 18 | 3,58 | 3,31 | 2,28 |
+| Muita | 8 | 3,56 | 3,50 | 1,94 |
+
+As médias por perfil atribuem o mesmo peso a cada participante.
+As comparações entre subgrupos são exclusivamente exploratórias.
+
+Resultados completos, incluindo os seis recortes do questionário,
+análise de sensibilidade e auditoria:
+[avaliação subjetiva](resultados/subjetivo/README.md).
 ### Leitura
 
 - O grid_block vence o nlm em tudo: bits/s, métricas simbólicas, FAD e KLD.
@@ -193,6 +237,24 @@ python evaluation/export_samples.py --system lstm-grid_block-k10=results/lstm-gr
 Para o nlm, troque `grid_block` por `nlm`. Para a amostragem sem filtro, tire `--top-k 10`.
 A geração usou `--max-len 1828` e `--seed 42`, os padrões do `sample.py`.
 
+### Avaliação subjetiva
+
+A análise estatística pode ser reproduzida a partir do CSV original
+exportado pela aplicação e da chave privada de identificação das condições.
+
+```bash
+python3 evaluation/subjective/analyze_giovanni_snapshot.py \
+    --ratings /caminho/privado/ratings.csv \
+    --key /caminho/privado/scenario_key.json \
+    --out /caminho/privado/resultados
+```
+
+Os resultados agregados e os hashes dos insumos estão disponíveis
+em [resultados/subjetivo/](resultados/subjetivo/README.md).
+
+Os dados individuais e a chave experimental não são publicados.
+A reprodução integral requer acesso autorizado a esses arquivos.
+
 ## 5. Limitações
 
 - O top-k 10 não foi ajustado na validação.
@@ -207,3 +269,13 @@ A geração usou `--max-len 1828` e `--seed 42`, os padrões do `sample.py`.
   das geradas pelas LSTMs; 630 do Markov) e é calculada só nas demais.
 - O `test_perplexity.py` conta duas vezes os tokens da última janela de cada música longa; o
   `evaluation/bits_per_second.py` não tem esse problema (seção 3).
+  - O baseline de Markov e a LSTM utilizam representações internas distintas,
+  limitando a atribuição das diferenças exclusivamente à arquitetura.
+- A avaliação subjetiva utiliza pareamento simbólico posterior à geração,
+  sem uma condição de associação aleatória para isolar seu efeito.
+- A ausência de diferença significativa entre Real e Neural não demonstra
+  equivalência entre as condições.
+- A amostragem por conveniência e a priorização dos contextos limitam
+  a generalização dos resultados subjetivos.
+- As análises por perfil são exploratórias, sem testes inferenciais
+  entre subgrupos.

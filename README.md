@@ -118,7 +118,13 @@ _(a preencher)_
 
 ### Carlos Henrique Brito Malta Leão
 
-_(a preencher)_
+- Análise exploratória do dataset do PICO-8 e figuras do corpus.
+- Pré-processamento das músicas: filtros por notas audíveis, instrumentos personalizados e
+  velocidades incompatíveis, e remoção de duplicatas pelo conteúdo musical.
+- Divisão em treino, validação e teste por grupos de jogos que compartilham SFX, para que nenhuma
+  música ou SFX apareça em mais de um subconjunto.
+- Integração do pré-processamento com a tokenização, que passou a ler os splits gerados.
+- Redação das seções "Dataset e pré-processamento" e "Trabalhos relacionados" do artigo.
 
 ### Giovanni Martinelli
 
@@ -151,6 +157,7 @@ _(a preencher)_
 - Desenvolvimento do pareamento global entre músicas reais e geradas pelo algoritmo Húngaro, utilizando descritores de altura, ritmo e textura.
 - Planejamento da avaliação subjetiva, seleção e contextualização dos cenários, balanceamento das condições experimentais e elaboração das checagens de atenção.
 - Preparação do pacote de 240 cenários para integração com a aplicação web e desenvolvimento do pipeline de análise estatística.
+- Análise estatística das avaliações subjetivas de 71 participantes, incluindo comparações pareadas, correção para múltiplas comparações, análise de sensibilidade e análise exploratória por perfil.
 - Redação e revisão das seções de avaliação objetiva e subjetiva do artigo e elaboração dos respectivos slides.
 
 ---
@@ -169,9 +176,11 @@ usou escreve "Não usei IA".
 
 ### Carlos Henrique Brito Malta Leão
 
-- **Ferramentas:** _(a preencher)_
-- **Para quê:** _(a preencher)_
-- **Conversas:** _(links)_
+- **Ferramentas:** Claude Code (Anthropic), no terminal.
+- **Para quê:** entender a estrutura dos dados de música dos cartuchos do PICO-8; revisão do pré-processamento, e das análises do corpus; conferir os números do artigo com o código; pesquisar referências e montar o `.bib`; revisar o português das seções "Dataset e pré-processamento" e "Trabalhos
+  relacionados".
+- **Conversas:** sessões do Claude Code no terminal, que não geram link público. As transcrições
+  ficam guardadas localmente e podem ser enviadas ao professor sob pedido.
 
 ### Giovanni Martinelli
 
@@ -203,4 +212,4 @@ usou escreve "Não usei IA".
 
 - **Ferramentas:** OpenAI ChatGPT e OpenAI Codex.
 - **Para quê:** apoio ao planejamento metodológico, estudo das métricas musicais, definição do protocolo experimental, implementação e depuração de código, elaboração de testes automatizados, interpretação dos resultados, documentação, revisão científica e preparação do artigo e da apresentação. As implementações e decisões metodológicas foram supervisionadas, revisadas e validadas pelo integrante.
-- **Conversa:** [links dos registros de interação com as ferramentas de IA.](https://chatgpt.com/s/t_6b076c3e437481918dbccb26c0f424b5)
+- **Conversas:** [Relatório consolidado do uso de ChatGPT e Codex durante o desenvolvimento do trabalho](https://chatgpt.com/s/t_6b076c3e437481918dbccb26c0f424b5). O registro apresenta uma síntese retrospectiva das atividades realizadas com apoio de IA.
