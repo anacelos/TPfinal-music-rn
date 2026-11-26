@@ -172,7 +172,7 @@ usou escreve "Não usei IA".
 
 - **Ferramentas:** Claude Code (modelo Claude Opus 5.5, Anthropic).
 - **Para quê:** tutoria. A IA não escreveu o código do modelo: explicou conceitos (Embedding, LSTM, `padding_idx`, shapes de `output`, `h_n` e `c_n`), mostrou exemplos numéricos para rodar no terminal, revisou o código que eu escrevi e apontou erros. Também foi usada para organizar o cronograma do trabalho (27/10) e para redigir esta descrição a partir do meu código (25/11).
-- **Conversas:** sessões do Claude Code (Code tab) de 27/10, 16–22/11 e 25/11/2026; resumo da conversa de 27/10 em `ChatsClaude/2026-10-27_planejamento_TPFinal.md` (arquivo local).
+- **Conversas:** sessões do Claude Code (Code tab) de 27/10, 16–22/11 e 25/11/2026.
 
 ### Carlos Henrique Brito Malta Leão
 
